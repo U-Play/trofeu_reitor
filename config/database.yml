@@ -17,6 +17,9 @@ development:
 
 test:
   <<: *common
+  # for travis-ci compatibility
+  username: postgresql
+  password:
   database: uplay-test
 
 production:
