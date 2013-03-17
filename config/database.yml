@@ -1,0 +1,24 @@
+# Postgres version 9.1
+#   gem install pg
+#
+#   Ensure the Postgres gem is defined in your Gemfile and
+#   a Postgres server is running on your machine
+#   gem 'pg'
+common: &common
+  adapter: postgresql
+  username: uplay
+  password: uplay
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *common
+  database: uplay-dev
+
+test:
+  <<: *common
+  database: uplay-test
+
+production:
+  <<: *common
+  database: uplay-production
