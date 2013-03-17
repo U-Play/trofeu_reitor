@@ -1,0 +1,15 @@
+<nav>
+  <ul>
+    <% if user_signed_in? %>
+      <% if can?(:manage, Citygate::User) %>
+        <li><i class='icon-cog'></i><%= link_to t('navigation.links.admin'), citygate.admin_users_path %></li>
+      <% end %>
+
+      <li><i class='icon-user'></i><%= link_to t('navigation.links.profile'), citygate.profile_path %></li>
+      <li><i class='icon-unlock'></i><%= link_to t('navigation.links.log_out'), citygate.destroy_user_session_path, method: 'delete' %></li>
+    <% else %>
+      <li><%= link_to t('navigation.links.log_in'), citygate.new_user_session_path %></li>
+      <li><%= link_to t('navigation.links.sign_up'), citygate.new_user_registration_path %></li>
+    <% end %>
+  </ul>
+</nav>
