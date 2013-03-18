@@ -1,2 +1,2 @@
 before_script:
-  - psql -c 'create database uplay-test;' -U postgres
+  - psql -c 'create database uplay_test;' -U postgres

@@ -13,15 +13,15 @@ common: &common
 
 development:
   <<: *common
-  database: uplay-dev
+  database: uplay_dev
 
 test:
   <<: *common
   # for travis-ci compatibility
-  username: postgresql
+  username: postgres
   password:
-  database: uplay-test
+  database: uplay_test
 
 production:
   <<: *common
-  database: uplay-production
+  database: uplay_production
