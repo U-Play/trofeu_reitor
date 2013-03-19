@@ -11,15 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317225852) do
+ActiveRecord::Schema.define(:version => 20130319014446) do
 
-  create_table "citygate_roles", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "citygate_users", :force => true do |t|
+  create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
@@ -30,7 +24,6 @@ ActiveRecord::Schema.define(:version => 20130317225852) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "password_salt"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
@@ -40,10 +33,16 @@ ActiveRecord::Schema.define(:version => 20130317225852) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "username"
-    t.integer  "role_id"
+    t.string   "course"
+    t.string   "student_number"
+    t.string   "sports_number"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
-  add_index "citygate_users", ["email"], :name => "index_citygate_users_on_email", :unique => true
-  add_index "citygate_users", ["reset_password_token"], :name => "index_citygate_users_on_reset_password_token", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

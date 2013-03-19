@@ -2,9 +2,14 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 
-gem 'pg'
 gem 'activerecord-postgres-hstore'
-gem 'citygate'
+gem 'cancan'
+gem 'devise'
+gem 'devise-encryptable'
+gem 'devise_invitable'
+gem 'paperclip'
+gem 'pg'
+gem 'slim'
 
 group :development do
   gem 'pry-rails'
