@@ -11,5 +11,26 @@ class User < ActiveRecord::Base
                     #styles: { medium: "300x300>", thumb: "100x100>" },
                     #default_url: "/images/:style/missing.png"
 
+  ## Relations ##
   belongs_to :role
+
+  has_many :events
+  has_many :teams # as coach
+  has_many :news
+  has_many :penalties
+
+  has_many :team_athletes, :dependent => :destroy, :inverse_of => :user
+  has_many :teams, :through => :team_athletes
+
+  has_many :match_referees
+  has_many :matches, :through => :match_referees
+
+  has_many :team_referees
+  has_many :teams, :through => :team_referees
+
+  has_many :match_event_occurrences
+  has_many :matches, :through => :match_event_occurrences
+  has_many :match_events, :through => :match_event_occurrences
+
+  # accepts_nested_attributes_for :team_athletes, :allow_destroy => true
 end

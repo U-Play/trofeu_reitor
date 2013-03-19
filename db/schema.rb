@@ -11,6 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130319103742) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -32,6 +33,210 @@ ActiveRecord::Schema.define(:version => 20130319103742) do
     t.string "name", :null => false
     t.string "desc"
   end
+=======
+ActiveRecord::Schema.define(:version => 20130319155045) do
+
+  create_table "events", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "deleted_at"
+    t.integer  "user_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "formats", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "deleted_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "group_stages", :force => true do |t|
+    t.integer  "n_rounds"
+    t.integer  "win_points"
+    t.integer  "tie_points"
+    t.integer  "loss_points"
+    t.integer  "tournament_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "group_stages", ["tournament_id"], :name => "index_group_stages_on_tournament_id"
+
+  create_table "knockout_stages", :force => true do |t|
+    t.boolean  "third_place"
+    t.boolean  "result_homologation"
+    t.integer  "tournament_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "knockout_stages", ["tournament_id"], :name => "index_knockout_stages_on_tournament_id"
+
+  create_table "locals", :force => true do |t|
+    t.string   "city"
+    t.datetime "deleted_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "match_event_occurrences", :force => true do |t|
+    t.integer  "total"
+    t.string   "time"
+    t.datetime "deleted_at"
+    t.integer  "match_event_id"
+    t.integer  "match_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "match_event_occurrences", ["match_event_id"], :name => "index_match_event_occurrences_on_match_event_id"
+  add_index "match_event_occurrences", ["match_id"], :name => "index_match_event_occurrences_on_match_id"
+  add_index "match_event_occurrences", ["user_id"], :name => "index_match_event_occurrences_on_user_id"
+
+  create_table "match_events", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "deleted_at"
+    t.integer  "sport_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "match_events", ["sport_id"], :name => "index_match_events_on_sport_id"
+
+  create_table "match_referees", :force => true do |t|
+    t.datetime "deleted_at"
+    t.integer  "match_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "match_referees", ["match_id"], :name => "index_match_referees_on_match_id"
+  add_index "match_referees", ["user_id"], :name => "index_match_referees_on_user_id"
+
+  create_table "matches", :force => true do |t|
+    t.string   "group"
+    t.integer  "position"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "deleted_at"
+    t.integer  "tournament_id"
+    t.integer  "local_id"
+    t.integer  "winner_id"
+    t.integer  "team_one_id"
+    t.integer  "team_two_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "matches", ["local_id"], :name => "index_matches_on_local_id"
+  add_index "matches", ["team_one_id"], :name => "index_matches_on_team_one_id"
+  add_index "matches", ["team_two_id"], :name => "index_matches_on_team_two_id"
+  add_index "matches", ["tournament_id"], :name => "index_matches_on_tournament_id"
+  add_index "matches", ["winner_id"], :name => "index_matches_on_winner_id"
+
+  create_table "news", :force => true do |t|
+    t.datetime "deleted_at"
+    t.integer  "event_id"
+    t.integer  "tournament_id"
+    t.integer  "team_id"
+    t.integer  "match_id"
+    t.integer  "user_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "news", ["event_id"], :name => "index_news_on_event_id"
+  add_index "news", ["match_id"], :name => "index_news_on_match_id"
+  add_index "news", ["team_id"], :name => "index_news_on_team_id"
+  add_index "news", ["tournament_id"], :name => "index_news_on_tournament_id"
+  add_index "news", ["user_id"], :name => "index_news_on_user_id"
+
+  create_table "penalties", :force => true do |t|
+    t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "deleted_at"
+    t.integer  "match_id"
+    t.integer  "team_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "penalties", ["match_id"], :name => "index_penalties_on_match_id"
+  add_index "penalties", ["team_id"], :name => "index_penalties_on_team_id"
+  add_index "penalties", ["user_id"], :name => "index_penalties_on_user_id"
+
+  create_table "sports", :force => true do |t|
+    t.string   "name"
+    t.datetime "deleted_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "team_athletes", :force => true do |t|
+    t.datetime "deleted_at"
+    t.integer  "team_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "team_athletes", ["team_id"], :name => "index_team_athletes_on_team_id"
+  add_index "team_athletes", ["user_id"], :name => "index_team_athletes_on_user_id"
+
+  create_table "team_referees", :force => true do |t|
+    t.datetime "deleted_at"
+    t.integer  "team_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "team_referees", ["team_id"], :name => "index_team_referees_on_team_id"
+  add_index "team_referees", ["user_id"], :name => "index_team_referees_on_user_id"
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.datetime "deleted_at"
+    t.integer  "tournament_id"
+    t.integer  "coach_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "teams", ["coach_id"], :name => "index_teams_on_coach_id"
+  add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
+
+  create_table "tournaments", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "rules"
+    t.string   "contacts"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "deleted_at"
+    t.integer  "sport_id"
+    t.integer  "format_id"
+    t.integer  "event_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "tournaments", ["event_id"], :name => "index_tournaments_on_event_id"
+  add_index "tournaments", ["format_id"], :name => "index_tournaments_on_format_id"
+  add_index "tournaments", ["sport_id"], :name => "index_tournaments_on_sport_id"
+>>>>>>> migrations done; models validations to be finished yet
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
