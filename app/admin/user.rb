@@ -1,16 +1,23 @@
 ActiveAdmin.register User do
   menu :priority => 11
 
+  filter :role, member_label: Proc.new { |r| r.name.titleize }
   filter :first_name
   filter :last_name
   filter :email
   filter :student_number
   filter :sports_number
 
+  controller do
+    def scoped_collection
+      end_of_association_chain.includes(:role)
+    end
+  end
+
   index do
-    column :first_name
-    column :last_name
+    column :name, sortable: 'first_name'
     column :email
+    column(:role, sortable: 'roles.name') { |user| user.role.name.titleize }
     column :student_number
     column :sports_number
     default_actions
@@ -35,6 +42,7 @@ ActiveAdmin.register User do
       f.input :email
       f.input :student_number
       f.input :sports_number
+      f.input :role, include_blank: false, member_label: Proc.new{ |r| r.name.titleize }
     end
     f.actions
   end
