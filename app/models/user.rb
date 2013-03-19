@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
                     # TODO check this configs when possible
                     #styles: { medium: "300x300>", thumb: "100x100>" },
                     #default_url: "/images/:style/missing.png"
+
+  belongs_to :role
 end
