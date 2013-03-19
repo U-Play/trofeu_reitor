@@ -1,21 +1,40 @@
 ActiveAdmin.register User do
   menu :priority => 11
 
+  filter :first_name
+  filter :last_name
+  filter :email
+  filter :student_number
+  filter :sports_number
+
   index do
+    column :first_name
+    column :last_name
     column :email
-    column :current_sign_in_at
-    column :last_sign_in_at
-    column :sign_in_count
+    column :student_number
+    column :sports_number
     default_actions
   end
 
-  filter :email
+  show do
+    attributes_table do
+      row :picture
+      row :first_name
+      row :last_name
+      row :email
+      row :course
+      row :student_number
+      row :sports_number
+    end
+  end
 
   form do |f|
-    f.inputs "Admin Details" do
+    f.inputs "User Details" do
+      f.input :first_name
+      f.input :last_name
       f.input :email
-      f.input :password
-      f.input :password_confirmation
+      f.input :student_number
+      f.input :sports_number
     end
     f.actions
   end
