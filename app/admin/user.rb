@@ -25,7 +25,7 @@ ActiveAdmin.register User do
 
   show do
     attributes_table do
-      row :picture
+      row(:picture) { |user| image_tag(user.picture.url) }
       row :first_name
       row :last_name
       row :email
@@ -35,14 +35,17 @@ ActiveAdmin.register User do
     end
   end
 
-  form do |f|
-    f.inputs "User Details" do
+  form do |f| #html: { enctype: 'multipart/form-data' } do |f|
+    f.inputs "Required Fields" do
+      f.input :email
+      f.input :role, include_blank: false, member_label: Proc.new{ |r| r.name.titleize }
+    end
+    f.inputs "Details" do
+      f.input :picture, as: :file, hint: f.template.image_tag(f.object.picture.url)
       f.input :first_name
       f.input :last_name
-      f.input :email
       f.input :student_number
       f.input :sports_number
-      f.input :role, include_blank: false, member_label: Proc.new{ |r| r.name.titleize }
     end
     f.actions
   end

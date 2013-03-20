@@ -7,9 +7,8 @@ class User < ActiveRecord::Base
                   :first_name, :last_name, :username, :course, :student_number, :sports_number, :picture, :role_id
 
   has_attached_file :picture
-  # TODO check this configs when possible
-  #styles: { medium: "300x300>", thumb: "100x100>" },
-  #default_url: "/images/:style/missing.png"
+                    # TODO check this configs when possible
+                    #styles: { medium: "300x300>", thumb: "100x100>" }
 
   ## Relations ##
   belongs_to :role
@@ -37,10 +36,10 @@ class User < ActiveRecord::Base
 
   # accepts_nested_attributes_for :team_athletes, :allow_destroy => true
 
+  ## Public Methods ##
+
   before_create :set_default_role
   after_create :send_invitation_email
-
-  ## Public Methods ##
 
   def name
     "#{first_name} #{last_name}".strip.presence || email
@@ -78,7 +77,9 @@ class User < ActiveRecord::Base
     self.role = Role.default_role
   end
 
-  def send_invitation_email
-    # UserMailer.invitation_email(self).deliver
-  end
+  protected
+
+    def send_invitation_email
+      UserMailer.invitation_email(self).deliver
+    end
 end
