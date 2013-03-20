@@ -7,7 +7,7 @@ class CreateMatches < ActiveRecord::Migration
       t.datetime :end_date
       t.datetime :deleted_at
       t.references :tournament
-      t.references :local
+      t.references :location
       t.references :winner
       t.references :team_one
       t.references :team_two
@@ -15,7 +15,7 @@ class CreateMatches < ActiveRecord::Migration
       t.timestamps
     end
     add_index :matches, :tournament_id
-    add_index :matches, :local_id
+    add_index :matches, :location_id
     add_index :matches, :winner_id
     add_index :matches, :team_one_id
     add_index :matches, :team_two_id

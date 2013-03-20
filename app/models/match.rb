@@ -3,7 +3,7 @@ class Match < ActiveRecord::Base
 
   ## Relations ##
   belongs_to :tournament
-  belongs_to :local
+  belongs_to :location
   belongs_to :winner, :class_name => "Team"
   belongs_to :team_one, :class_name => "Team"
   belongs_to :team_two, :class_name => "Team"
@@ -23,5 +23,5 @@ class Match < ActiveRecord::Base
 
   ## Validations ##
   validates :tournament_id, presence: true
-  validates :local_id, presence: true
+  validates :location_id, presence: true
 end

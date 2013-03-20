@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(:version => 20130319155045) do
 
   add_index "knockout_stages", ["tournament_id"], :name => "index_knockout_stages_on_tournament_id"
 
-  create_table "locals", :force => true do |t|
+  create_table "locations", :force => true do |t|
     t.string   "city"
     t.datetime "deleted_at"
     t.datetime "created_at", :null => false
@@ -92,14 +92,14 @@ ActiveRecord::Schema.define(:version => 20130319155045) do
     t.datetime "deleted_at"
     t.integer  "match_event_id"
     t.integer  "match_id"
-    t.integer  "user_id"
+    t.integer  "athlete_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
 
+  add_index "match_event_occurrences", ["athlete_id"], :name => "index_match_event_occurrences_on_athlete_id"
   add_index "match_event_occurrences", ["match_event_id"], :name => "index_match_event_occurrences_on_match_event_id"
   add_index "match_event_occurrences", ["match_id"], :name => "index_match_event_occurrences_on_match_id"
-  add_index "match_event_occurrences", ["user_id"], :name => "index_match_event_occurrences_on_user_id"
 
   create_table "match_events", :force => true do |t|
     t.string   "name"
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(:version => 20130319155045) do
     t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
-    t.integer  "local_id"
+    t.integer  "location_id"
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(:version => 20130319155045) do
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "matches", ["local_id"], :name => "index_matches_on_local_id"
+  add_index "matches", ["location_id"], :name => "index_matches_on_location_id"
   add_index "matches", ["team_one_id"], :name => "index_matches_on_team_one_id"
   add_index "matches", ["team_two_id"], :name => "index_matches_on_team_two_id"
   add_index "matches", ["tournament_id"], :name => "index_matches_on_tournament_id"

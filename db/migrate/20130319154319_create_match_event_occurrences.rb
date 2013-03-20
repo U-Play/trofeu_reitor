@@ -6,12 +6,12 @@ class CreateMatchEventOccurrences < ActiveRecord::Migration
       t.datetime :deleted_at
       t.references :match_event
       t.references :match
-      t.references :user
+      t.references :athlete
 
       t.timestamps
     end
     add_index :match_event_occurrences, :match_event_id
     add_index :match_event_occurrences, :match_id
-    add_index :match_event_occurrences, :user_id
+    add_index :match_event_occurrences, :athlete_id
   end
 end

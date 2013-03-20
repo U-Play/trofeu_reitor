@@ -1,4 +1,4 @@
-class Local < ActiveRecord::Base
+class Location < ActiveRecord::Base
   include ParanoiaInterface
 
   ## Relations ##
