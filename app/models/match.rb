@@ -8,8 +8,11 @@ class Match < ActiveRecord::Base
   belongs_to :team_one, :class_name => "Team"
   belongs_to :team_two, :class_name => "Team"
 
-  has_many :news
   has_many :penalties
+  # has_many :news
+
+  has_many :news_references, :as => :newsable
+  has_many :news, through: :news_references
 
   has_many :match_referees, :inverse_of => :match
   has_many :referees, :through => :match_referees, :source => :user

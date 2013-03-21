@@ -8,8 +8,11 @@ class Team < ActiveRecord::Base
   has_many :match_as_team_one, :class_name => "Match", :foreign_key => "team_one_id"
   has_many :match_as_team_two, :class_name => "Match", :foreign_key => "team_two_id"
   has_many :match_as_winner, :class_name => "Match", :foreign_key => "winner_id"
-  has_many :news
   has_many :penalties
+  # has_many :news
+
+  has_many :news_references, :as => :newsable
+  has_many :news, through: :news_references
 
   has_many :team_athletes, :dependent => :destroy, :inverse_of => :team
   has_many :athletes, :through => :team_athletes, :source => :user

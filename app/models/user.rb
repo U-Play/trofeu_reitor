@@ -15,18 +15,21 @@ class User < ActiveRecord::Base
   belongs_to :role
 
   has_many :events
-  has_many :teams # as coach
-  has_many :news
+  has_many :teams_as_coach
   has_many :penalties
+  # has_many :news
+
+  has_many :news_references, :as => :newsable
+  has_many :news, through: :news_references
 
   has_many :team_athletes, :dependent => :destroy, :inverse_of => :user
-  has_many :teams, :through => :team_athletes
+  has_many :teams_as_athlete, :through => :team_athletes
+
+  has_many :team_referees
+  has_many :teams_as_referee, :through => :team_referees
 
   has_many :match_referees
   has_many :matches, :through => :match_referees
-
-  has_many :team_referees
-  has_many :teams, :through => :team_referees
 
   has_many :match_event_occurrences
   has_many :matches, :through => :match_event_occurrences

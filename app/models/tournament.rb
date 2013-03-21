@@ -12,7 +12,10 @@ class Tournament < ActiveRecord::Base
 
   has_many :teams
   has_many :matches
-  has_many :news
+  # has_many :news
+
+  has_many :news_references, :as => :newsable
+  has_many :news, through: :news_references
 
   ## Attributes ##
   attr_accessible :contacts, :deleted_at, :description, :end_date, :name, :rules, :start_date,
