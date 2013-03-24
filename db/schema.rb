@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "user_id"
     t.datetime "created_at",  :null => false
@@ -107,13 +109,13 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "match_referees", :force => true do |t|
     t.datetime "deleted_at"
     t.integer  "match_id"
-    t.integer  "user_id"
+    t.integer  "referee_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   add_index "match_referees", ["match_id"], :name => "index_match_referees_on_match_id"
-  add_index "match_referees", ["user_id"], :name => "index_match_referees_on_user_id"
+  add_index "match_referees", ["referee_id"], :name => "index_match_referees_on_referee_id"
 
   create_table "matches", :force => true do |t|
     t.string   "group"
@@ -155,20 +157,21 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   add_index "news_references", ["newsable_id"], :name => "index_news_references_on_newsable_id"
 
   create_table "penalties", :force => true do |t|
+    t.string   "name"
     t.text     "description"
     t.datetime "start_date"
     t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "match_id"
     t.integer  "team_id"
-    t.integer  "user_id"
+    t.integer  "athlete_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
+  add_index "penalties", ["athlete_id"], :name => "index_penalties_on_athlete_id"
   add_index "penalties", ["match_id"], :name => "index_penalties_on_match_id"
   add_index "penalties", ["team_id"], :name => "index_penalties_on_team_id"
-  add_index "penalties", ["user_id"], :name => "index_penalties_on_user_id"
 
   create_table "roles", :force => true do |t|
     t.string "name", :null => false
