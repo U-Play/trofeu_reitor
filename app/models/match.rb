@@ -17,9 +17,9 @@ class Match < ActiveRecord::Base
   has_many :match_referees, :inverse_of => :match
   has_many :referees, :through => :match_referees, :source => :user
 
-  has_many :match_event_occurrences
-  has_many :athletes, :through => :match_event_occurrences, :source => :user
-  has_many :match_events, :through => :match_event_occurrences
+  has_many :highlight_occurrences
+  has_many :athletes, :through => :highlight_occurrences, :source => :user
+  has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
   attr_accessible :deleted_at, :end_date, :group, :position, :start_date

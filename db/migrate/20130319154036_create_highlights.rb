@@ -1,6 +1,6 @@
-class CreateMatchEvents < ActiveRecord::Migration
+class CreateHighlights < ActiveRecord::Migration
   def change
-    create_table :match_events do |t|
+    create_table :highlights do |t|
       t.string :name
       t.text :description
       t.datetime :deleted_at
@@ -8,6 +8,6 @@ class CreateMatchEvents < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :match_events, :sport_id
+    add_index :highlights, :sport_id
   end
 end

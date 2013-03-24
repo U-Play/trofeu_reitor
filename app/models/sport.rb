@@ -2,7 +2,7 @@ class Sport < ActiveRecord::Base
   include ParanoiaInterface
 
   ## Relations ##
-  has_many :match_events
+  has_many :highlights
   has_many :tournaments
 
   ## Attributes ##
