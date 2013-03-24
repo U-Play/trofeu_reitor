@@ -18,7 +18,7 @@ class Tournament < ActiveRecord::Base
   has_many :news, through: :news_references
 
   ## Attributes ##
-  attr_accessible :contacts, :deleted_at, :description, :end_date, :name, :rules, :start_date,
+  attr_accessible :contacts, :description, :end_date, :name, :rules, :start_date,
                   :event_id, :sport_id, :format_id
 
   ## Validations ##

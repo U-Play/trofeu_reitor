@@ -6,7 +6,7 @@ class MatchReferee < ActiveRecord::Base
   belongs_to :user
 
   ## Attributes ##
-  attr_accessible :deleted_at, :match, :user
+  attr_accessible :match, :user
 
   ## Validations ##
   validates :match, presence: true

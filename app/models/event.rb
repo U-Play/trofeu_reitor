@@ -11,7 +11,7 @@ class Event < ActiveRecord::Base
   has_many :news, through: :news_references
 
   ## Attributes ##
-  attr_accessible :deleted_at, :description, :name, :user_id
+  attr_accessible :description, :name, :user_id
 
   ## Validations ##
   validates :user_id, presence: true

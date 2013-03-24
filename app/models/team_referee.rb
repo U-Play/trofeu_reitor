@@ -6,7 +6,7 @@ class TeamReferee < ActiveRecord::Base
   belongs_to :user
 
   ## Attributes ##
-  attr_accessible :deleted_at, :team, :user
+  attr_accessible :team, :user
 
   ## Validations ##
   validates :team, presence: true

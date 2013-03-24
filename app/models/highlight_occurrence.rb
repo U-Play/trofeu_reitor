@@ -7,8 +7,8 @@ class HighlightOccurrence < ActiveRecord::Base
   belongs_to :athlete, :class_name => "User"
 
   ## Attributes ##
-  attr_accessible :deleted_at, :time, :total, :highlight, :match, :athlete
+  attr_accessible :time, :total, :highlight, :match, :athlete
 
   ## Validations ##
-  validates [:highlight, :match, :athlete], presence: true
+  validates :highlight, :match, :athlete, presence: true
 end

@@ -22,7 +22,7 @@ class Match < ActiveRecord::Base
   has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
-  attr_accessible :deleted_at, :end_date, :group, :position, :start_date
+  attr_accessible :end_date, :group, :position, :start_date
 
   ## Validations ##
   validates :tournament_id, presence: true
