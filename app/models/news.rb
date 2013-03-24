@@ -1,4 +1,4 @@
-class News < ActiveRecord::Base
+<<<<<<< HEAD
   include ParanoiaInterface
 
   ## Relations ##
