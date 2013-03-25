@@ -1,5 +1,5 @@
 p
   | Welcome
-  = @user.name_or_email
+  = @user.name
 p You can confirm yout account email through the link below:
 p= link_to 'Confirm my account', confirmation_url(@user, confirmation_token: @user.confirmation_token)

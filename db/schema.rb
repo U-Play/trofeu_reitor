@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20130409154245) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-    t.string   "time"
+    t.integer  "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
@@ -187,8 +187,9 @@ ActiveRecord::Schema.define(:version => 20130409154245) do
   add_index "penalties", ["team_id"], :name => "index_penalties_on_team_id"
 
   create_table "roles", :force => true do |t|
-    t.string "name", :null => false
-    t.string "desc"
+    t.string   "name",       :null => false
+    t.string   "desc"
+    t.datetime "deleted_at"
   end
 
   create_table "sports", :force => true do |t|
@@ -239,8 +240,8 @@ ActiveRecord::Schema.define(:version => 20130409154245) do
     t.text     "description"
     t.text     "rules"
     t.string   "contacts"
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date     "start_date"
+    t.date     "end_date"
     t.datetime "deleted_at"
     t.integer  "sport_id"
     t.integer  "format_id"
@@ -281,6 +282,7 @@ ActiveRecord::Schema.define(:version => 20130409154245) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "role_id"
+    t.datetime "deleted_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

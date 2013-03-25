@@ -39,7 +39,7 @@ class Tournament < ActiveRecord::Base
 
   protected
 
-  def set_event
-    self.event ||= Event.first
-  end
+    def set_event
+      self.event ||= Event.first
+    end
 end
