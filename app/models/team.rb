@@ -21,9 +21,11 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :referee
 
   ## Attributes ##
-  attr_accessible :deleted_at, :name, :tournament_id, :manager_email, :team_athletes_attributes,
+<<<<<<< HEAD
+  attr_accessible :deleted_at, :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
   :team_referees_attributes
 
+  after_create :manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
@@ -47,10 +49,10 @@ class Team < ActiveRecord::Base
   ## Private Methods ##
   protected
 
-  def set_manager
-    return if self.manager
-    manager = User.find_or_create_by_email(@manager_email)
-    self.save!
-    manager.promote_to_manager
-  end
+    def set_manager
+      return if self.manager
+      manager = User.find_or_create_by_email(@manager_email)
+      self.save!
+      manager.promote_to_manager
+    end
 end

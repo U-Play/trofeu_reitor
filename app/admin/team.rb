@@ -25,7 +25,8 @@ ActiveAdmin.register Team do
     f.inputs "Required Fields" do
       f.input :tournament
       f.input :name
-      f.input :coach
+      f.input :coach, label: 'Select a coach'
+      f.input :coach_email, label: 'Or invite a new user to be the coach'
     end
     f.actions
   end
