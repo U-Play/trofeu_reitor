@@ -7,14 +7,16 @@ namespace :db do
     puts 'Deleting all records from all tables'
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
-    User.with_deleted.all.each { |u| u.destroy! }
+    # User.with_deleted.all.each { |u| u.destroy! }
 
     puts 'Running db:seed'
     Rake::Task["db:seed"].execute
 
-    # puts 'Generating test data. This might take a while...'
-    # puts 'Generating brands...'
-    # FactoryGirl.create_list :brand, 10
+    puts 'Generating test data. This might take a while...'
+    puts 'Generating sports...'
+    FactoryGirl.create_list :sport, 5
+    puts 'Generating tournaments...'
+    FactoryGirl.create_list :tournament, 2
     # # puts 'Generating product_categories...'
     # # FactoryGirl.create_list :product_category_leaf, 5
     # puts 'Generating shipment_conditions...'

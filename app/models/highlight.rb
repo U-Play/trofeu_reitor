@@ -12,6 +12,6 @@ class Highlight < ActiveRecord::Base
   attr_accessible :description, :name, :sport_id
 
   ## Validations ##
-  validates :sport_id, presence: true
+  validates :sport_id, :name, presence: true
 
 end

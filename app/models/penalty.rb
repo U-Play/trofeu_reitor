@@ -7,5 +7,5 @@ class Penalty < ActiveRecord::Base
   belongs_to :user
 
   ## Attributes ##
-  attr_accessible :description, :end_date, :start_date
+  attr_accessible :name, :description, :end_date, :start_date
 end

@@ -9,7 +9,7 @@ ActiveAdmin.register Sport do
 
   form do |f|
     f.inputs "Sport Details" do
-      f.input :name
+      f.input :name, :required => true
     end
     f.buttons
   end

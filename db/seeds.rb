@@ -33,3 +33,21 @@ users.each do |attr|
     user.save!
   end
 end
+
+puts 'creating default formats'
+Format.find_or_initialize_by_name('Group Stage').tap do |group|
+  group.description = "A group stage (also known as pool play or the pool stage) is the round-robin stage of many sporting championships"
+  group.save!
+end
+Format.find_or_initialize_by_name('Knockout Stage').tap do |group|
+  group.description = "A knockout tournament is divided into successive rounds; each competitor
+  plays in at most one fixture per round. The top-ranked competitors in each fixture progress to the
+  next round. As rounds progress, the number of competitors and fixtures decreases. The final round,
+  usually known as the final or cup final, consists of just one fixture; the winner of which is the
+  overall champion."
+  group.save!
+end
+Format.find_or_initialize_by_name('Multi Stage').tap do |group|
+  group.description = "Many tournaments are held in multiple stages, with the top teams in one stage progressing to the next."
+  group.save!
+end

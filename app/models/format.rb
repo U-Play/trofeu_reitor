@@ -5,5 +5,8 @@ class Format < ActiveRecord::Base
   has_many :tournaments
 
   ## Attributes ##
-  attr_accessible :description, :name
+  attr_accessible :description, :name, :deleted_at
+
+  ## Validations ##
+  validates :name, presence: true
 end

@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "user_id"
     t.datetime "created_at",  :null => false
@@ -155,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   add_index "news_references", ["newsable_id"], :name => "index_news_references_on_newsable_id"
 
   create_table "penalties", :force => true do |t|
+    t.string   "name"
     t.text     "description"
     t.datetime "start_date"
     t.datetime "end_date"

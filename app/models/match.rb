@@ -9,7 +9,6 @@ class Match < ActiveRecord::Base
   belongs_to :team_two, :class_name => "Team"
 
   has_many :penalties
-  # has_many :news
 
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
@@ -22,9 +21,9 @@ class Match < ActiveRecord::Base
   has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
-  attr_accessible :end_date, :group, :position, :start_date
+  attr_accessible :end_date, :group, :position, :start_date, :tournament_id, :location_id,
+  :winner_id, :team_one_id, :team_two_id
 
   ## Validations ##
-  validates :tournament_id, presence: true
-  validates :location_id, presence: true
+  validates :tournament_id, :location_id, presence: true
 end
