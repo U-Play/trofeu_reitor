@@ -5,9 +5,11 @@ FactoryGirl.define do
     sequence(:description) { |n| "Great tournament#{n}" }
     start_date Time.now
     end_date Time.now
-    s_id { rand(Sport.count-1) + 1 }
-    sport_id Sport.find(s_id).id
-    f_id { rand(Format.count-1) + 1 }
-    format_id Format.find(f_id).id
+    association :sport
+    association :format
+    association :event#, :start_date => Time.now
+    # sport_id Sport.first.id
+    # format_id Format.first.id
+    # event_id Event.first.id
   end
 end

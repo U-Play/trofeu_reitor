@@ -16,9 +16,11 @@ namespace :db do
     puts 'Generating sports...'
     FactoryGirl.create_list :sport, 5
     puts 'Generating tournaments...'
-    FactoryGirl.create_list :tournament, 2
-    # # puts 'Generating product_categories...'
-    # # FactoryGirl.create_list :product_category_leaf, 5
+    FactoryGirl.create_list :tournament, 2, :sport_id => Sport.find(rand(Sport.count-1) + 1).id, :format_id => Format.find(rand(Format.count-1) + 1).id
+    puts 'Generating locations...'
+    FactoryGirl.create_list :location, 5
+    puts 'Generating matches...'
+    FactoryGirl.create_list :match, 5, tournament_id: Tournament.first.id
     # puts 'Generating shipment_conditions...'
     # FactoryGirl.create_list :shipment_condition, 5
     # puts 'Generating prototypes with properties and variant_properties...'

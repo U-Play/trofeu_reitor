@@ -26,4 +26,12 @@ class Match < ActiveRecord::Base
 
   ## Validations ##
   validates :tournament_id, :location_id, presence: true
+  validate :start_before_end
+
+  def start_before_end
+    return unless start_date and end_date
+    if (start_date > end_date)
+      errors.add(:start_date, "needs to be lesser or equal to the end date")
+    end
+  end
 end

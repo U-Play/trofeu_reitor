@@ -34,6 +34,13 @@ users.each do |attr|
   end
 end
 
+puts 'creating default event'
+Event.find_or_initialize_by_name('Trofeu do Reitor').tap do |event|
+  event.user_id = Role.find_by_name('root').users.first.id
+  event.start_date = Time.now
+  event.save!
+end
+
 puts 'creating default formats'
 Format.find_or_initialize_by_name('Group Stage').tap do |group|
   group.description = "A group stage (also known as pool play or the pool stage) is the round-robin stage of many sporting championships"

@@ -8,12 +8,12 @@ class CreatePenalties < ActiveRecord::Migration
       t.datetime :deleted_at
       t.references :match
       t.references :team
-      t.references :user
+      t.references :athlete
 
       t.timestamps
     end
     add_index :penalties, :match_id
     add_index :penalties, :team_id
-    add_index :penalties, :user_id
+    add_index :penalties, :athlete_id
   end
 end

@@ -164,14 +164,14 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
     t.datetime "deleted_at"
     t.integer  "match_id"
     t.integer  "team_id"
-    t.integer  "user_id"
+    t.integer  "athlete_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
+  add_index "penalties", ["athlete_id"], :name => "index_penalties_on_athlete_id"
   add_index "penalties", ["match_id"], :name => "index_penalties_on_match_id"
   add_index "penalties", ["team_id"], :name => "index_penalties_on_team_id"
-  add_index "penalties", ["user_id"], :name => "index_penalties_on_user_id"
 
   create_table "roles", :force => true do |t|
     t.string "name", :null => false
