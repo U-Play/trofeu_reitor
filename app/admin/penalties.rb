@@ -32,7 +32,7 @@ ActiveAdmin.register Penalty do
         row(column)
       end
       if (penalty.match)
-        panel "Match Details" do
+        panel "Match" do
           attributes_table_for penalty.match do 
             row("Start Date") { |m| link_to m.start_date, admin_match_path(m)  }
             row("End Date") { |m| link_to m.end_date, admin_match_path(m) if m.end_date }
@@ -60,7 +60,7 @@ ActiveAdmin.register Penalty do
   # Scopes
   scope :all, :default => true
   scope :on_going do |penalties|
-    penalties.where('( start_date <= ? and end_date >= ? ) or (start_date = ? and end_date = ? )', Time.now, Time.now, Time.now, nil)
+    penalties.where('start_date <= ? and end_date >= ?', Time.now, Time.now)
   end
   scope :coming do |penalties|
     penalties.where('start_date > ?', Time.now)

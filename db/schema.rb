@@ -109,13 +109,13 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "match_referees", :force => true do |t|
     t.datetime "deleted_at"
     t.integer  "match_id"
-    t.integer  "user_id"
+    t.integer  "referee_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   add_index "match_referees", ["match_id"], :name => "index_match_referees_on_match_id"
-  add_index "match_referees", ["user_id"], :name => "index_match_referees_on_user_id"
+  add_index "match_referees", ["referee_id"], :name => "index_match_referees_on_referee_id"
 
   create_table "matches", :force => true do |t|
     t.string   "group"
