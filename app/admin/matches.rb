@@ -1,5 +1,4 @@
 ActiveAdmin.register Match do
-
   index do
     # column :group
     column(:start_date)
@@ -70,6 +69,5 @@ ActiveAdmin.register Match do
   filter :winner_id
   filter :team_one_id
   filter :team_two_id
-
 
 end

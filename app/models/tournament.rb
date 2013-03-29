@@ -8,6 +8,7 @@ class Tournament < ActiveRecord::Base
 
   has_one :group_stage, :inverse_of => :tournament
   has_one :knockout_stage, :inverse_of => :tournament
+  has_one :format
 
   has_many :teams, :order => 'id'
   has_many :matches, :order => 'id'
