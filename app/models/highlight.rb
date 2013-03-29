@@ -9,9 +9,9 @@ class Highlight < ActiveRecord::Base
   has_many :matches, :through => :highlight_occurrences
 
   ## Attributes ##
-  attr_accessible :deleted_at, :description, :name, :sport_id
+  attr_accessible :description, :name, :sport_id
 
   ## Validations ##
-  validates :sport_id, presence: true
+  validates :sport_id, :name, presence: true
 
 end

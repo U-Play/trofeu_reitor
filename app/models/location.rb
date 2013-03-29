@@ -6,4 +6,6 @@ class Location < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :city
+
+  ## Validations ##
 end

@@ -3,11 +3,11 @@ class CreateMatchReferees < ActiveRecord::Migration
     create_table :match_referees do |t|
       t.datetime :deleted_at
       t.references :match
-      t.references :user
+      t.references :referee
 
       t.timestamps
     end
     add_index :match_referees, :match_id
-    add_index :match_referees, :user_id
+    add_index :match_referees, :referee_id
   end
 end

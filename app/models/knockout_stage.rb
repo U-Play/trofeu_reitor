@@ -5,7 +5,7 @@ class KnockoutStage < ActiveRecord::Base
   belongs_to :tournament
 
   ## Attributes ##
-  attr_accessible :result_homologation, :third_place
+  attr_accessible :result_homologation, :third_place, :tournament_id
 
   ## Validations ##
   validates :tournament_id, presence: true
