@@ -178,11 +178,6 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
     t.string "desc"
   end
 
-  create_table "roles", :force => true do |t|
-    t.string "name", :null => false
-    t.string "desc"
-  end
-
   create_table "sports", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
