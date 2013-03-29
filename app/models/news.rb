@@ -16,5 +16,4 @@ class News < ActiveRecord::Base
   has_many :users, through: :news_references, :source => :newsable, :source_type => 'User'
 
   ## Attributes ##
-  attr_accessible :deleted_at
 end

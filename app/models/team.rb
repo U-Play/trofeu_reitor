@@ -21,7 +21,7 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :user
 
   ## Attributes ##
-  attr_accessible :deleted_at, :name, :tournament_id, :coach_id
+  attr_accessible :name, :tournament_id, :coach_id
 
   ## Validations ##
   validates :tournament_id, presence: true

@@ -6,5 +6,4 @@ class NewsReference < ActiveRecord::Base
   belongs_to :news
 
   ## Attributes ##
-  attr_accessible :deleted_at
 end

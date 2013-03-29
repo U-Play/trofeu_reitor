@@ -6,7 +6,7 @@ class TeamAthlete < ActiveRecord::Base
   belongs_to :user
 
   ## Attributes ##
-  attr_accessible :deleted_at, :team_id, :user_id, :team, :user
+  attr_accessible :team_id, :user_id, :team, :user
 
   ## Validations ##
   validates :team, presence: true
