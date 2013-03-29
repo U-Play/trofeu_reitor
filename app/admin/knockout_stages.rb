@@ -9,8 +9,7 @@ ActiveAdmin.register KnockoutStage do
   
   form do |f|
     f.inputs "Knockout Stage Details" do
-      f.input :tournament_id, :as => :select, :collection => Tournament.all, :label_method => :name,
-        :value_method => :id, required: true
+      f.input :tournament, required: true
       f.input :result_homologation, as: :boolean
       f.input :third_place, as: :boolean
     end

@@ -1,20 +1,15 @@
 ActiveAdmin.register Event do
   index do
-    column :name do |event|
-      link_to event.name, admin_event_path(event)
-    end
-    column :user_id do |event|
-      link_to event.user.name, admin_user_path(event.user)
-    end
-    column :start_date
+    column(:name)     { |event| link_to event.name, admin_event_path(event) }
+    column(:user_id) { |event| link_to event.user.name, admin_user_path(event.user) }
+    column(:start_date)
 
     default_actions
   end
 
   form do |f|
     f.inputs "Event Details" do
-      f.input :user, :as => :select, :collection => User.all, :label_method => :name, 
-        :value_method => :id, :required => true
+      f.input :user, :required => true
       f.input :name, :required => true
       f.input :description
       f.input :start_date, :required => true, as: :datepicker
@@ -52,14 +47,8 @@ ActiveAdmin.register Event do
 
   # Scopes
   scope :all, :default => true
-  scope :on_going do |events|
-    events.where('start_date <= ? and end_date >= ?', Time.now, Time.now)
-  end
-  scope :coming do |events|
-    events.where('start_date > ?', Time.now)
-  end
-  scope :past do |events|
-    events.where('end_date < ?', Time.now)
-  end
+  scope(:on_going)  { |events| events.on_going }
+  scope(:coming)    { |events| events.coming }
+  scope(:past)      { |events| events.past }
 
 end

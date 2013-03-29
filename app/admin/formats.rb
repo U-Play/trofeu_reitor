@@ -1,8 +1,6 @@
 ActiveAdmin.register Format, :as => "TournamentFormat" do
   index do
-    column :name do |format|
-      link_to format.name, admin_format_path(format)
-    end
+    column(:name) { |format| link_to format.name, admin_tournament_format_path(format) }
 
     default_actions
   end

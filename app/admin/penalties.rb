@@ -3,9 +3,9 @@ ActiveAdmin.register Penalty do
     column(:name)
     column(:start_date)
     column(:end_date)
-    column(:match) { |p| link_to p.match.start_date, admin_match_path(p.match) if p.match }
-    column(:team) { |p| link_to p.team.name, admin_team_path(p.team) if p.team }
-    column(:athlete) { |p| link_to p.athlete.name, admin_user_path(p.athlete) if p.athlete }
+    column(:match)    { |p| link_to p.match.start_date, admin_match_path(p.match) if p.match }
+    column(:team)     { |p| link_to p.team.name, admin_team_path(p.team) if p.team }
+    column(:athlete)  { |p| link_to p.athlete.name, admin_user_path(p.athlete) if p.athlete }
 
     default_actions
   end
@@ -16,12 +16,9 @@ ActiveAdmin.register Penalty do
       f.input :description
       f.input :start_date, as: :datepicker
       f.input :end_date, as: :datepicker
-      f.input :match_id, :as => :select, :collection => Match.all, :label_method => :start_date,
-        :value_method => :id
-      f.input :team_id, :as => :select, :collection => Team.all, :label_method => :name,
-        :value_method => :id
-      f.input :athlete_id, :as => :select, :collection => User.all, :label_method => :name, # TODO:athletes only
-        :value_method => :id
+      f.input :match
+      f.input :team
+      f.input :athlete # TODO:athletes only
     end
     f.actions
   end
@@ -59,13 +56,7 @@ ActiveAdmin.register Penalty do
 
   # Scopes
   scope :all, :default => true
-  scope :on_going do |penalties|
-    penalties.where('start_date <= ? and end_date >= ?', Time.now, Time.now)
-  end
-  scope :coming do |penalties|
-    penalties.where('start_date > ?', Time.now)
-  end
-  scope :past do |penalties|
-    penalties.where('end_date < ?', Time.now)
-  end
+  scope(:on_going)  { |penalties| penalties.on_going }
+  scope(:coming)    { |penalties| penalties.coming }
+  scope(:past)      { |penalties| penalties.past }
 end

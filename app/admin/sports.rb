@@ -1,8 +1,6 @@
 ActiveAdmin.register Sport do
   index do
-    column :name do |sport|
-      link_to sport.name, admin_sport_path(sport)
-    end
+    column(:name) { |sport| link_to sport.name, admin_sport_path(sport) }
 
     default_actions
   end
@@ -25,8 +23,8 @@ ActiveAdmin.register Sport do
 
     panel "Highlights" do
       table_for sport.highlights do |t|
-        t.column("name") { |highlight| link_to highlight.name, admin_highlight_path(highlight) }
-        t.column("Description") { |highlight| highlight.description }
+        t.column(:name) { |highlight| link_to highlight.name, admin_highlight_path(highlight) }
+        t.column(:description) { |highlight| highlight.description }
       end
     end
   end

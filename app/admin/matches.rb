@@ -16,16 +16,6 @@ ActiveAdmin.register Match do
       f.input :winner
       f.input :team_one
       f.input :team_two
-      # f.input :tournament_id, :as => :select, :collection => Tournament.all, :label_method => :name,
-      #   :value_method => :id, :required => true
-      # f.input :location_id, :as => :select, :collection => Location.all, :label_method => :city,
-      #   :value_method => :id, :required => true
-      # f.input :winner_id, :as => :select, :collection => Team.all, :label_method => :name,
-      #   :value_method => :id
-      # f.input :team_one_id, :as => :select, :collection => Team.all, :label_method => :name,
-      #   :value_method => :id
-      # f.input :team_two_id, :as => :select, :collection => Team.all, :label_method => :name,
-      #   :value_method => :id
       f.input :group
       f.input :start_date, as: :datepicker
       f.input :end_date, as: :datepicker
@@ -72,6 +62,8 @@ ActiveAdmin.register Match do
   end
 
   # Filter only by
+  filter :start_date
+  filter :end_date
   filter :tournament_id
   filter :location_id
   filter :winner_id

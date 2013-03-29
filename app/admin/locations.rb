@@ -1,6 +1,6 @@
 ActiveAdmin.register Location do
   index do
-    column :city
+    column(:city)
 
     default_actions
   end

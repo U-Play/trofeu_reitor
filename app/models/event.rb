@@ -22,4 +22,10 @@ class Event < ActiveRecord::Base
       errors.add(:start_date, "needs to be lesser or equal to the end date")
     end
   end
+
+  ## Scopes ##
+  scope :on_going,  -> { where('start_date <= ? and end_date >= ?', Time.now, Time.now) }
+  scope :coming,    -> { where('start_date > ?', Time.now) }
+  scope :past,      -> { where('end_date < ?', Time.now) }
+
 end

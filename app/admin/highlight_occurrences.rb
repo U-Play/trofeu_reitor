@@ -13,12 +13,9 @@ ActiveAdmin.register HighlightOccurrence do
     f.inputs "Highlight Occurrence Details" do
       f.input :total, required: true
       f.input :time, required: true#, as: :time_select TODO: tratar este input para ficar mais facil, nem que se tenha que mudar o tipo na DB
-      f.input :match_id, :as => :select, :collection => Match.all, :label_method => :start_date,
-        :value_method => :id, required: true
-      f.input :highlight_id, :as => :select, :collection => Highlight.all, :label_method => :name,
-        :value_method => :id, required: true
-      f.input :athlete_id, :as => :select, :collection => User.all, :label_method => :name, # TODO:athletes only
-        :value_method => :id, required: true
+      f.input :match, required: true
+      f.input :highlight, required: true
+      f.input :athlete, required: true # TODO:athletes only
     end
     f.actions
   end
