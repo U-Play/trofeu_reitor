@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320234352) do
+ActiveRecord::Schema.define(:version => 20130402141623) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -230,8 +230,9 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
     t.integer  "sport_id"
     t.integer  "format_id"
     t.integer  "event_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "number_of_teams"
   end
 
   add_index "tournaments", ["event_id"], :name => "index_tournaments_on_event_id"

@@ -1,5 +1,6 @@
 Uplay::Application.routes.draw do
-  root to: 'static_pages#home'
+  root to: 'tournaments#new'
+  resources :tournaments
 
   ActiveAdmin.routes(self)
 

@@ -1,0 +1,12 @@
+h2 Index of Things
+
+- @tournaments.each do |t|
+
+  |TOURNAMENT 
+  = t.id
+  | - 
+  = t.name
+  p
+  - t.teams.each do |te|
+    = te.name
+    p
