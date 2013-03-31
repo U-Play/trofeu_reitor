@@ -1,5 +1,6 @@
 Uplay::Application.routes.draw do
-  root to: 'static_pages#home'
+  root to: 'tournaments#new'
+  resources :tournaments
 
   devise_for :users
 end
