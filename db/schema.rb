@@ -237,6 +237,47 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   add_index "tournaments", ["event_id"], :name => "index_tournaments_on_event_id"
   add_index "tournaments", ["format_id"], :name => "index_tournaments_on_format_id"
   add_index "tournaments", ["sport_id"], :name => "index_tournaments_on_sport_id"
+||||||| merged common ancestors
+ActiveRecord::Schema.define(:version => 20130319014446) do
+=======
+ActiveRecord::Schema.define(:version => 20130319150730) do
+
+  create_table "matches", :force => true do |t|
+    t.string   "stage"
+    t.string   "group"
+    t.integer  "position"
+    t.date     "game_start"
+    t.date     "game_end"
+    t.string   "result"
+    t.integer  "tournament_id"
+    t.integer  "team_one_id"
+    t.integer  "team_two_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "matches", ["team_one_id"], :name => "index_matches_on_team_one_id"
+  add_index "matches", ["team_two_id"], :name => "index_matches_on_team_two_id"
+  add_index "matches", ["tournament_id"], :name => "index_matches_on_tournament_id"
+
+  create_table "teams", :force => true do |t|
+    t.string   "name"
+    t.integer  "tournament_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
+
+  create_table "tournaments", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "contacts"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
