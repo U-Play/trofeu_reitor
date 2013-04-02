@@ -10,4 +10,8 @@ h2 New Tournament
   = text_field_tag :number_teams, '', :required => true
   p
 
+  = f.label 'Format'
+  = f.collection_select :format_id, @formats, :id, :name
+  p
+
   = f.submit 'Create'

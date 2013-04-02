@@ -9,7 +9,7 @@ class Tournament < ActiveRecord::Base
   has_one :group_stage
   has_one :knockout_stage
 
-  has_many :teams
+  has_many :teams, :order => 'id'
   has_many :matches
   # has_many :news
 
@@ -21,8 +21,9 @@ class Tournament < ActiveRecord::Base
     :event_id, :sport_id, :format_id
 
   ## Validations ##
-  validates :sport_id, presence: true
+  #validates :sport_id, presence: true
   validates :event_id, presence: true
+  validates :name, presence: true
   before_validation :set_event
 
   protected
