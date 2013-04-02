@@ -1,4 +1,9 @@
 ActiveAdmin.register GroupStage do
+  menu false
+
+  # Is nested resource of
+  belongs_to :tournament
+
   index do
     column(:tournament) { |gs| link_to gs.tournament.name, admin_tournament_path(gs.tournament) }
     column(:n_rounds)

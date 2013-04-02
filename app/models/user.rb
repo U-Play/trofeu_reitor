@@ -40,4 +40,8 @@ class User < ActiveRecord::Base
   def name
     full_name = "#{first_name} #{last_name}".strip.presence || email
   end
+
+  def tournaments
+    Tournament.joins(:event => :user).where(:events => {:user_id => id})
+  end
 end

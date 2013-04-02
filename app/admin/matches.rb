@@ -1,4 +1,9 @@
 ActiveAdmin.register Match do
+  menu false
+
+  # Is nested resource of
+  belongs_to :tournament
+
   index do
     # column :group
     column(:start_date)
@@ -37,6 +42,16 @@ ActiveAdmin.register Match do
   end
 
   show do
+    panel "Menu" do
+      columns do
+        column do
+          ul do
+            li "Highlights"
+            # li link_to("Teams", admin_tournament_teams_path(tournament.id))
+          end
+        end
+      end
+    end
     attributes_table do
       [:start_date, :end_date, :group].each do |column|
         row(column)

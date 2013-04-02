@@ -1,4 +1,9 @@
 ActiveAdmin.register Team do
+  menu false
+
+  # Is nested resource of
+  belongs_to :tournament
+
   form do |f|
     f.inputs "Required Fields" do
       f.input :tournament_id, :as => :select, :collection => Tournament.all, :label_method => :name,

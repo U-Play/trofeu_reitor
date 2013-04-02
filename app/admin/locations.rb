@@ -1,4 +1,6 @@
 ActiveAdmin.register Location do
+  menu :parent => "Administration"
+
   index do
     column(:city)
 

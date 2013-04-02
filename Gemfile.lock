@@ -226,6 +226,7 @@ DEPENDENCIES
   devise-encryptable
   devise_invitable
   factory_girl_rails
+  inherited_resources
   jquery-rails
   paperclip
   paranoia

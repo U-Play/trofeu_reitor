@@ -1,17 +1,37 @@
 ActiveAdmin.register Tournament do
-  filter :name
+  menu :parent => "Administration"
+
+  scope_to :current_user
 
   index do
-    column :name
-    column :start_date
-    column :end_date
+    column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
+    column(:start_date)
+    column(:end_date)
     default_actions
   end
 
   show do
+    panel "Menu" do
+      columns do
+        column do
+          # panel "Models" do
+          ul do
+            li link_to("Teams", admin_tournament_teams_path(tournament.id))
+            li link_to("Matches", admin_tournament_matches_path(tournament.id))
+            li link_to("Group Stage Configuration", admin_tournament_group_stage_path(tournament.id))
+            li link_to("Knockout Stage Configuration", admin_tournament_knockout_stage_path(tournament.id))
+          end
+          # end
+        end
+      end
+    end
     attributes_table do
-      row :sport
       row :name
+      row :sport
+      row :event
+      row :format
+      row :description
+      row :rules
       row :start_date
       row :end_date
     end
@@ -30,5 +50,7 @@ ActiveAdmin.register Tournament do
     end
     f.actions
   end
+
+  filter :name
 
 end

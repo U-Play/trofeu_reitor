@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.12'
 
 gem 'activeadmin'
+gem 'inherited_resources'
 gem 'activerecord-postgres-hstore'
 gem 'cancan'
 gem 'devise'

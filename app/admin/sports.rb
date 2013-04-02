@@ -1,4 +1,6 @@
 ActiveAdmin.register Sport do
+  menu :parent => "Administration"
+
   index do
     column(:name) { |sport| link_to sport.name, admin_sport_path(sport) }
 

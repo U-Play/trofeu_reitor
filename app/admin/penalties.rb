@@ -1,4 +1,10 @@
 ActiveAdmin.register Penalty do
+  menu false
+
+  # Is nested resource of
+  # belongs_to :user
+  # belongs_to :athlete#, :class_name => "user"
+
   index do
     column(:name)
     column(:start_date)

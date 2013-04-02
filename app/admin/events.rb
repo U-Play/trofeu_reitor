@@ -1,4 +1,8 @@
 ActiveAdmin.register Event do
+  menu false
+
+  scope_to :current_user
+
   index do
     column(:name)     { |event| link_to event.name, admin_event_path(event) }
     column(:user_id) { |event| link_to event.user.name, admin_user_path(event.user) }

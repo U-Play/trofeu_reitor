@@ -1,4 +1,6 @@
 ActiveAdmin.register HighlightOccurrence do
+  menu false
+
   index do
     column(:total)
     column(:time)
