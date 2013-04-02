@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(:version => 20130409154245) do
     t.string   "name"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
+    t.integer  "manager_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "group_id"

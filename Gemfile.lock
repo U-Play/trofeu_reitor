@@ -240,6 +240,7 @@ DEPENDENCIES
   jquery-rails
   just-datetime-picker
   meta_request
+  meta_search
   paperclip
   paranoia
   paranoia_uniqueness_validator

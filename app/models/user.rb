@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 
   def promote_to_manager
     set_role('manager') if role.nil? || role.name == 'athlete'
-    # UserMailer.promoted_to_manager_email(self).deliver
+    UserMailer.promoted_to_manager_email(self).deliver
   end
 
   def tournaments
@@ -69,16 +69,14 @@ class User < ActiveRecord::Base
 
   protected
 
-  def set_role(new_role)
-    self.update_attributes role: Role.find_by_name(new_role)
-  end
+    def set_role(new_role)
+      self.update_attributes role_id: Role.find_by_name(new_role).id
+    end
 
-  def set_default_role
-    return unless role.nil?
-    self.role = Role.default_role
-  end
-
-  protected
+    def set_default_role
+      return unless role.nil?
+      self.role = Role.default_role
+    end
 
     def send_invitation_email
       UserMailer.invitation_email(self).deliver

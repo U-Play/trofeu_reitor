@@ -2,8 +2,7 @@ ActiveAdmin.register User do
   menu :priority => 11
 
   filter :role, member_label: Proc.new { |r| r.name.titleize }
-  filter :first_name
-  filter :last_name
+  filter :first_name_or_last_name, as: :string
   filter :email
   filter :student_number
   filter :sports_number
@@ -35,7 +34,7 @@ ActiveAdmin.register User do
     end
   end
 
-  form do |f| #html: { enctype: 'multipart/form-data' } do |f|
+  form do |f|
     f.inputs "Required Fields" do
       f.input :email
       f.input :role, include_blank: false, member_label: Proc.new{ |r| r.name.titleize }

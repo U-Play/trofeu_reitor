@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin_user!
+    #binding.pry
     authorize! :access, :admin
     authenticate_user!
   end

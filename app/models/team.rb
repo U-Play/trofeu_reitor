@@ -21,11 +21,10 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :referee
 
   ## Attributes ##
-<<<<<<< HEAD
   attr_accessible :deleted_at, :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
   :team_referees_attributes
 
-  after_create :manager
+  after_create :set_manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true

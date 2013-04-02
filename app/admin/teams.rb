@@ -1,8 +1,13 @@
 ActiveAdmin.register Team do
+<<<<<<< HEAD
   menu false
 
   # Is nested resource of
   belongs_to :tournament
+=======
+
+  filter :name
+>>>>>>> checking for problems
 
   controller do
     def scoped_collection
@@ -12,13 +17,19 @@ ActiveAdmin.register Team do
 
   index do
     column :name
+<<<<<<< HEAD
     # column(:tournament, sortable: 'tournament.name') { |team| team.tournament.name }
     column(:manager, sortable: 'user.first_name') { |team| team.manager.name if team.manager }
     column(:group) { |team| team.group.name if team.group }
+=======
+    column(:tournament, sortable: 'tournament.name') { |team| team.tournament.name }
+    column(:coach, sortable: 'user.first_name') { |team| team.coach.name if team.coach }
+>>>>>>> checking for problems
     default_actions
   end
 
   show do
+<<<<<<< HEAD
     # panel "Menu" do
     #   columns do
     #     column do
@@ -69,11 +80,16 @@ ActiveAdmin.register Team do
       column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
       column(:result)
       column('')     { |m| link_to 'View', admin_tournament_match_path(m.tournament, m) }
+=======
+    attributes_table do
+      row :name
+>>>>>>> checking for problems
     end
   end
 
   form do |f|
     f.inputs "Required Fields" do
+<<<<<<< HEAD
       f.input :name, required: true
       f.input :manager_email, as: :email, required: true
     end
@@ -94,10 +110,18 @@ ActiveAdmin.register Team do
           mr.input :_destroy, :as => :boolean, :label => "Destroy?"
         # end
       end
+=======
+      f.input :tournament, required: true
+      f.input :name
+      f.input :manager_email, as: :email, required: true
+>>>>>>> checking for problems
     end
     f.actions
   end
 
+<<<<<<< HEAD
   filter :name
 
+=======
+>>>>>>> checking for problems
 end

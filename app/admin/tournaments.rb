@@ -3,6 +3,8 @@ ActiveAdmin.register Tournament do
 
   scope_to :current_user
 
+  filter :name
+
   # Custom Action Items
   action_item :only => :show do
     link_to 'Teams', admin_tournament_teams_path(params[:id])
