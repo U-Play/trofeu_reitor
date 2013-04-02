@@ -23,5 +23,8 @@ test:
   database: uplay_test
 
 production:
-  <<: *common
+  adapter: postgresql
+  username: deploy
+  pool: 5
+  timeout: 5000
   database: uplay_production
