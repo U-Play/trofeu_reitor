@@ -8,8 +8,8 @@ ActiveAdmin.register Match do
     # column :group
     column(:start_date)
     column(:end_date)
-    column(:team_one) { |m| link_to m.team_one.name, admin_team_path(m.team_one) if m.team_one }
-    column(:team_two) { |m| link_to m.team_two.name, admin_team_path(m.team_two) if m.team_two }
+    column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+    column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
 
     default_actions
   end
@@ -19,8 +19,8 @@ ActiveAdmin.register Match do
       f.input :tournament, :required => true
       f.input :location, :required => true
       f.input :winner
-      f.input :team_one
-      f.input :team_two
+      f.input :team_one, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
+      f.input :team_two, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
       f.input :group
       f.input :start_date, as: :datepicker
       f.input :end_date, as: :datepicker
@@ -76,7 +76,7 @@ ActiveAdmin.register Match do
   # Filter only by
   filter :start_date
   filter :end_date
-  filter :tournament_id
+  # filter :tournament_id
   filter :location_id
   filter :winner_id
   filter :team_one_id
