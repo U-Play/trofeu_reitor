@@ -17,9 +17,10 @@ ActiveAdmin.register Tournament do
           # panel "Models" do
           ul do
             li link_to("Teams", admin_tournament_teams_path(tournament.id))
+            #FIXME os seguintes links dao erro
             li link_to("Matches", admin_tournament_matches_path(tournament.id))
-            li link_to("Group Stage Configuration", admin_tournament_group_stage_path(tournament.id))
-            li link_to("Knockout Stage Configuration", admin_tournament_knockout_stage_path(tournament.id))
+            li link_to("Group Stage Configuration", admin_tournament_group_stages_path(tournament.id))
+            li link_to("Knockout Stage Configuration", admin_tournament_knockout_stages_path(tournament.id))
           end
           # end
         end

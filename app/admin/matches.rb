@@ -28,7 +28,7 @@ ActiveAdmin.register Match do
 
     f.inputs "Referees" do
       f.has_many :match_referees do |mr|
-        mr.input :referee # it should automatically generate a drop-down select to choose from your existing referees
+        mr.input :referee # it automatically generates a drop-down select to choose from your existing referees
         # mr.input :another_attribute_to_update
 
         # if mr.object.persisted?
@@ -42,16 +42,6 @@ ActiveAdmin.register Match do
   end
 
   show do
-    panel "Menu" do
-      columns do
-        column do
-          ul do
-            li "Highlights"
-            # li link_to("Teams", admin_tournament_teams_path(tournament.id))
-          end
-        end
-      end
-    end
     attributes_table do
       [:start_date, :end_date, :group].each do |column|
         row(column)
@@ -61,17 +51,24 @@ ActiveAdmin.register Match do
       row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
       row(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
     end
+    panel "Referees" do
+      table_for match.referees do 
+        column(:name)  { |r| link_to r.name, admin_user_path(r) }
+      end
+    end
     panel "Penalties" do
       table_for match.penalties do 
         column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
-        column(:description)
         column(:start_date)
         column(:end_date)
       end
     end
-    panel "Referees" do
-      table_for match.referees do 
-        column(:name)  { |r| link_to r.name, admin_user_path(r) }
+    panel "Highlights" do
+      table_for match.highlight_occurrences do 
+        column(:time)
+        column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
+        column(:highlight) { |ho| link_to ho.highlight.name, admin_highlight_path(ho.highlight) }
+        column(:total)
       end
     end
   end
