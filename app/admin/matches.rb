@@ -16,12 +16,12 @@ ActiveAdmin.register Match do
 
   form do |f|
     f.inputs "Match Details" do
-      f.input :tournament, :required => true
       f.input :location, :required => true
+      #TODO mudar o conteudo do format para algo mais bem feito
+      f.input :format, :required => true, :collection => Format.where(:id => [1,2])
       f.input :winner
       f.input :team_one, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
       f.input :team_two, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
-      f.input :group
       f.input :start_date, as: :datepicker
       f.input :end_date, as: :datepicker
     end
@@ -43,11 +43,11 @@ ActiveAdmin.register Match do
 
   show do
     attributes_table do
-      [:start_date, :end_date, :group].each do |column|
+      [:start_date, :end_date].each do |column|
         row(column)
       end
-      row(:team_one) { |m| link_to m.team_one.name, admin_team_path(m.team_one) if m.team_one }
-      row(:team_two) { |m| link_to m.team_two.name, admin_team_path(m.team_two) if m.team_two }
+      row(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      row(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
       row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
       row(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
     end
@@ -67,7 +67,7 @@ ActiveAdmin.register Match do
       table_for match.highlight_occurrences do 
         column(:time)
         column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
-        column(:highlight) { |ho| link_to ho.highlight.name, admin_highlight_path(ho.highlight) }
+        column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.sport, ho.highlight) }
         column(:total)
       end
     end
@@ -76,7 +76,6 @@ ActiveAdmin.register Match do
   # Filter only by
   filter :start_date
   filter :end_date
-  # filter :tournament_id
   filter :location_id
   filter :winner_id
   filter :team_one_id

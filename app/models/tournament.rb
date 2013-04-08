@@ -11,6 +11,7 @@ class Tournament < ActiveRecord::Base
 
   has_many :teams
   has_many :matches
+  has_many :groups
   # has_many :news
 
   has_many :news_references, :as => :newsable
@@ -24,6 +25,17 @@ class Tournament < ActiveRecord::Base
   validates :sport_id, presence: true
   validates :event_id, presence: true
   before_validation :set_event
+
+  ## Public Methods ##
+  def has_group_stage?
+    #TODO check a better way to references group stage and multi stage other than the ids
+    format_id == 1 or format_id == 3
+  end
+
+  def has_knockout_stage?
+    #TODO check a better way to references group stage and multi stage other than the ids
+    format_id == 2 or format_id == 3
+  end
 
   protected
 

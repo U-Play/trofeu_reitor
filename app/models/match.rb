@@ -4,6 +4,7 @@ class Match < ActiveRecord::Base
   ## Relations ##
   belongs_to :tournament
   belongs_to :location
+  belongs_to :format
   belongs_to :winner, :class_name => "Team"
   belongs_to :team_one, :class_name => "Team"
   belongs_to :team_two, :class_name => "Team"
@@ -17,17 +18,17 @@ class Match < ActiveRecord::Base
   has_many :referees, :through => :match_referees, :source => :referee
 
   has_many :highlight_occurrences
-  has_many :athletes, :through => :highlight_occurrences, :source => :user
+  has_many :athletes, :through => :highlight_occurrences, :source => :athlete
   has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
-  attr_accessible :end_date, :group, :position, :start_date, :tournament_id, :location_id,
-    :winner_id, :team_one_id, :team_two_id, :match_referees_attributes
+  attr_accessible :end_date, :position, :start_date, :tournament_id, :location_id, :winner_id,
+  :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   ## Validations ##
-  validates :tournament_id, :location_id, presence: true
+  validates :tournament_id, :location_id, :format, presence: true
   validate :start_before_end
 
   def start_before_end

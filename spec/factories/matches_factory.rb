@@ -5,6 +5,7 @@ FactoryGirl.define do
     end_date { Time.now  }
     association :tournament 
     association :location 
+    association :format 
     # association :team_one, factory: :team
     # association :team_two, factory: :team
 
