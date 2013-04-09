@@ -66,8 +66,7 @@ class Tournament < ActiveRecord::Base
       i += 1
     end
   end
-
-  ## Public Methods ##
+  
   def has_group_stage?
     #TODO check a better way to references group stage and multi stage other than the ids
     format_id == 1 or format_id == 3

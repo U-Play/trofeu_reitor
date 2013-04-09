@@ -33,7 +33,7 @@ ActiveAdmin.register Tournament do
   end
 
   index do
-    column :name
+    column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
     column :number_of_teams
     column(:format) { |t| link_to t.format.name, admin_tournament_format_path(t.format) if t.format }
     column :start_date
