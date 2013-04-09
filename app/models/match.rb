@@ -27,7 +27,8 @@ class Match < ActiveRecord::Base
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   ## Validations ##
-  validates :tournament_id, :location_id, presence: true
+  validates :tournament_id, presence: true 
+  #validates :location_id, presence: true
   validate :start_before_end
 
   def start_before_end
