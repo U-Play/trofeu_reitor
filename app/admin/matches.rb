@@ -1,4 +1,5 @@
 ActiveAdmin.register Match do
+
   index do
     # column :group
     column(:start_date)
@@ -61,6 +62,15 @@ ActiveAdmin.register Match do
     end
   end
 
+
+  member_action :save_draft, :method => :post do
+    @tournament = Tournament.find(params[:id])
+    params[:matches].each do |k,v|
+      @tournament.matches.find(k).update_attributes(:team_one_id => v[0], :team_two_id => v[1])
+    end
+    redirect_to admin_tournament_path(@tournament)
+  end
+
   # Filter only by
   filter :start_date
   filter :end_date
@@ -69,5 +79,6 @@ ActiveAdmin.register Match do
   filter :winner_id
   filter :team_one_id
   filter :team_two_id
+
 
 end

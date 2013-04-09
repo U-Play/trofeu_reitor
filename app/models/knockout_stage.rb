@@ -8,6 +8,6 @@ class KnockoutStage < ActiveRecord::Base
   attr_accessible :result_homologation, :third_place, :tournament_id
 
   ## Validations ##
-  validates :tournament_id, presence: true
+  validates :tournament, presence: true
 
 end
