@@ -1,10 +1,10 @@
 h2 Manual Draft
 
 - team_position = 1
-= form_tag :controller => "matches", :action => "save_draft", :method => "post" do |f|
-  //- if @match.errors.any?
-      //- @match.errors.full_messages.each do |msg|
-        //%li= msg
+= form_tag :controller => "tournaments", :action => "save_draft", :method => "post" do |f|
+  - if @tournament.errors.any?
+      - @tournament.errors.full_messages.each do |msg|
+        li= msg
 
   - @tournament.matches.each do |m|
     - if m.position <= (@tournament.matches.size/2).ceil

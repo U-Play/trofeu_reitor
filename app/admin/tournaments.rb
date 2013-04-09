@@ -52,7 +52,7 @@ ActiveAdmin.register Tournament do
       f.input :name
       f.input :format
       f.inputs "Group Stage" do
-        f.semantic_fields_for :group_stage, f.object.build_group_stage do |gs|
+        f.semantic_fields_for :group_stage, (f.object.group_stage || f.object.build_group_stage) do |gs|
           gs.inputs do
             gs.input :n_rounds
             gs.input :loss_points
@@ -62,7 +62,7 @@ ActiveAdmin.register Tournament do
         end
       end
       f.inputs "Knockout Stage" do
-        f.semantic_fields_for :knockout_stage, f.object.build_knockout_stage do |ks|
+        f.semantic_fields_for :knockout_stage, (f.object.knockout_stage || f.object.build_knockout_stage) do |ks|
           ks.inputs do
             ks.input :result_homologation
             ks.input :third_place
@@ -77,6 +77,26 @@ ActiveAdmin.register Tournament do
       f.input :end_date, as: :datepicker
     end
     f.actions
+  end
+
+  #Save the manual draft made
+  member_action :save_draft, :method => :post do
+    selected_teams = []
+    @tournament = Tournament.find(params[:id])
+    params[:matches].each do |k,v|
+      selected_teams << v[0] if !v[0].blank?
+      selected_teams << v[1] if !v[1].blank?
+    end
+    if selected_teams.uniq.length == selected_teams.length
+      params[:matches].each do |k,v|
+        @tournament.matches.find(k).update_attributes(:team_one_id => v[0], :team_two_id => v[1])
+      end
+      redirect_to admin_tournament_path(@tournament)
+    else
+      @tournament.errors[:base] << "The same team cannot be selected for two different matches!"
+      @teams = @tournament.teams
+      render :show_manual_draft
+    end
   end
 
   #Action to show the page where the admin can do the manual draft
