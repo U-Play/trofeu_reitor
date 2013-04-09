@@ -1,8 +1,7 @@
 FactoryGirl.define do
 
   factory :match do
-    start_date { Time.now }
-    end_date { Time.now  }
+    start_datetime { DateTime.now }
     association :tournament 
     association :location 
     association :format 

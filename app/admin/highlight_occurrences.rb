@@ -2,7 +2,6 @@ ActiveAdmin.register HighlightOccurrence do
   menu false
 
   index do
-    column(:total)
     column(:time)
     column(:match)      { |ho| link_to ho.match.start_date, admin_match_path(ho.match) }
     column(:highlight)  { |ho| link_to ho.highlight.name, admin_highlight_path(ho.highlight) }
@@ -13,7 +12,6 @@ ActiveAdmin.register HighlightOccurrence do
   
   form do |f|
     f.inputs "Highlight Occurrence Details" do
-      f.input :total, required: true
       f.input :time, required: true#, as: :time_select TODO: tratar este input para ficar mais facil, nem que se tenha que mudar o tipo na DB
       f.input :match, required: true
       f.input :highlight, required: true
@@ -24,7 +22,7 @@ ActiveAdmin.register HighlightOccurrence do
 
   show do
     attributes_table do
-      [:total, :time].each do |column|
+      [:time].each do |column|
         row(column)
       end
       panel "Match" do

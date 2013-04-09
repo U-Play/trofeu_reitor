@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408213546) do
+ActiveRecord::Schema.define(:version => 20130409154245) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(:version => 20130408213546) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-    t.integer  "total"
     t.string   "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
@@ -129,17 +128,20 @@ ActiveRecord::Schema.define(:version => 20130408213546) do
 
   create_table "matches", :force => true do |t|
     t.integer  "position"
-    t.datetime "start_date"
-    t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
     t.integer  "location_id"
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "format_id"
+    t.datetime "start_datetime"
+    t.string   "result_team_one"
+    t.string   "result_team_two"
+    t.boolean  "started"
+    t.boolean  "ended"
   end
 
   add_index "matches", ["format_id"], :name => "index_matches_on_format_id"
@@ -192,8 +194,9 @@ ActiveRecord::Schema.define(:version => 20130408213546) do
   create_table "sports", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.text     "description"
   end
 
   create_table "team_athletes", :force => true do |t|

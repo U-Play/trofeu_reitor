@@ -14,6 +14,7 @@ gem 'pg'
 gem 'slim'
 gem "paranoia"
 gem "paranoia_uniqueness_validator"
+gem "just-datetime-picker"
 
 group :development do
   gem 'pry-rails'

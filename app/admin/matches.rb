@@ -4,12 +4,40 @@ ActiveAdmin.register Match do
   # Is nested resource of
   belongs_to :tournament
 
+  # Custom Action Items
+  action_item :only => :show do
+    match = Match.find(params[:id])
+    link_to('Start Game', start_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn) if match.pending?
+    # link_to 'Start', start_game_path(@game), :method => :put, :class => :btn
+  end
+
+  # Custom Member Actions
+  member_action :start, :method => :put do
+    match = Match.find(params[:id])
+    match.started = true
+    if match.update_attributes(params[:match])
+      # redirect_to :action => :show, :notice => "Match successfully started!"
+      redirect_to admin_tournament_match_path(match.tournament, match)
+
+    else
+      match.started = false
+      render :action => 'show'
+      # render active_admin_template('show.html.arb')
+      # render :show
+    end
+  end
+
   index do
-    # column :group
-    column(:start_date)
-    column(:end_date)
+    column("Status") do |m| 
+      status_tag(
+        ( ( m.started? && 'Started' ) || ( m.pending? && 'Pending' )  || ( m.ended? && 'Ended' ) ), 
+        ( ( m.started? && :error )    || ( m.pending? && :warning )   || ( m.ended? && :ok ) ) 
+      )
+    end
+    column(:start_datetime)
     column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
     column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+    column(:result)
 
     default_actions
   end
@@ -21,9 +49,10 @@ ActiveAdmin.register Match do
       f.input :format, :required => true, :collection => Format.where(:id => [1,2])
       f.input :winner
       f.input :team_one, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
+      f.input :result_team_one
       f.input :team_two, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
-      f.input :start_date, as: :datepicker
-      f.input :end_date, as: :datepicker
+      f.input :result_team_two
+      f.input :start_datetime, :as => :just_datetime_picker
     end
 
     f.inputs "Referees" do
@@ -32,9 +61,9 @@ ActiveAdmin.register Match do
         # mr.input :another_attribute_to_update
 
         # if mr.object.persisted?
-          # show the destroy checkbox only if it is an existing match_referee
-          # else, there's already dynamic JS to add / remove new match_referees
-          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
+        # show the destroy checkbox only if it is an existing match_referee
+        # else, there's already dynamic JS to add / remove new match_referees
+        mr.input :_destroy, :as => :boolean, :label => "Destroy?"
         # end
       end
     end
@@ -43,7 +72,7 @@ ActiveAdmin.register Match do
 
   show do
     attributes_table do
-      [:start_date, :end_date].each do |column|
+      [:start_datetime].each do |column|
         row(column)
       end
       row(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
@@ -68,14 +97,12 @@ ActiveAdmin.register Match do
         column(:time)
         column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
         column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.sport, ho.highlight) }
-        column(:total)
       end
     end
   end
 
   # Filter only by
-  filter :start_date
-  filter :end_date
+  filter :start_datetime
   filter :location_id
   filter :winner_id
   filter :team_one_id
