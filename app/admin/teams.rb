@@ -30,7 +30,7 @@ ActiveAdmin.register Team do
     # end
     attributes_table do
       row :name
-      row(:group) { |t| link_to t.group.name, admin_tournament_group_path(t.tournament, t.group) }
+      row(:group) { |t| link_to t.group.name, admin_tournament_group_path(t.tournament, t.group) if t.group }
       row :manager
     end
     panel "Athletes" do
@@ -53,12 +53,7 @@ ActiveAdmin.register Team do
     panel "Matches" do
       table_for team.matches do 
         column(:id)  { |m| link_to m.id, admin_tournament_match_path(m.tournament, m) }
-        column("Status") do |m| 
-          status_tag(
-            ( ( m.started? && 'Started' ) || ( m.pending? && 'Pending' )  || ( m.ended? && 'Ended' ) ), 
-            ( ( m.started? && :error )    || ( m.pending? && :warning )   || ( m.ended? && :ok ) ) 
-          )
-        end
+        column("Status") { |m| status_tag m.status, m.status_type }
         column(:start_datetime)
         column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
         column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }

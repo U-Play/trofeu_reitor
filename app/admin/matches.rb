@@ -4,42 +4,77 @@ ActiveAdmin.register Match do
   # Is nested resource of
   belongs_to :tournament
 
+  # Custom Member Actions
+  member_action :begin, :method => :put do
+    match = Match.find(params[:id])
+    match.begin
+    if match.update_attributes params[:match]
+      redirect_to admin_tournament_match_path(match.tournament, match), :notice => "Match successfully started!"
+    else
+      render :show
+    end
+  end
+
   # Custom Action Items
   action_item :only => :show do
     match = Match.find(params[:id])
-    link_to('Start Game', start_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn) if match.pending?
-    # link_to 'Start', start_game_path(@game), :method => :put, :class => :btn
-  end
-
-  # Custom Member Actions
-  member_action :start, :method => :put do
-    match = Match.find(params[:id])
-    match.started = true
-    if match.update_attributes(params[:match])
-      # redirect_to :action => :show, :notice => "Match successfully started!"
-      redirect_to admin_tournament_match_path(match.tournament, match)
-
+    if match.pending?
+      link_to('Begin Game', begin_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
     else
-      match.started = false
-      render :action => 'show'
-      # render active_admin_template('show.html.arb')
-      # render :show
+      # link_to('End Game', end_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
     end
   end
 
   index do
-    column("Status") do |m| 
-      status_tag(
-        ( ( m.started? && 'Started' ) || ( m.pending? && 'Pending' )  || ( m.ended? && 'Ended' ) ), 
-        ( ( m.started? && :error )    || ( m.pending? && :warning )   || ( m.ended? && :ok ) ) 
-      )
-    end
+    column("Status") { |m| status_tag m.status, m.status_type }
     column(:start_datetime)
     column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
     column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
     column(:result)
+    column(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
 
     default_actions
+  end
+
+  show do
+    attributes_table do
+      [:start_datetime].each do |column|
+        row(column)
+      end
+      row(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      row(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
+      row(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
+    end
+    panel "Play by Play" do
+      if match.started?
+        render :partial => 'play_by_play', 
+          :locals => {
+            match: match, 
+            highlights: HighlightOccurrence.find_all_by_match_id(params[:id]), 
+            highlight: HighlightOccurrence.new 
+          }
+      end
+    end
+    panel "Referees" do
+      table_for match.referees do 
+        column(:name)  { |r| link_to r.name, admin_user_path(r) }
+      end
+    end
+    panel "Penalties" do
+      table_for match.penalties do 
+        column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
+        column(:start_date)
+        column(:end_date)
+      end
+    end
+    # panel "Highlights" do
+    #   table_for match.highlight_occurrences do 
+    #     column(:time)
+    #     column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
+    #     column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.highlight.sport, ho.highlight) }
+    #   end
+    # end
   end
 
   form do |f|
@@ -68,37 +103,6 @@ ActiveAdmin.register Match do
       end
     end
     f.actions
-  end
-
-  show do
-    attributes_table do
-      [:start_datetime].each do |column|
-        row(column)
-      end
-      row(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-      row(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
-      row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
-      row(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
-    end
-    panel "Referees" do
-      table_for match.referees do 
-        column(:name)  { |r| link_to r.name, admin_user_path(r) }
-      end
-    end
-    panel "Penalties" do
-      table_for match.penalties do 
-        column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
-        column(:start_date)
-        column(:end_date)
-      end
-    end
-    panel "Highlights" do
-      table_for match.highlight_occurrences do 
-        column(:time)
-        column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
-        column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.sport, ho.highlight) }
-      end
-    end
   end
 
   # Filter only by

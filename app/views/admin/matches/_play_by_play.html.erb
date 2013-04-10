@@ -1,0 +1,22 @@
+<table class="table table-condensed table-striped">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Highlight</th>
+      <th>Athlete</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: highlight } %>
+    <% highlights.each do |hl| %>
+      <tr>
+        <td><%= hl.time %></td>
+        <td><%= hl.highlight.name %></td>
+        <td><%= hl.athlete.name %></td>
+        <td><%= link_to 'Apagar', admin_match_highlight_occurrence_path(match, hl), :method => :delete, :class => 'icon-remove' %></td>
+      </tr>
+    <% end if highlights %>
+  </tbody>
+</table>

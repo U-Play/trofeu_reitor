@@ -1,0 +1,20 @@
+<tr>
+  <%= form_for highlight, :url => admin_match_highlight_occurrences_path(match, highlight), :method => :post do |f| %>
+    <td>
+      <%= f.number_field :time, value: 0, :min => 0 %>
+    </td>
+
+    <td>
+      <%= f.label match.tournament.sport.name %>
+      <%= f.collection_select :highlight_id, Highlight.find_all_by_sport_id(match.tournament.sport.id), :id, :name %>
+    </td>
+
+    <td>
+      <%= f.collection_select :athlete_id, match.athletes, :id, :name %>
+    </td>
+
+    <td>
+      <%= f.submit 'Add', :class => 'btn btn-mini' %>
+    </td>
+  <% end if highlight && match %>
+</tr>

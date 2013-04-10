@@ -18,7 +18,7 @@ class Match < ActiveRecord::Base
   has_many :referees, :through => :match_referees, :source => :referee
 
   has_many :highlight_occurrences
-  has_many :athletes, :through => :highlight_occurrences, :source => :athlete
+  has_many :highlight_athletes, :through => :highlight_occurrences, :source => :athlete
   has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
@@ -32,10 +32,14 @@ class Match < ActiveRecord::Base
 
   ## Validations ##
   validates :tournament_id, :location_id, :format, presence: true
-  validate :end_after_started
+  # validate :end_after_started
   validate :start_with_two_teams
 
   ## Public Methods ##
+  def athletes
+    User.where(:id => (team_one.athletes + team_two.athletes))
+  end
+
   def ended?
     started && ended
   end
@@ -48,8 +52,22 @@ class Match < ActiveRecord::Base
     "#{result_team_one} - #{result_team_two}"
   end
 
+  def begin
+    if pending?
+      self.update_attribute :started, true
+    end
+  end
+
   def started?
     started && !ended
+  end
+
+  def status
+    ( started? && 'Started' ) || ( pending? && 'Pending' )  || ( ended? && 'Ended' )
+  end
+
+  def status_type
+    ( started? && :error ) || ( pending? && :warning ) || ( ended? && :ok )
   end
 
   ## Protected Methods ##
