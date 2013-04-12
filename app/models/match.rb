@@ -27,7 +27,6 @@ class Match < ActiveRecord::Base
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   ## Validations ##
-<<<<<<< HEAD
   validates :tournament_id, presence: true 
   #validates :location_id, presence: true
   validate :start_before_end
@@ -64,30 +63,3 @@ class Match < ActiveRecord::Base
   #   self.match_referees.sort_by! {|x| x.referee.name}
   # end
 end
-||||||| merged common ancestors
-  validates :tournament_id, presence: true
-  validates :location_id, presence: true
-end
-=======
-  validates :tournament_id, :location_id, presence: true
-  validate :start_before_end
-
-  def start_before_end
-    return unless start_date and end_date
-    if (start_date > end_date)
-      errors.add(:start_date, "needs to be lesser or equal to the end date")
-    end
-  end
-
-  ## Public Methods ##
-  # def get_unselected_referees_and_order_by_name
-  #   # creates an array for all match_referees that the match does not currently have selected
-  #   # and builds them in the match
-  #   (User.all - self.referees).each do |p| #TODO so referees
-  #     self.match_referees.build(:referee => p) unless self.match_referees.map(&:referee_id).include?(p.id)
-  #   end
-  #   # to ensure that all referees are always shown in a consistent order
-  #   self.match_referees.sort_by! {|x| x.referee.name}
-  # end
-end
->>>>>>> merged from ba/apply_active_admin
