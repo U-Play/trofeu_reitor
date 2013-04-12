@@ -9,7 +9,6 @@
     </td>
 
     <td>
-      <%# <%= f.collection_select :athlete_id, match.athletes, :id, name_with_team(match) %>
       <%= f.select :athlete_id, match.athletes.map{ |ath| [ath.name_with_team(match), ath.id] } %>
     </td>
 

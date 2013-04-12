@@ -58,7 +58,7 @@ ActiveAdmin.register HighlightOccurrence do
           row(:result)
         end
       end
-      row(:highlight) { |ho| link_to ho.highlight.name, admin_highlight_path(ho.highlight) }
+      row(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.highlight.sport, ho.highlight) }
       row(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
     end
   end
