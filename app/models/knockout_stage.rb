@@ -15,13 +15,13 @@ class KnockoutStage < ActiveRecord::Base
   def draft_made?
     teams_drafted = 0
     self.tournament.teams.each do |t|
-      teams_drafted += 1 unless t.match_as_team_one.empty? && t.match_as_team_two.empty? 
+      teams_drafted += 1 unless t.matches_as_team_one.empty? && t.matches_as_team_two.empty? 
     end
     return self.tournament.number_of_teams == teams_drafted 
   end
 
   def actual_stage_finished?
-    #Don't address the final
+    #Don't address the final stage
     last_positions = self.last_position_of_each_stage(1)
     games_finished = self.tournament.matches.finished.size
     #Also test if the next stage has already been set
@@ -45,8 +45,9 @@ class KnockoutStage < ActiveRecord::Base
 
   #Based on the number of teams, get the number of stages that the tournament will have
   def number_of_stages
-    for number_of_stages in 0..self.tournament.number_of_teams
-      break if self.tournament.number_of_teams <= 2 ** number_of_stages
+    number_of_stages = 0
+    until self.tournament.number_of_teams <= 2 ** number_of_stages
+      number_of_stages += 1
     end
     return number_of_stages
   end
@@ -66,17 +67,20 @@ class KnockoutStage < ActiveRecord::Base
 
   #According to the configurations, create the necessary matches that will be played 'till the final one
   def create_knockout_matches
-    number_of_stages = self.number_of_stages
-    if self.third_place
-      number_of_games = 2 ** number_of_stages
-    else
-      number_of_games = (2 ** number_of_stages) - 1 
-    end
     position = 1
     #Create all Games
-    number_of_games.times do
-      self.tournament.matches.create position: position, knockout_index: stage_of_position(position)
+    self.tournament_games.times do
+      self.tournament.matches.create position: position, knockout_index: stage_of_position(position), format_id: Format.knockoutFormat.id
       position += 1
+    end
+  end
+
+  def tournament_games
+    number_stages = self.number_of_stages
+    if self.third_place
+      number_of_games = 2 ** number_stages
+    else
+      number_of_games = (2 ** number_stages) - 1
     end
   end
 
@@ -94,23 +98,25 @@ class KnockoutStage < ActiveRecord::Base
     games_finished = self.tournament.matches.finished.size
     last_positions = self.last_position_of_each_stage
     next_stage = last_positions.index(games_finished) - 1
-    first_game_stage = games_finished + 1
-    #Get the number of games made in the actual stage (minus one) and add to the first position of the next stage
-    last_game_stage = first_game_stage + ((2 ** (next_stage + 1)) / 2) - 1
-    self.set_next_stage_matches(first_game_stage, last_game_stage, next_stage)
+    self.set_next_stage_matches(next_stage)
   end
 
-  def set_next_stage_matches(first_game_stage, last_game_stage, next_stage)
+  def set_next_stage_matches(next_stage)
     acc = 0
-    for position in first_game_stage..last_game_stage
-      previous_position = position - (2 ** (next_stage + 1)) + acc
+    third_place_done = false
+    first_winner_id = nil
+    second_winner_id = nil
+    self.tournament.matches.stage(next_stage).each do |m|
+      previous_position = m.position - (2 ** (next_stage + 1)) + acc
       first_match = self.tournament.matches.find_by_position(previous_position)
       second_match = self.tournament.matches.find_by_position(previous_position + 1)
-      if next_stage == 0 && self.third_place
-        self.tournament.matches.find_by_position(position).update_attributes(:team_one_id => first_match.loser.id, :team_two_id => second_match.loser.id)
-        self.tournament.matches.find_by_position(position + 1).update_attributes(:team_one_id => first_match.winner_id, :team_two_id => second_match.winner_id)
+      if next_stage == 0 && self.third_place && !third_place_done
+        m.update_attributes(:team_one_id => first_match.loser.id, :team_two_id => second_match.loser.id)
+        first_winner_id = first_match.winner_id
+        second_winner_id = second_match.winner_id
+        third_place_done = true
       else
-        self.tournament.matches.find_by_position(position).update_attributes(:team_one_id => first_match.winner_id, :team_two_id => second_match.winner_id)
+        m.update_attributes(:team_one_id => (first_winner_id || first_match.winner_id), :team_two_id => (second_winner_id || second_match.winner_id))
       end
       acc += 1
     end

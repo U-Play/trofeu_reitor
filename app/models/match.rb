@@ -22,32 +22,18 @@ class Match < ActiveRecord::Base
   has_many :highlights, :through => :highlight_occurrences
 
   ## Attributes ##
-<<<<<<< HEAD
-  attr_accessible :end_date, :group, :position, :start_date, :tournament_id, :location_id,
-    :knockout_index, :winner_id, :team_one_id, :team_two_id, :match_referees_attributes
-||||||| merged common ancestors
-  attr_accessible :end_date, :group, :position, :start_date, :tournament_id, :location_id,
-    :winner_id, :team_one_id, :team_two_id, :match_referees_attributes
-=======
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
   :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id, :result_team_one,
-  :result_team_two, :started, :ended
->>>>>>> merged from ba/tournament_crud
+  :result_team_two, :started, :ended, :knockout_index
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   just_define_datetime_picker :start_datetime, :add_to_attr_accessible => true
 
   ## Validations ##
-<<<<<<< HEAD
-  validates :tournament_id, presence: true 
+  validates :tournament, presence: true 
   #validates :location_id, presence: true
-  validate :start_before_end
-||||||| merged common ancestors
-  validates :tournament_id, :location_id, presence: true
-  validate :start_before_end
-=======
-  validates :tournament_id, :location_id, :format, presence: true
+  validates :format, presence: true
   validate :end_after_started
   validate :start_with_two_teams
   
@@ -59,63 +45,17 @@ class Match < ActiveRecord::Base
   def athletes
     User.where(:id => (team_one.athletes + team_two.athletes))
   end
->>>>>>> merged from ba/tournament_crud
 
-<<<<<<< HEAD
   ## Scopes ##
 
   scope :finished, lambda { where("winner_id IS NOT NULL")}
 
-  def start_before_end
-    return unless start_date and end_date
-    if (start_date > end_date)
-      errors.add(:start_date, "needs to be lesser or equal to the end date")
-||||||| merged common ancestors
-  def start_before_end
-    return unless start_date and end_date
-    if (start_date > end_date)
-      errors.add(:start_date, "needs to be lesser or equal to the end date")
-=======
   def begin
     if pending?
       self.update_attribute :started, true
->>>>>>> merged from ba/tournament_crud
     end
   end
 
-<<<<<<< HEAD
-  def loser
-    match = nil
-    if self.winner_id == self.team_one_id
-      match = self.team_two
-    elsif self.winner_id == self.team_two_id
-      match = self.team_one
-    end
-    return match
-  end
-
-  ## Public Methods ##
-  # def get_unselected_referees_and_order_by_name
-  #   # creates an array for all match_referees that the match does not currently have selected
-  #   # and builds them in the match
-  #   (User.all - self.referees).each do |p| #TODO so referees
-  #     self.match_referees.build(:referee => p) unless self.match_referees.map(&:referee_id).include?(p.id)
-  #   end
-  #   # to ensure that all referees are always shown in a consistent order
-  #   self.match_referees.sort_by! {|x| x.referee.name}
-  # end
-||||||| merged common ancestors
-  ## Public Methods ##
-  # def get_unselected_referees_and_order_by_name
-  #   # creates an array for all match_referees that the match does not currently have selected
-  #   # and builds them in the match
-  #   (User.all - self.referees).each do |p| #TODO so referees
-  #     self.match_referees.build(:referee => p) unless self.match_referees.map(&:referee_id).include?(p.id)
-  #   end
-  #   # to ensure that all referees are always shown in a consistent order
-  #   self.match_referees.sort_by! {|x| x.referee.name}
-  # end
-=======
   def end
     if started?
       self.update_attribute :ended, true
@@ -124,6 +64,16 @@ class Match < ActiveRecord::Base
 
   def ended?
     started && ended
+  end
+  
+  def loser
+    match = nil
+    if self.winner_id == self.team_one_id
+      match = self.team_two
+    elsif self.winner_id == self.team_two_id
+      match = self.team_one
+    end
+    return match
   end
 
   def self.find_all_by_team(team)
@@ -161,12 +111,11 @@ class Match < ActiveRecord::Base
   ## Protected Methods ##
   protected
 
-  def end_after_started 
-    errors.add(:ended, "match has to start before ending") if (!started && ended)
-  end
+    def end_after_started 
+      errors.add(:ended, "match has to start before ending") if (!started && ended)
+    end
 
-  def start_with_two_teams
-    errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
-  end
->>>>>>> merged from ba/tournament_crud
+    def start_with_two_teams
+      errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
+    end
 end
