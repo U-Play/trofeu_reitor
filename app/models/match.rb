@@ -42,6 +42,16 @@ class Match < ActiveRecord::Base
     end
   end
 
+  def loser
+    match = nil
+    if self.winner_id == self.team_one_id
+      match = self.team_two
+    elsif self.winner_id == self.team_two_id
+      match = self.team_one
+    end
+    return match
+  end
+
   ## Public Methods ##
   # def get_unselected_referees_and_order_by_name
   #   # creates an array for all match_referees that the match does not currently have selected

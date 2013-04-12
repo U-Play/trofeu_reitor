@@ -9,15 +9,15 @@ ActiveAdmin.register Tournament do
         #If tournament is successfully saved, it will create the number of teams that are going to participate
         @tournament.create_teams
         #Depending on the type of format, it will create the according matches
+        #Format: Mixed Stage
+        if @tournament.group_stage && @tournament.knockout_stage 
+          puts "NOT IMPLEMENTED"
         #Format: Group Stage
-        if @tournament.format_id == 1
+        elsif @tournament.group_stage
           puts "NOT IMPLEMENTED"
         #Format: Knockout Stage
-        elsif @tournament.format_id == 2
-          @tournament.create_knockout_matches
-        #Format: Mixed Stage
-        elsif @tournament.format_id == 3
-          puts "NOT IMPLEMENTED"
+        elsif @tournament.knockout_stage
+          @tournament.knockout_stage.create_knockout_matches
         end
         redirect_to admin_tournaments_path
       else
@@ -80,7 +80,7 @@ ActiveAdmin.register Tournament do
   end
 
   #Save the manual draft made
-  member_action :save_draft, :method => :post do
+  member_action :save_knockout_draft, :method => :post do
     selected_teams = []
     @tournament = Tournament.find(params[:id])
     params[:matches].each do |k,v|
@@ -92,42 +92,34 @@ ActiveAdmin.register Tournament do
         @tournament.matches.find(k).update_attributes(:team_one_id => v[0], :team_two_id => v[1])
       end
       if selected_teams.length == @tournament.number_of_teams
-        first_games = (2 ** @tournament.number_of_stages)/2
-        for position in 1..first_games do
-          match = @tournament.matches.find_by_position(position)
-          if match.team_one_id.nil? && !match.team_two_id.nil?
-            match.update_attributes(:winner_id => match.team_two_id)
-          elsif !match.team_one_id.nil? && match.team_two_id.nil?
-            match.update_attributes(:winner_id => match.team_one_id)
-          end
-        end
+        @tournament.knockout_stage.set_exempt_winners
       end
       redirect_to admin_tournament_path(@tournament)
     else
       @tournament.errors[:base] << "The same team cannot be selected for two different matches!"
       @teams = @tournament.teams
-      render :show_manual_draft
+      render :show_knockout_draft
     end
   end
 
-  action_item :only => :show, :if => proc{ !tournament.draft_made? } do 
-    link_to 'Manual Draft', :controller => "tournaments", :action => "show_manual_draft", :id => tournament.id
+  action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 
+    link_to 'Knockout Draft', :controller => "tournaments", :action => "show_knockout_draft", :id => tournament.id
   end 
 
   #Action to show the page where the admin can do the manual draft
-  member_action :show_manual_draft, :method => :get do
+  member_action :show_knockout_draft, :method => :get do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
   end
-  
-  action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.actual_stage_finished?} do
+
+  action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.knockout_stage.actual_stage_finished?} do
     link_to 'Generate Next Stage', {:controller => "tournaments", :action => "next_stage", :id => tournament.id}, :method => :post
   end
 
   #Action that will update the matches with teams that go to the next stage
   member_action :next_stage, :method => :post do
     @tournament = Tournament.find(params[:id])
-    @tournament.update_next_stage
+    @tournament.knockout_stage.update_next_stage
     redirect_to admin_tournament_path(@tournament)
   end
 
