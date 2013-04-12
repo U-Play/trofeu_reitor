@@ -31,6 +31,10 @@ class Match < ActiveRecord::Base
   #validates :location_id, presence: true
   validate :start_before_end
 
+  ## Scopes ##
+
+  scope :finished, lambda { where("winner_id IS NOT NULL")}
+
   def start_before_end
     return unless start_date and end_date
     if (start_date > end_date)
