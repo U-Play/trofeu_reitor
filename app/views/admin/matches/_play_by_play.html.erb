@@ -16,7 +16,7 @@
       <tr>
         <td><%= hl.time %></td>
         <td><%= hl.highlight.name %></td>
-        <td><%= hl.athlete.name %></td>
+        <td><%= hl.athlete.name_with_team(match) %></td>
         <td><%= link_to 'Apagar', admin_match_highlight_occurrence_path(match, hl), :method => :delete %></td>
       </tr>
     <% end if highlights %>
