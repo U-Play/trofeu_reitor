@@ -62,6 +62,16 @@ ActiveAdmin.register Team do
     end
   end
 
+  sidebar "Other Matches For This Team", :only => :show do
+    table_for Match.find_all_by_team(team) do
+      # column(:status)  { |m| status_tag m.status, m.status_type }
+      column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      column(:result)
+      column('')     { |m| link_to 'View', admin_tournament_match_path(m.tournament, m) }
+    end
+  end
+
   form do |f|
     f.inputs "Required Fields" do
       f.input :name, required: true

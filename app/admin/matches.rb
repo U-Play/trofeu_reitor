@@ -11,6 +11,18 @@ ActiveAdmin.register Match do
     if match.update_attributes params[:match]
       redirect_to admin_tournament_match_path(match.tournament, match), :notice => "Match successfully started!"
     else
+      # match.started = false
+      # redirect_to admin_tournament_match_path(match.tournament, match), :warning => match.errors.messages
+      render :show
+    end
+  end
+
+  member_action :end, :method => :put do
+    match = Match.find(params[:id])
+    match.end
+    if match.update_attributes params[:match]
+      redirect_to edit_admin_tournament_match_path(match.tournament, match), :warning => 'Insert the final result and the winner of this match'
+    else
       render :show
     end
   end
@@ -18,10 +30,10 @@ ActiveAdmin.register Match do
   # Custom Action Items
   action_item :only => :show do
     match = Match.find(params[:id])
-    if match.pending?
-      link_to('Begin Game', begin_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
-    else
-      # link_to('End Game', end_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
+    if match.pending? && match.ready?
+      link_to('Begin Match', begin_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
+    elsif match.started?
+      link_to('End Match'  , end_admin_tournament_match_path(match.tournament, match), :method => :put, :class => :btn)
     end
   end
 
@@ -41,20 +53,20 @@ ActiveAdmin.register Match do
       [:start_datetime].each do |column|
         row(column)
       end
-      row(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-      row(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      row(:team_one)   { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      row(:team_two)   { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      row(:result)
       row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
-      row(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
+      row(:sport)      { |m| link_to m.tournament.sport.name, admin_sport_path(m.tournament.sport) }
+      row(:location)   { |m| link_to m.location.city, admin_location_path(m.location) }
     end
     panel "Play by Play" do
-      if match.started?
-        render :partial => 'play_by_play', 
-          :locals => {
-            match: match, 
-            highlights: HighlightOccurrence.find_all_by_match_id(params[:id]), 
-            highlight: HighlightOccurrence.new 
-          }
-      end
+      render :partial => 'play_by_play', 
+        :locals => {
+          match: match, 
+          highlights: HighlightOccurrence.find_all_by_match_id(params[:id]), 
+          highlight: HighlightOccurrence.new 
+        }
     end
     panel "Referees" do
       table_for match.referees do 
@@ -75,6 +87,16 @@ ActiveAdmin.register Match do
     #     column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.highlight.sport, ho.highlight) }
     #   end
     # end
+  end
+
+  sidebar "Other Matches In This Tournament", :only => :show do
+    table_for Match.find_all_by_tournament_id(match.tournament_id) do
+      # column(:status)  { |m| status_tag m.status, m.status_type }
+      column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      column(:result)
+      column('')     { |m| link_to 'View', admin_tournament_match_path(m.tournament, m) }
+    end
   end
 
   form do |f|

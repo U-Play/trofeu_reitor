@@ -11,6 +11,7 @@ FactoryGirl.define do
     after(:create) do |m|
       m.team_one_id = FactoryGirl.create(:team, tournament_id: m.tournament_id).id
       m.team_two_id = FactoryGirl.create(:team, tournament_id: m.tournament_id).id
+      m.save
       # m.team_one.tournament_id = m.tournament_id
       # m.team_two.tournament_id = m.tournament_id
     end

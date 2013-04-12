@@ -5,16 +5,16 @@
     </td>
 
     <td>
-      <%= f.label match.tournament.sport.name %>
       <%= f.collection_select :highlight_id, Highlight.find_all_by_sport_id(match.tournament.sport.id), :id, :name %>
     </td>
 
     <td>
-      <%= f.collection_select :athlete_id, match.athletes, :id, :name %>
+      <%# <%= f.collection_select :athlete_id, match.athletes, :id, name_with_team(match) %>
+      <%= f.select :athlete_id, match.athletes.map{ |ath| [ath.name_with_team(match), ath.id] } %>
     </td>
 
     <td>
-      <%= f.submit 'Add', :class => 'btn btn-mini' %>
+      <%= f.submit 'Add' %>
     </td>
   <% end if highlight && match %>
 </tr>

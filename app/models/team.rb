@@ -40,6 +40,10 @@ class Team < ActiveRecord::Base
     Match.where(:id => (matches_as_team_one + matches_as_team_two))
   end
 
+  def has_athlete?(athlete)
+    athletes.any? { |ath| ath.id == athlete.id }
+  end
+
   ## Private Methods ##
   protected
 

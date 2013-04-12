@@ -3,6 +3,32 @@ ActiveAdmin.register Tournament do
 
   scope_to :current_user
 
+  # Custom Action Items
+  action_item :only => :show do
+    link_to 'Teams', admin_tournament_teams_path(params[:id])
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    link_to('Groups', admin_tournament_groups_path(tournament.id)) if tournament.has_group_stage?
+  end
+
+  action_item :only => :show do
+    link_to 'Matches', admin_tournament_matches_path(params[:id])
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    #FIXME os seguintes links dao erro
+    link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    #FIXME os seguintes links dao erro
+    link_to('Knockout Stage Configuration', admin_tournament_knockout_stages_path(tournament.id)) if tournament.has_knockout_stage?
+  end
+
   index do
     column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
     column(:start_date)
@@ -11,22 +37,6 @@ ActiveAdmin.register Tournament do
   end
 
   show do
-    panel "Menu" do
-      columns do
-        column do
-          # panel "Models" do
-          ul do
-            li link_to("Teams", admin_tournament_teams_path(tournament.id))
-            li link_to("Groups", admin_tournament_groups_path(tournament.id)) if tournament.has_group_stage?
-            li link_to("Matches", admin_tournament_matches_path(tournament.id))
-            #FIXME os seguintes links dao erro
-            li link_to("Group Stage Configuration", admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
-            li link_to("Knockout Stage Configuration", admin_tournament_knockout_stages_path(tournament.id)) if tournament.has_knockout_stage?
-          end
-          # end
-        end
-      end
-    end
     attributes_table do
       row :name
       row :sport

@@ -12,13 +12,27 @@ ActiveAdmin.register Sport do
       f.input :name, :required => true
       f.input :description
     end
+    f.inputs "Highlights" do
+      f.has_many :highlights do |mr|
+        mr.input :name
+        mr.input :description
+
+        if !mr.object.nil?
+        # show the destroy checkbox only if it is an existing match_referee
+        # else, there's already dynamic JS to add / remove new match_referees
+          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
+        end
+      end
+    end
     f.buttons
   end
 
-  show :title => :name do
+  show do
     panel "Sport Details" do
-      [:name, :description].each do |column|
-        row(column)
+      attributes_table do
+        [:name, :description].each do |column|
+          row(column)
+        end
       end
     end
     panel "Tournaments" do

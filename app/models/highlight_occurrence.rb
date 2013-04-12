@@ -1,6 +1,8 @@
 class HighlightOccurrence < ActiveRecord::Base
   include ParanoiaInterface
 
+  default_scope order('time DESC')
+
   ## Relations ##
   belongs_to :highlight
   belongs_to :match

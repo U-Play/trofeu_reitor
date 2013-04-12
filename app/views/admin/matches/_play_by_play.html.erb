@@ -9,13 +9,15 @@
   </thead>
 
   <tbody>
-    <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: highlight } %>
+    <% if match.started? or match.ended? %>
+      <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: highlight } %>
+    <% end %>
     <% highlights.each do |hl| %>
       <tr>
         <td><%= hl.time %></td>
         <td><%= hl.highlight.name %></td>
         <td><%= hl.athlete.name %></td>
-        <td><%= link_to 'Apagar', admin_match_highlight_occurrence_path(match, hl), :method => :delete, :class => 'icon-remove' %></td>
+        <td><%= link_to 'Apagar', admin_match_highlight_occurrence_path(match, hl), :method => :delete %></td>
       </tr>
     <% end if highlights %>
   </tbody>

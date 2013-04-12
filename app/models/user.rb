@@ -40,8 +40,18 @@ class User < ActiveRecord::Base
   before_create :set_default_role
   after_create :send_invitation_email
 
+  ## Public Methods ##
+
   def name
     "#{first_name} #{last_name}".strip.presence || email
+  end
+
+  def name_with_team(match)
+    if match.team_one.has_athlete?(self)
+      "#{name} (#{match.team_one.name})".strip
+    elsif match.team_two.has_athlete?(self)
+      "#{name} (#{match.team_two.name})".strip
+    end
   end
 
   def password_required?
