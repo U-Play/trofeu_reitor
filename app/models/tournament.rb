@@ -48,11 +48,25 @@ class Tournament < ActiveRecord::Base
     return number_games == games_drafted 
   end
 
+  def actual_stage_finished?
+    # we start at 0
+    number_of_stages = self.number_of_stages - 1
+    positions = []
+    position = 0
+    number_of_stages.downto(1) do |i|
+      position += 2 ** i
+      positions << position
+    end
+    games_finished = self.matches.finished.size
+    #Test if the next stage is set
+    return positions.include?(games_finished) && self.matches.find_by_position(games_finished + 1).team_one_id.nil?
+  end
+
   def create_teams
     i = 1
     self.number_of_teams.times do
       self.teams.create name: "Team " << i.to_s 
-      i += 1      
+      i += 1
     end
   end
 
@@ -71,11 +85,30 @@ class Tournament < ActiveRecord::Base
     end
   end
 
+  def update_next_stage
+    number_of_stages = self.number_of_stages - 1
+    games_finished = self.matches.finished.size
+    acc = 0
+    actual_stage = number_of_stages
+    number_of_stages.downto(0) do |i|
+      acc += 2 ** i
+      actual_stage = i - 1
+      break if games_finished == acc
+    end
+    first_game_stage = acc + 1
+    last_game_stage = first_game_stage + (2 ** (actual_stage - 1))
+    acc = 0
+    for position in first_game_stage..last_game_stage
+      first_winner = self.matches.find_by_position(position - (2 ** (actual_stage + 1)) + acc).winner
+      second_winner = self.matches.find_by_position(position - (2 ** (actual_stage + 1)) + acc + 1).winner
+      self.matches.find_by_position(position).update_attributes(:team_one_id => first_winner.id, :team_two_id => second_winner.id)
+      acc += 1
+    end
+  end
+
   def number_of_stages
     for number_of_stages in 0..self.number_of_teams
-      if self.number_of_teams <= 2 ** number_of_stages
-        break
-      end
+      break if self.number_of_teams <= 2 ** number_of_stages
     end
     puts "The number of stages needed are " << number_of_stages.to_s
     number_of_stages

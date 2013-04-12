@@ -91,6 +91,17 @@ ActiveAdmin.register Tournament do
       params[:matches].each do |k,v|
         @tournament.matches.find(k).update_attributes(:team_one_id => v[0], :team_two_id => v[1])
       end
+      if selected_teams.length == @tournament.number_of_teams
+        first_games = (2 ** @tournament.number_of_stages)/2
+        for position in 1..first_games do
+          match = @tournament.matches.find_by_position(position)
+          if match.team_one_id.nil? && !match.team_two_id.nil?
+            match.update_attributes(:winner_id => match.team_two_id)
+          elsif !match.team_one_id.nil? && match.team_two_id.nil?
+            match.update_attributes(:winner_id => match.team_one_id)
+          end
+        end
+      end
       redirect_to admin_tournament_path(@tournament)
     else
       @tournament.errors[:base] << "The same team cannot be selected for two different matches!"
@@ -112,10 +123,12 @@ ActiveAdmin.register Tournament do
   #Action that will update the matches with teams that go to the next stage
   member_action :next_stage, :method => :post do
     @tournament = Tournament.find(params[:id])
+    @tournament.update_next_stage
+    redirect_to admin_tournament_path(@tournament)
   end
 
-  action_item :only => :show do
-    link_to 'Generate Next Stage', :controller => "tournaments", :action => "next_stage", :id => tournament.id
+  action_item :only => :show, :if => proc{ tournament.actual_stage_finished?} do
+    link_to 'Generate Next Stage', {:controller => "tournaments", :action => "next_stage", :id => tournament.id}, :method => :post
   end
 
 end
