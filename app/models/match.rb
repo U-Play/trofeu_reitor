@@ -50,6 +50,10 @@ class Match < ActiveRecord::Base
   validates :tournament_id, :location_id, :format, presence: true
   validate :end_after_started
   validate :start_with_two_teams
+  
+  ## Scopes ##
+
+  scope :finished, lambda { where("winner_id IS NOT NULL")}
 
   ## Public Methods ##
   def athletes

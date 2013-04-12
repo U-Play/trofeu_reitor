@@ -1,7 +1,4 @@
 ActiveAdmin.register Tournament do
-
-  filter :name
-  
   menu :parent => "Administration"
 
   filter :name
@@ -128,4 +125,5 @@ ActiveAdmin.register Tournament do
     @tournament.knockout_stage.update_next_stage
     redirect_to admin_tournament_path(@tournament)
   end
+
 end

@@ -10,7 +10,7 @@ class Tournament < ActiveRecord::Base
   has_one :knockout_stage, :inverse_of => :tournament
 
   has_many :teams, :order => 'id'
-  has_many :matches, :order => 'id'
+  has_many :matches, :order => 'position'
   has_many :groups
   # has_many :news
 
@@ -19,7 +19,6 @@ class Tournament < ActiveRecord::Base
 
   ## Nested Attributes ##
   accepts_nested_attributes_for :group_stage
-  #Check careful this because when we select group_stage, knockout_stage is still created
   accepts_nested_attributes_for :knockout_stage
 
   ## Attributes ##
@@ -38,9 +37,6 @@ class Tournament < ActiveRecord::Base
   before_save :reject_format
   after_create :create_teams
   after_create :elaborate_format
-
-  ## Scopes ##
-
 
   ##Public Methods##
 
@@ -66,7 +62,7 @@ class Tournament < ActiveRecord::Base
       i += 1
     end
   end
-  
+
   def has_group_stage?
     #TODO check a better way to references group stage and multi stage other than the ids
     format_id == 1 or format_id == 3
