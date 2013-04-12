@@ -110,25 +110,25 @@ ActiveAdmin.register Tournament do
     end
   end
 
+  action_item :only => :show, :if => proc{ !tournament.draft_made? } do 
+    link_to 'Manual Draft', :controller => "tournaments", :action => "show_manual_draft", :id => tournament.id
+  end 
+
   #Action to show the page where the admin can do the manual draft
   member_action :show_manual_draft, :method => :get do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
   end
-
-  action_item :only => :show, :if => proc{ !tournament.draft_made? } do 
-    link_to 'Manual Draft', :controller => "tournaments", :action => "show_manual_draft", :id => tournament.id
-  end 
+  
+  action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.actual_stage_finished?} do
+    link_to 'Generate Next Stage', {:controller => "tournaments", :action => "next_stage", :id => tournament.id}, :method => :post
+  end
 
   #Action that will update the matches with teams that go to the next stage
   member_action :next_stage, :method => :post do
     @tournament = Tournament.find(params[:id])
     @tournament.update_next_stage
     redirect_to admin_tournament_path(@tournament)
-  end
-
-  action_item :only => :show, :if => proc{ tournament.actual_stage_finished?} do
-    link_to 'Generate Next Stage', {:controller => "tournaments", :action => "next_stage", :id => tournament.id}, :method => :post
   end
 
 end
