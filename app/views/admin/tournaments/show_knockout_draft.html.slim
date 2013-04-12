@@ -1,7 +1,7 @@
-h2 Manual Draft
+h2 Knockout Draft
 
 - team_position = 1
-= form_tag :controller => "tournaments", :action => "save_draft", :method => "post" do |f|
+= form_tag :controller => "tournaments", :action => "save_knockout_draft", :method => "post" do |f|
   - if @tournament.errors.any?
       - @tournament.errors.full_messages.each do |msg|
         li= msg
