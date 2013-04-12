@@ -23,6 +23,7 @@ class Group < ActiveRecord::Base
   end
 
   ## Private Methods ##
+  protected
   def number_of_teams_cannot_surpass_maximum
     errors.add(:teams, 'cannot surpass the maximum slots per group') if teams.count > max_slots
   end
