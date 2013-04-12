@@ -6,17 +6,9 @@ class Tournament < ActiveRecord::Base
   belongs_to :format
   belongs_to :event
 
-<<<<<<< HEAD
   has_one :group_stage, :inverse_of => :tournament
   has_one :knockout_stage, :inverse_of => :tournament
   has_one :format
-||||||| parent of 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
-  has_one :group_stage
-  has_one :knockout_stage
-=======
-  has_one :group_stage, :inverse_of => :tournament
-  has_one :knockout_stage, :inverse_of => :tournament
->>>>>>> 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
 
   has_many :teams, :order => 'id'
   has_many :matches, :order => 'id'
@@ -44,7 +36,6 @@ class Tournament < ActiveRecord::Base
   ## Callbacks ##
 
   before_validation :set_event
-<<<<<<< HEAD
   before_save :reject_format
 
   ##Public Methods##
@@ -57,54 +48,6 @@ class Tournament < ActiveRecord::Base
       i += 1
     end
   end
-||||||| parent of 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
-=======
-  before_save :reject_format
-
-  ##Public Methods##
-
-  def draft_made?
-    number_games = (2 ** self.number_of_stages)/2
-    games_drafted = 0
-    self.matches.each do |m|
-      games_drafted += 1 unless (m.team_one.nil? && m.team_two.nil?) || m.position > number_games
-    end
-    return number_games == games_drafted 
-  end
-
-  def create_teams
-    i = 1
-    self.number_of_teams.times do
-      self.teams.create name: "Team " << i.to_s 
-      i += 1      
-    end
-  end
-
-  def create_knockout_matches
-    number_of_stages = self.number_of_stages
-    if self.knockout_stage.nil? || !self.knockout_stage.third_place?
-      number_of_games = (2 ** number_of_stages) - 1
-    else
-      number_of_games = 2 ** number_of_stages 
-    end
-    i = 1
-    #Create all Games
-    number_of_games.times do
-      self.matches.create position: i
-      i += 1
-    end
-  end
-
-  def number_of_stages
-    for number_of_stages in 0..self.number_of_teams
-      if self.number_of_teams <= 2 ** number_of_stages
-        break
-      end
-    end
-    puts "The number of stages needed are " << number_of_stages.to_s
-    number_of_stages
-  end
->>>>>>> 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
 
   protected
 
