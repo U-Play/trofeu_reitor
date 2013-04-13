@@ -43,14 +43,14 @@ class Tournament < ActiveRecord::Base
   # According to the format of the tournament, create the necessary games
   def elaborate_format
     #Format: Multi Stage
-    if this.group_stage && this.knockout_stage
+    if self.group_stage && self.knockout_stage
       puts "NOT IMPLEMENTED"
     #Format: Group Stage
-    elsif this.group_stage
+    elsif self.group_stage
       puts "NOT IMPLEMENTED"
     #Format: Knockout Stage
-    elsif this.knockout_stage
-      this.knockout_stage.create_knockout_matches
+    elsif self.knockout_stage
+      self.knockout_stage.create_knockout_matches
     end
   end
 
