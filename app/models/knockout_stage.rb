@@ -8,7 +8,6 @@ class KnockoutStage < ActiveRecord::Base
   attr_accessible :result_homologation, :third_place, :tournament_id
 
   ## Validations ##
-<<<<<<< HEAD
   validates :tournament, presence: true
 
   ## Public Methods ##
@@ -101,10 +100,4 @@ class KnockoutStage < ActiveRecord::Base
       acc += 1
     end
   end
-||||||| parent of 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
-  validates :tournament_id, presence: true
-=======
-  validates :tournament, presence: true
->>>>>>> 6ec98bb... Knockout Draft working; Manual draft for knockout working; missing the draft for the next stage
-
 end
