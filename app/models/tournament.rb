@@ -35,6 +35,8 @@ class Tournament < ActiveRecord::Base
   ## Callbacks ##
   before_validation :set_event
   before_save :reject_format
+  after_create :create_teams
+  after_create :elaborate_format
 
   ##Public Methods##
 

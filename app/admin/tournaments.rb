@@ -1,22 +1,5 @@
 ActiveAdmin.register Tournament do
 
-  controller do
-    
-    def create
-      @tournament = Tournament.new params[:tournament]
-    
-      if @tournament.save
-        #If tournament is successfully saved, it will create the number of teams that are going to participate
-        @tournament.create_teams
-        #Depending on the type of format, it will create the according matches
-        @tournament.elaborate_format
-        redirect_to admin_tournaments_path
-      else
-        render :new
-      end
-    end
-  end
-
   filter :name
 
   index do
