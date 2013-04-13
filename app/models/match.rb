@@ -27,14 +27,29 @@ class Match < ActiveRecord::Base
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   ## Validations ##
-  validates :tournament_id, :location_id, presence: true
+  validates :tournament_id, presence: true 
+  #validates :location_id, presence: true
   validate :start_before_end
+
+  ## Scopes ##
+
+  scope :finished, lambda { where("winner_id IS NOT NULL")}
 
   def start_before_end
     return unless start_date and end_date
     if (start_date > end_date)
       errors.add(:start_date, "needs to be lesser or equal to the end date")
     end
+  end
+
+  def loser
+    match = nil
+    if self.winner_id == self.team_one_id
+      match = self.team_two
+    elsif self.winner_id == self.team_two_id
+      match = self.team_one
+    end
+    return match
   end
 
   ## Public Methods ##
