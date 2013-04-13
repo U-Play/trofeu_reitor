@@ -38,6 +38,20 @@ class Tournament < ActiveRecord::Base
 
   ##Public Methods##
 
+  # According to the format of the tournament, create the necessary games
+  def elaborate_format
+    #Format: Multi Stage
+    if this.group_stage && this.knockout_stage
+      puts "NOT IMPLEMENTED"
+    #Format: Group Stage
+    elsif this.group_stage
+      puts "NOT IMPLEMENTED"
+    #Format: Knockout Stage
+    elsif this.knockout_stage
+      this.knockout_stage.create_knockout_matches
+    end
+  end
+
   #Immediately create the number of teams of a tournament
   def create_teams
     i = 1

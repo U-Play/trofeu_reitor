@@ -9,16 +9,7 @@ ActiveAdmin.register Tournament do
         #If tournament is successfully saved, it will create the number of teams that are going to participate
         @tournament.create_teams
         #Depending on the type of format, it will create the according matches
-        #Format: Mixed Stage
-        if @tournament.group_stage && @tournament.knockout_stage 
-          puts "NOT IMPLEMENTED"
-        #Format: Group Stage
-        elsif @tournament.group_stage
-          puts "NOT IMPLEMENTED"
-        #Format: Knockout Stage
-        elsif @tournament.knockout_stage
-          @tournament.knockout_stage.create_knockout_matches
-        end
+        @tournament.elaborate_format
         redirect_to admin_tournaments_path
       else
         render :new
