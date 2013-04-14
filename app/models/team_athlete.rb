@@ -3,13 +3,13 @@ class TeamAthlete < ActiveRecord::Base
 
   ## Relations ##
   belongs_to :team
-  belongs_to :user
+  belongs_to :athlete, :class_name => "User"
 
   ## Attributes ##
-  attr_accessible :team_id, :user_id, :team, :user
+  attr_accessible :team_id, :athlete_id, :team, :athlete
 
   ## Validations ##
   validates :team, presence: true
-  validates :user, presence: true
+  validates :athlete, presence: true
 
 end

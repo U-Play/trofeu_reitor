@@ -1,11 +1,41 @@
 ActiveAdmin.register Tournament do
 
   filter :name
+  
+  menu :parent => "Administration"
+
+  scope_to :current_user
+
+  # Custom Action Items
+  action_item :only => :show do
+    link_to 'Teams', admin_tournament_teams_path(params[:id])
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    link_to('Groups', admin_tournament_groups_path(tournament.id)) if tournament.has_group_stage?
+  end
+
+  action_item :only => :show do
+    link_to 'Matches', admin_tournament_matches_path(params[:id])
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    #FIXME os seguintes links dao erro
+    link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
+  end
+
+  action_item :only => :show do
+    tournament = Tournament.find(params[:id])
+    #FIXME os seguintes links dao erro
+    link_to('Knockout Stage Configuration', admin_tournament_knockout_stages_path(tournament.id)) if tournament.has_knockout_stage?
+  end
 
   index do
     column :name
     column :number_of_teams
-    column(:format) { |t| link_to t.format.name, admin_team_path(t.format) if t.format }
+    column(:format) { |t| link_to t.format.name, admin_tournament_format_path(t.format) if t.format }
     column :start_date
     column :end_date
     default_actions
@@ -13,8 +43,12 @@ ActiveAdmin.register Tournament do
 
   show do
     attributes_table do
-      row :sport
       row :name
+      row :sport
+      row :event
+      row :format
+      row :description
+      row :rules
       row :start_date
       row :end_date
     end
@@ -94,5 +128,4 @@ ActiveAdmin.register Tournament do
     @tournament.knockout_stage.update_next_stage
     redirect_to admin_tournament_path(@tournament)
   end
-
 end

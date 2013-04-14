@@ -1,6 +1,4 @@
 class MatchReferee < ActiveRecord::Base
-  include ParanoiaInterface
-
   ## Relations ##
   belongs_to :match
   belongs_to :referee, :class_name => "User"

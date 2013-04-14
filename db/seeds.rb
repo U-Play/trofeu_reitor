@@ -58,3 +58,28 @@ Format.find_or_initialize_by_name('Multi Stage').tap do |group|
   group.description = "Many tournaments are held in multiple stages, with the top teams in one stage progressing to the next."
   group.save!
 end
+
+puts 'creating default sports'
+futsal = 'Futsal'
+sports = [{name: futsal, description: ''}]
+
+sports.each do |attr|
+  Sport.find_or_initialize_by_name(attr[:name]).tap do |sport|
+    sport.description = attr[:description]
+    sport.save!
+  end
+end
+
+puts 'creating default highlights'
+highlights = [ 
+  { name: 'Goal', description: '', sport_id: Sport.find_by_name(futsal).id },
+  { name: 'Card', description: '', sport_id: Sport.find_by_name(futsal).id }
+]
+
+highlights.each do |attr|
+  Highlight.find_or_initialize_by_name(attr[:name]).tap do |highlight|
+    highlight.description = attr[:description]
+    highlight.sport_id = attr[:sport_id]
+    highlight.save!
+  end
+end

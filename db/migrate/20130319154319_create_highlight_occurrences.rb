@@ -2,7 +2,7 @@ class CreateHighlightOccurrences < ActiveRecord::Migration
   def change
     create_table :highlight_occurrences do |t|
       t.integer :total
-      t.string :time
+      t.integer :time
       t.datetime :deleted_at
       t.references :highlight
       t.references :match

@@ -1,0 +1,19 @@
+<tr>
+  <%= form_for highlight, :url => admin_match_highlight_occurrences_path(match, highlight), :method => :post do |f| %>
+    <td>
+      <%= f.number_field :time, value: 0, :min => 0 %>
+    </td>
+
+    <td>
+      <%= f.collection_select :highlight_id, Highlight.find_all_by_sport_id(match.tournament.sport.id), :id, :name %>
+    </td>
+
+    <td>
+      <%= f.select :athlete_id, match.athletes.map{ |ath| [ath.name_with_team(match), ath.id] } %>
+    </td>
+
+    <td>
+      <%= f.submit 'Add' %>
+    </td>
+  <% end if highlight && match %>
+</tr>

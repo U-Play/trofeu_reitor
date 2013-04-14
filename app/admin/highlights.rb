@@ -1,4 +1,9 @@
 ActiveAdmin.register Highlight do
+  menu false
+
+  # Is nested resource of
+  belongs_to :sport
+
   index do
     column(:name)
     column(:description)
