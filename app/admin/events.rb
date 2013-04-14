@@ -1,4 +1,8 @@
 ActiveAdmin.register Event do
+  menu false
+
+  scope_to :current_user
+
   index do
     column(:name)     { |event| link_to event.name, admin_event_path(event) }
     column(:user_id) { |event| link_to event.user.name, admin_user_path(event.user) }
@@ -25,11 +29,10 @@ ActiveAdmin.register Event do
       row(:user) { link_to event.user.name, admin_user_path(event.user) }
     end
     panel "Tournaments" do
-      table_for event.tournaments
-      # do |t|
-      #   t.column("name") { |event| link_to event.name, admin_event_path(event) }
-      #   t.column("Description") { |event| event.description }
-      # end
+      table_for event.tournaments do |t|
+        t.column(:name) { |tournament| link_to tournament.name, admin_tournament_path(tournament) }
+        t.column(:description) { |tournament| tournament.description }
+      end
     end
   end
 

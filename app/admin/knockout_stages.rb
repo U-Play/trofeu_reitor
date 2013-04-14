@@ -1,4 +1,9 @@
 ActiveAdmin.register KnockoutStage do
+  menu false
+
+  # Is nested resource of
+  belongs_to :tournament
+
   index do
     column(:tournament) { |ks| link_to ks.tournament.name, admin_tournament_path(ks.tournament) }
     column(:result_homologation)

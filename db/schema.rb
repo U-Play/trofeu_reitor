@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320234352) do
+ActiveRecord::Schema.define(:version => 20130409154245) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date     "start_date"
+    t.date     "end_date"
     t.datetime "deleted_at"
     t.integer  "user_id"
     t.datetime "created_at",  :null => false
@@ -62,8 +62,17 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
 
   add_index "group_stages", ["tournament_id"], :name => "index_group_stages_on_tournament_id"
 
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.integer  "tournament_id"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
+
   create_table "highlight_occurrences", :force => true do |t|
-    t.integer  "total"
     t.string   "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
@@ -118,20 +127,24 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   add_index "match_referees", ["referee_id"], :name => "index_match_referees_on_referee_id"
 
   create_table "matches", :force => true do |t|
-    t.string   "group"
     t.integer  "position"
-    t.datetime "start_date"
-    t.datetime "end_date"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
     t.integer  "location_id"
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "format_id"
+    t.datetime "start_datetime"
+    t.string   "result_team_one"
+    t.string   "result_team_two"
+    t.boolean  "started"
+    t.boolean  "ended"
   end
 
+  add_index "matches", ["format_id"], :name => "index_matches_on_format_id"
   add_index "matches", ["location_id"], :name => "index_matches_on_location_id"
   add_index "matches", ["team_one_id"], :name => "index_matches_on_team_one_id"
   add_index "matches", ["team_two_id"], :name => "index_matches_on_team_two_id"
@@ -181,42 +194,44 @@ ActiveRecord::Schema.define(:version => 20130320234352) do
   create_table "sports", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.text     "description"
   end
 
   create_table "team_athletes", :force => true do |t|
     t.datetime "deleted_at"
     t.integer  "team_id"
-    t.integer  "user_id"
+    t.integer  "athlete_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "team_athletes", ["athlete_id"], :name => "index_team_athletes_on_user_id"
   add_index "team_athletes", ["team_id"], :name => "index_team_athletes_on_team_id"
-  add_index "team_athletes", ["user_id"], :name => "index_team_athletes_on_user_id"
 
   create_table "team_referees", :force => true do |t|
     t.datetime "deleted_at"
     t.integer  "team_id"
-    t.integer  "user_id"
+    t.integer  "referee_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
+  add_index "team_referees", ["referee_id"], :name => "index_team_referees_on_user_id"
   add_index "team_referees", ["team_id"], :name => "index_team_referees_on_team_id"
-  add_index "team_referees", ["user_id"], :name => "index_team_referees_on_user_id"
 
   create_table "teams", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
-    t.integer  "coach_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "group_id"
+    t.integer  "manager_id"
   end
 
-  add_index "teams", ["coach_id"], :name => "index_teams_on_coach_id"
+  add_index "teams", ["manager_id"], :name => "index_teams_on_manager_id"
   add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
 
   create_table "tournaments", :force => true do |t|
