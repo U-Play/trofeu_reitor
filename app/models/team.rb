@@ -50,8 +50,8 @@ class Team < ActiveRecord::Base
 
     def set_manager
       return if self.manager
-      manager = User.find_or_create_by_email(@manager_email)
+      manager = User.find_or_invite_by_email(@manager_email)
       self.save!
-      manager.promote_to_manager
+      manager.promote_to_manager(self)
     end
 end

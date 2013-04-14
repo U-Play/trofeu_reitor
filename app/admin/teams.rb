@@ -1,5 +1,5 @@
 ActiveAdmin.register Team do
-  menu false
+  # menu :parent => "Administration"
 
   # Is nested resource of
   belongs_to :tournament

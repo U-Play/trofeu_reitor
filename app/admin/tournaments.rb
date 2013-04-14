@@ -1,8 +1,6 @@
 ActiveAdmin.register Tournament do
   menu :parent => "Administration"
 
-  scope_to :current_user
-
   filter :name
 
   # Custom Action Items
@@ -51,7 +49,6 @@ ActiveAdmin.register Tournament do
     end
   end
 
-
   form do |f|
     f.inputs "Required Fields" do
       f.input :sport
@@ -64,7 +61,5 @@ ActiveAdmin.register Tournament do
     end
     f.actions
   end
-
-  filter :name
 
 end
