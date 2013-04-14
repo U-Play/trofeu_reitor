@@ -1,12 +1,13 @@
 FactoryGirl.define do
 
   factory :user do
-    first_name 'FirstName'
-    last_name  'LastName'
+    sequence(:first_name) { |n| "FirstName#{n}" }
+    sequence(:last_name) { |n| "LastName#{n}" }
     sequence(:email) { |n| "someweirdunrepeatableemail#{n}@yourcousin.com" }
     sequence(:password) { |n| "bigpassword#{n}" }
     sequence(:password_confirmation) { |n| "bigpassword#{n}" }
     confirmed_at { Time.now }
+    association :role
   end
 end
 

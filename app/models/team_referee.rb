@@ -3,13 +3,13 @@ class TeamReferee < ActiveRecord::Base
 
   ## Relations ##
   belongs_to :team
-  belongs_to :user
+  belongs_to :referee, :class_name => "User"
 
   ## Attributes ##
-  attr_accessible :team, :user
+  attr_accessible :team, :referee, :team_id, :referee_id
 
   ## Validations ##
   validates :team, presence: true
-  validates :user, presence: true
+  validates :referee, presence: true
 
 end

@@ -1,4 +1,6 @@
 ActiveAdmin.register Location do
+  menu :parent => "Administration"
+
   index do
     column(:city)
 
@@ -20,11 +22,17 @@ ActiveAdmin.register Location do
     end
     panel "Matches" do
       table_for location.matches do 
-        column(:id)  { |m| link_to m.id, admin_match_path(m) }
-        column(:start_date)
-        column(:end_date)
-        column(:team_one) { |m| link_to m.team_one.name, admin_team_path(m.team_one) if m.team_one }
-        column(:team_two) { |m| link_to m.team_two.name, admin_team_path(m.team_two) if m.team_two }
+        column(:id)  { |m| link_to m.id, admin_tournament_match_path(m.tournament, m) }
+        column("Status") do |m| 
+          status_tag(
+            ( ( m.started? && 'Started' ) || ( m.pending? && 'Pending' )  || ( m.ended? && 'Ended' ) ), 
+            ( ( m.started? && :error )    || ( m.pending? && :warning )   || ( m.ended? && :ok ) ) 
+          )
+        end
+        column(:start_datetime)
+        column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+        column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+        column(:result)
       end
     end
   end

@@ -24,8 +24,8 @@ class Event < ActiveRecord::Base
   end
 
   ## Scopes ##
-  scope :on_going,  -> { where('start_date <= ? and end_date >= ?', Time.now, Time.now) }
-  scope :coming,    -> { where('start_date > ?', Time.now) }
-  scope :past,      -> { where('end_date < ?', Time.now) }
+  scope :on_going,  -> { where('start_date <= ? and end_date >= ?', Date.today, Date.today) }
+  scope :coming,    -> { where('start_date > ?', Date.today) }
+  scope :past,      -> { where('end_date < ?', Date.today) }
 
 end
