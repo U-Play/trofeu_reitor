@@ -232,7 +232,7 @@ ActiveRecord::Schema.define(:version => 20130414231539) do
     t.integer  "group_id"
   end
 
-  add_index "teams", ["manager_id"], :name => "index_teams_on_manager_id"
+  add_index "teams", ["manager_id"], :name => "index_teams_on_coach_id"
   add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
 
   create_table "tournaments", :force => true do |t|

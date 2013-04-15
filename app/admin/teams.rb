@@ -79,22 +79,17 @@ ActiveAdmin.register Team do
       f.input :name, required: true
       f.input :manager_email, as: :email, required: true
     end
+
     f.inputs "Athletes" do
       f.has_many :team_athletes do |mr|
-        mr.input :athlete
-
-        # if mr.object.persisted?
-          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
-        # end
+        mr.input :athlete_email, as: :email, required: true
+        mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
       end
     end
     f.inputs "Referees" do
       f.has_many :team_referees do |mr|
-        mr.input :referee
-
-        # if mr.object.persisted?
-          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
-        # end
+        mr.input :referee_email, as: :email, required: true
+        mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
       end
     end
     f.actions

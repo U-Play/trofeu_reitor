@@ -24,17 +24,17 @@ class Team < ActiveRecord::Base
   attr_accessible :deleted_at, :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
   :team_referees_attributes
 
+  ## Callbacks ##
   after_create :set_manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
+  #accepts_nested_attributes_for :athletes
   accepts_nested_attributes_for :team_referees, :allow_destroy => true
 
   ## Validations ##
   validates :name, :tournament_id, presence: true
 
-  ## Callbacks ##
-  # after_save :set_manager
 
   ## Public Methods ##
   def matches
