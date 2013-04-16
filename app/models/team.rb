@@ -54,6 +54,7 @@ class Team < ActiveRecord::Base
       manager = User.find_or_invite_by_email(@manager_email)
       @manager_email = nil
       manager.promote_to_manager(self)
+      self.update_attributes manager_id: manager.id
       self.save!
     end
 end
