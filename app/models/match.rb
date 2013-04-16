@@ -40,6 +40,7 @@ class Match < ActiveRecord::Base
   ## Scopes ##
 
   scope :finished, lambda { where("winner_id IS NOT NULL")}
+  scope :stage, lambda { |stage| where(knockout_index: stage) }
 
   ## Public Methods ##
   def athletes
