@@ -1,3 +1,6 @@
+require 'resque/server'
+
+
 Uplay::Application.routes.draw do
 
   root to: 'static_pages#home'
@@ -15,4 +18,10 @@ Uplay::Application.routes.draw do
   end
 
   ActiveAdmin.routes(self)
+  # devise_for :admins, ActiveAdmin::Devise.config.merge(class_name: 'User')
+
+  match 'credentials/:id' => 'credentials#print', :via => :get
+
+	mount Resque::Server.new, at: "/resque"
+
 end

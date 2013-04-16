@@ -21,6 +21,9 @@ gem 'roadie' # action_mailer css inliner
 gem 'rvm-capistrano'
 gem 'slim'
 gem 'state_machine'
+gem "just-datetime-picker"
+gem 'wicked_pdf'
+gem "resque"
 
 group :development do
   gem 'better_errors'
