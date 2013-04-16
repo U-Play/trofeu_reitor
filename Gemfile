@@ -13,6 +13,7 @@ gem 'meta_search'
 gem 'paperclip'
 gem 'pg'
 gem 'slim'
+gem 'state_machine'
 gem "paranoia"
 gem "paranoia_uniqueness_validator"
 gem "just-datetime-picker"

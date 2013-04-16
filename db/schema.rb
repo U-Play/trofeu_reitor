@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416103833) do
+ActiveRecord::Schema.define(:version => 20130416135157) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -292,6 +292,7 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "validation_state"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -42,6 +42,28 @@ class User < ActiveRecord::Base
   before_create :set_default_role
   # after_create :send_invitation_email
 
+  state_machine :validation_state, initial: :unprocessed do
+    # unprocessed
+    # requested
+    # validated
+    event(:validate) { transition [:unprocessed, :requested] => :validated }
+    event(:request_validation) { transition :unprocessed => :requested }
+    event(:invalidate) { transition :unprocessed => same, :requested => :unprocessed }
+
+    after_transition any => :requested do |user, transition|
+      AdminMailer.validation_requested_email(user).deliver
+    end
+
+    after_transition any => :validated do |user, transition|
+      UserMailer.validated_email(user).deliver
+    end
+
+    after_transition any => :unprocessed do |user, transition|
+      UserMailer.invalidated_email(user).deliver
+    end
+  end
+
+
   def name
     "#{first_name} #{last_name}".strip.presence || email
   end
