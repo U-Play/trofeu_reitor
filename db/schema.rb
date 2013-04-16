@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130402141623) do
+ActiveRecord::Schema.define(:version => 20130416103833) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -128,8 +128,9 @@ ActiveRecord::Schema.define(:version => 20130402141623) do
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "knockout_index"
   end
 
   add_index "matches", ["location_id"], :name => "index_matches_on_location_id"

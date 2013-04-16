@@ -57,17 +57,15 @@ ActiveAdmin.register Tournament do
   member_action :save_knockout_draft, :method => :post do
     selected_teams = []
     @tournament = Tournament.find(params[:id])
-    params[:matches].each do |k,v|
-      selected_teams << v[0] if !v[0].blank?
-      selected_teams << v[1] if !v[1].blank?
+    params[:matches].each do |match,teams|
+      selected_teams << teams[0] if !teams[0].blank?
+      selected_teams << teams[1] if !teams[1].blank?
     end
     if selected_teams.uniq.length == selected_teams.length
-      params[:matches].each do |k,v|
-        @tournament.matches.find(k).update_attributes(:team_one_id => v[0], :team_two_id => v[1])
+      params[:matches].each do |match,teams|
+        @tournament.matches.find(match).update_attributes(:team_one_id => teams[0], :team_two_id => teams[1])
       end
-      if selected_teams.length == @tournament.number_of_teams
-        @tournament.knockout_stage.set_exempt_winners
-      end
+      @tournament.knockout_stage.set_exempt_winners if selected_teams.length == @tournament.number_of_teams
       redirect_to admin_tournament_path(@tournament)
     else
       @tournament.errors[:base] << "The same team cannot be selected for two different matches!"
