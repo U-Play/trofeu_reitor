@@ -24,16 +24,23 @@ class Match < ActiveRecord::Base
   ## Attributes ##
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
   :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id, :result_team_one,
-  :result_team_two, :started, :ended
+  :result_team_two, :started, :ended, :knockout_index
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
   just_define_datetime_picker :start_datetime, :add_to_attr_accessible => true
 
   ## Validations ##
-  validates :tournament_id, :location_id, :format, presence: true
+  validates :tournament, presence: true 
+  #validates :location_id, presence: true
+  validates :format, presence: true
   validate :end_after_started
   validate :start_with_two_teams
+  
+  ## Scopes ##
+
+  scope :finished, lambda { where("winner_id IS NOT NULL")}
+  scope :stage, lambda { |stage| where(knockout_index: stage) }
 
   ## Public Methods ##
   def athletes
@@ -54,6 +61,16 @@ class Match < ActiveRecord::Base
 
   def ended?
     started && ended
+  end
+  
+  def loser
+    match = nil
+    if self.winner_id == self.team_one_id
+      match = self.team_two
+    elsif self.winner_id == self.team_two_id
+      match = self.team_one
+    end
+    return match
   end
 
   def self.find_all_by_team(team)
@@ -91,11 +108,11 @@ class Match < ActiveRecord::Base
   ## Protected Methods ##
   protected
 
-  def end_after_started 
-    errors.add(:ended, "match has to start before ending") if (!started && ended)
-  end
+    def end_after_started 
+      errors.add(:ended, "match has to start before ending") if (!started && ended)
+    end
 
-  def start_with_two_teams
-    errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
-  end
+    def start_with_two_teams
+      errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
+    end
 end

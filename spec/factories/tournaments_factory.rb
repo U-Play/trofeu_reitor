@@ -5,6 +5,7 @@ FactoryGirl.define do
     sequence(:description) { |n| "Great tournament#{n}" }
     start_date Time.now
     end_date Time.now
+    number_of_teams 12
     association :sport
     association :format
     association :event#, :start_date => Time.now

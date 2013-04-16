@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130414231539) do
+||||||| merged common ancestors
+ActiveRecord::Schema.define(:version => 20130320234352) do
+=======
+ActiveRecord::Schema.define(:version => 20130416103833) do
+>>>>>>> cp/generate_knockout_stage
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,7 +79,14 @@ ActiveRecord::Schema.define(:version => 20130414231539) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
+<<<<<<< HEAD
     t.integer  "time"
+||||||| merged common ancestors
+    t.integer  "total"
+    t.string   "time"
+=======
+    t.string   "time"
+>>>>>>> cp/generate_knockout_stage
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
@@ -142,6 +155,7 @@ ActiveRecord::Schema.define(:version => 20130414231539) do
     t.string   "result_team_two"
     t.boolean  "started"
     t.boolean  "ended"
+    t.integer  "knockout_index"
   end
 
   add_index "matches", ["format_id"], :name => "index_matches_on_format_id"
@@ -246,8 +260,9 @@ ActiveRecord::Schema.define(:version => 20130414231539) do
     t.integer  "sport_id"
     t.integer  "format_id"
     t.integer  "event_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "number_of_teams"
   end
 
   add_index "tournaments", ["event_id"], :name => "index_tournaments_on_event_id"
