@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   include ParanoiaInterface
 
   devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable, :confirmable, :invitable
+    :recoverable, :rememberable, :trackable, :validatable, :invitable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :first_name, :last_name, :username, :course, :student_nmdevisuber, :sports_number, :picture, :role_id

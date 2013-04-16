@@ -25,7 +25,7 @@ class Team < ActiveRecord::Base
   :team_referees_attributes
 
   ## Callbacks ##
-  after_create :set_manager
+  after_update :set_manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
@@ -49,9 +49,11 @@ class Team < ActiveRecord::Base
   protected
 
     def set_manager
-      return if self.manager
+      return if @manager_email.nil? || (self.manager && self.manager.email == @manager_email)
+
       manager = User.find_or_invite_by_email(@manager_email)
-      self.save!
+      @manager_email = nil
       manager.promote_to_manager(self)
+      self.save!
     end
 end
