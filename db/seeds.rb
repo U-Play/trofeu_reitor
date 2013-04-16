@@ -68,7 +68,13 @@ end
 
 puts 'creating default sports'
 futsal = 'Futsal'
-sports = [{name: futsal, description: ''}]
+basket = 'Basketball'
+hand   = 'Handball'
+sports = [
+  {name: futsal, description: ''},
+  {name: basket, description: ''},
+  {name: hand  , description: ''},
+]
 
 sports.each do |attr|
   Sport.find_or_initialize_by_name(attr[:name]).tap do |sport|
@@ -78,9 +84,32 @@ sports.each do |attr|
 end
 
 puts 'creating default highlights'
-highlights = [
-  { name: 'Goal', description: '', sport_id: Sport.find_by_name(futsal).id },
-  { name: 'Card', description: '', sport_id: Sport.find_by_name(futsal).id }
+futsal_id = Sport.find_by_name(futsal).id
+basket_id = Sport.find_by_name(basket).id
+hand_id   = Sport.find_by_name(hand).id
+highlights = [ 
+  # futsal
+  { name: 'Goal'        , description: '', sport_id: futsal_id },
+  { name: 'Yellow Card' , description: '', sport_id: futsal_id },
+  { name: 'Red Card'    , description: '', sport_id: futsal_id },
+  { name: 'Foul'        , description: '', sport_id: futsal_id },
+  # basket
+  { name: 'Foul 1st Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 2nd Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 3rd Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 4th Period' , description: '', sport_id: basket_id },
+  { name: 'One Point'       , description: '', sport_id: basket_id },
+  { name: 'Two Points'      , description: '', sport_id: basket_id },
+  { name: 'Three Points'    , description: '', sport_id: basket_id },
+  # handball
+  { name: 'Goal' , description: ''                           , sport_id: hand_id },
+  { name: 'A'    , description: 'Yellow Card Warning'        , sport_id: hand_id },
+  { name: "2'"   , description: ''                           , sport_id: hand_id },
+  { name: 'D/E'  , description: 'Desqualification/Expulsion' , sport_id: hand_id },
+  # { name: 'D'    , description: 'Red Card Desqualification: can be substituted after 2 minutes', sport_id: hand_id },
+  # { name: 'E'    , description: 'Expulsion: can\'t be substituted'                             , sport_id: hand_id },
+  { name: 'TP'   , description: 'Penalização adicional a um jogador que incorre numa conduta
+                                  antidesportiva após sofrer desqualificação direta ou por acumulação.', sport_id: hand_id }
 ]
 
 highlights.each do |attr|
