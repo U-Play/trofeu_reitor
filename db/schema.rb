@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-    t.integer  "time"
+    t.string   "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
@@ -134,15 +134,15 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "knockout_index"
     t.integer  "format_id"
     t.datetime "start_datetime"
     t.string   "result_team_one"
     t.string   "result_team_two"
     t.boolean  "started"
     t.boolean  "ended"
-    t.integer  "knockout_index"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "matches", ["format_id"], :name => "index_matches_on_format_id"

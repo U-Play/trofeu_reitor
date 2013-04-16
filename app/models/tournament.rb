@@ -38,9 +38,6 @@ class Tournament < ActiveRecord::Base
   after_create :create_teams
   after_create :elaborate_format
 
-  ## Scopes ##
-
-
   ##Public Methods##
 
   # According to the format of the tournament, create the necessary games

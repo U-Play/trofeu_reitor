@@ -102,7 +102,7 @@ ActiveAdmin.register Match do
 
   form do |f|
     f.inputs "Match Details" do
-      f.input :location, :required => true
+      f.input :location
       #TODO mudar o conteudo do format para algo mais bem feito
       f.input :format, :required => true, :collection => Format.where(:id => [1,2])
       f.input :winner
