@@ -80,15 +80,15 @@ class Tournament < ActiveRecord::Base
 
   protected
 
-  def set_event
-    self.event ||= Event.first
-  end
-
-  def reject_format
-    if self.format_id == 1
-      self.knockout_stage = nil
-    elsif self.format_id == 2
-      self.group_stage = nil
+    def set_event
+      self.event ||= Event.first
     end
-  end
+
+    def reject_format
+      if self.format_id == 1
+        self.knockout_stage = nil
+      elsif self.format_id == 2
+        self.group_stage = nil
+      end
+    end
 end

@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-    t.string   "time"
+    t.integer  "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
@@ -196,8 +196,9 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
   add_index "penalties", ["team_id"], :name => "index_penalties_on_team_id"
 
   create_table "roles", :force => true do |t|
-    t.string "name", :null => false
-    t.string "desc"
+    t.string   "name",       :null => false
+    t.string   "desc"
+    t.datetime "deleted_at"
   end
 
   create_table "sports", :force => true do |t|
@@ -234,13 +235,13 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.string   "name"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
+    t.integer  "manager_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "group_id"
-    t.integer  "manager_id"
   end
 
-  add_index "teams", ["manager_id"], :name => "index_teams_on_manager_id"
+  add_index "teams", ["manager_id"], :name => "index_teams_on_coach_id"
   add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
 
   create_table "tournaments", :force => true do |t|
@@ -248,8 +249,8 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.text     "description"
     t.text     "rules"
     t.string   "contacts"
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date     "start_date"
+    t.date     "end_date"
     t.datetime "deleted_at"
     t.integer  "sport_id"
     t.integer  "format_id"
@@ -264,12 +265,12 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
   add_index "tournaments", ["sport_id"], :name => "index_tournaments_on_sport_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                                :default => "", :null => false
+    t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                        :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -278,8 +279,8 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "username"
@@ -291,6 +292,13 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "role_id"
+    t.datetime "deleted_at"
+    t.string   "invitation_token",       :limit => 60
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit"
+    t.integer  "invited_by_id"
+    t.string   "invited_by_type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -1,8 +1,10 @@
 ActiveAdmin.register Team do
-  menu false
+  # menu :parent => "Administration"
 
   # Is nested resource of
   belongs_to :tournament
+
+  filter :name
 
   controller do
     def scoped_collection
@@ -34,24 +36,24 @@ ActiveAdmin.register Team do
       row :manager
     end
     panel "Athletes" do
-      table_for team.athletes do 
+      table_for team.athletes do
         column(:name)  { |a| link_to a.name, admin_user_path(a) }
       end
     end
     panel "Referees" do
-      table_for team.referees do 
+      table_for team.referees do
         column(:name)  { |r| link_to r.name, admin_user_path(r) }
       end
     end
     panel "Penalties" do
-      table_for team.penalties do 
+      table_for team.penalties do
         column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
         column(:start_date)
         column(:end_date)
       end
     end
     panel "Matches" do
-      table_for team.matches do 
+      table_for team.matches do
         column(:id)  { |m| link_to m.id, admin_tournament_match_path(m.tournament, m) }
         column("Status") { |m| status_tag m.status, m.status_type }
         column(:start_datetime)
@@ -77,27 +79,20 @@ ActiveAdmin.register Team do
       f.input :name, required: true
       f.input :manager_email, as: :email, required: true
     end
+
     f.inputs "Athletes" do
       f.has_many :team_athletes do |mr|
-        mr.input :athlete
-
-        # if mr.object.persisted?
-          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
-        # end
+        mr.input :athlete_email, as: :email, required: true
+        mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
       end
     end
     f.inputs "Referees" do
       f.has_many :team_referees do |mr|
-        mr.input :referee
-
-        # if mr.object.persisted?
-          mr.input :_destroy, :as => :boolean, :label => "Destroy?"
-        # end
+        mr.input :referee_email, as: :email, required: true
+        mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
       end
     end
     f.actions
   end
-
-  filter :name
 
 end

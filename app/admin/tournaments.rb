@@ -4,7 +4,7 @@ ActiveAdmin.register Tournament do
   
   menu :parent => "Administration"
 
-  scope_to :current_user
+  filter :name
 
   # Custom Action Items
   action_item :only => :show do

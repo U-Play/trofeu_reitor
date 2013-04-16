@@ -3,12 +3,13 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.12'
 
 gem 'activeadmin'
-gem 'inherited_resources'
 gem 'activerecord-postgres-hstore'
 gem 'cancan'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'devise_invitable'
+gem 'inherited_resources'
+gem 'meta_search'
 gem 'paperclip'
 gem 'pg'
 gem 'slim'
@@ -20,6 +21,7 @@ group :development do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'meta_request'
 end
 
 group :test do
