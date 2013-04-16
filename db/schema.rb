@@ -11,13 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130414231539) do
-||||||| merged common ancestors
-ActiveRecord::Schema.define(:version => 20130320234352) do
-=======
 ActiveRecord::Schema.define(:version => 20130416103833) do
->>>>>>> cp/generate_knockout_stage
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -79,14 +73,8 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-<<<<<<< HEAD
-    t.integer  "time"
-||||||| merged common ancestors
     t.integer  "total"
     t.string   "time"
-=======
-    t.string   "time"
->>>>>>> cp/generate_knockout_stage
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
