@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin_user!
     authorize! :access, :admin
-    authenticate_user!
   end
 
   rescue_from CanCan::AccessDenied do |exception|

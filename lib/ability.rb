@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    send user.role.name unless user.nil?
+    send user.role.name unless user.nil? || user.role.nil?
   end
 
   def root
@@ -24,6 +24,7 @@ class Ability
 
   def manager
     athlete
+    can :access, :admin
   end
 
   def athlete

@@ -21,19 +21,20 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :referee
 
   ## Attributes ##
-  attr_accessible :deleted_at, :name, :tournament_id, :manager_email, :team_athletes_attributes,
+  attr_accessible :deleted_at, :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
   :team_referees_attributes
 
+  ## Callbacks ##
+  after_update :set_manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
+  #accepts_nested_attributes_for :athletes
   accepts_nested_attributes_for :team_referees, :allow_destroy => true
 
   ## Validations ##
   validates :name, :tournament_id, presence: true
 
-  ## Callbacks ##
-  # after_save :set_manager
 
   ## Public Methods ##
   def matches
@@ -47,10 +48,13 @@ class Team < ActiveRecord::Base
   ## Private Methods ##
   protected
 
-  def set_manager
-    return if self.manager
-    manager = User.find_or_create_by_email(@manager_email)
-    self.save!
-    manager.promote_to_manager
-  end
+    def set_manager
+      return if @manager_email.nil? || (self.manager && self.manager.email == @manager_email)
+
+      manager = User.find_or_invite_by_email(@manager_email)
+      @manager_email = nil
+      manager.promote_to_manager(self)
+      self.update_attributes manager_id: manager.id
+      self.save!
+    end
 end

@@ -1,9 +1,10 @@
 ActiveAdmin.register Sport do
   menu :parent => "Administration"
 
+  filter :name
+
   index do
     column(:name) { |sport| link_to sport.name, admin_sport_path(sport) }
-
     default_actions
   end
 
@@ -50,8 +51,5 @@ ActiveAdmin.register Sport do
       end
     end
   end
-
-  # Filter only by name
-  filter :name
 
 end
