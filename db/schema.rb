@@ -134,14 +134,6 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-<<<<<<< HEAD
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-    t.integer  "knockout_index"
-||||||| merged common ancestors
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-=======
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "format_id"
@@ -150,7 +142,7 @@ ActiveRecord::Schema.define(:version => 20130416103833) do
     t.string   "result_team_two"
     t.boolean  "started"
     t.boolean  "ended"
->>>>>>> merged from ba/tournament_crud
+    t.integer  "knockout_index"
   end
 
   add_index "matches", ["format_id"], :name => "index_matches_on_format_id"
