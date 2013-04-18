@@ -7,9 +7,21 @@ ActiveAdmin.register User do
   filter :student_number
   filter :sports_number
 
+  action_item :only => :show, if: proc{ user.can_validate? } do
+    link_to 'Validate', validate_admin_user_path(user)
+    #link_to admin_validate_user_path
+    #tournament = Tournament.find(params[:id])
+    #FIXME os seguintes links dao erro
+    #link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
+
+  end
+
   controller do
     def scoped_collection
       end_of_association_chain.includes(:role)
+    end
+
+    def validate
     end
   end
 
