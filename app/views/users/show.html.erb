@@ -1,0 +1,40 @@
+<% title "User" %>
+
+<%= image_tag @user.picture.url %>
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+<p>
+  <strong>Course:</strong>
+  <%= @user.course %>
+</p>
+<p>
+  <strong>Student Number:</strong>
+  <%= @user.student_number %>
+</p>
+<p>
+  <strong>Sports Number:</strong>
+  <%= @user.sports_number %>
+</p>
+<p>
+  <strong>Picture File Name:</strong>
+  <%= @user.picture_file_name %>
+</p>
+<p>
+  <strong>Validation State:</strong>
+  <%= @user.validation_state %>
+</p>
+
+<% if can? :manage, @user %>
+  <p>
+    <%= link_to "Edit", edit_user_path(@user) %> |
+    <% if can? :request_validation, @user %>
+      <%= button_to "Request Validation", user_request_validation_path(@user) %>
+    <% end %>
+  </p>
+<% end %>

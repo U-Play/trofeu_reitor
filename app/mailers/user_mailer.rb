@@ -22,6 +22,6 @@ class UserMailer < ActionMailer::Base
 
     def send_mail(user, subject)
       @user = user
-      mail to: email, subject: subject
+      mail to: @user.email, subject: subject
     end
 end

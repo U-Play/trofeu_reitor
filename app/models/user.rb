@@ -4,8 +4,18 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :invitable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :username, :course, :student_nmdevisuber, :sports_number, :picture, :role_id
+  attr_accessible :email,
+                  :password,
+                  :password_confirmation,
+                  :remember_me,
+                  :first_name,
+                  :last_name,
+                  :username,
+                  :course,
+                  :student_number,
+                  :sports_number,
+                  :picture,
+                  :role_id
 
   has_attached_file :picture
                     # TODO check this configs when possible
@@ -42,13 +52,13 @@ class User < ActiveRecord::Base
   before_create :set_default_role
   # after_create :send_invitation_email
 
-  state_machine :validation_state, initial: :unprocessed do
-    # unprocessed
-    # requested
+  state_machine :validation_state, initial: :validation_unprocessed do
+    # validation_unprocessed
+    # validation_requested
     # validated
-    event(:validate) { transition [:unprocessed, :requested] => :validated }
-    event(:request_validation) { transition :unprocessed => :requested }
-    event(:invalidate) { transition :unprocessed => same, :requested => :unprocessed }
+    event(:validate) { transition [:validation_unprocessed, :validation_requested] => :validated }
+    event(:request_validation) { transition :validation_unprocessed => :validation_requested }
+    event(:invalidate) { transition :validation_unprocessed => same, :validation_requested => :validation_unprocessed }
 
     after_transition any => :requested do |user, transition|
       AdminMailer.validation_requested_email(user).deliver
@@ -92,6 +102,14 @@ class User < ActiveRecord::Base
   def self.find_or_invite_by_email(email)
     user = User.find_by_email(email)
     return user || User.invite!(email: email)
+  end
+
+  def self.with_validation_finished
+    where validation_state: :validated
+  end
+
+  def self.with_validation_requested
+    where validation_state: :requested
   end
 
   protected

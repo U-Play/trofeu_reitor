@@ -1,31 +1,32 @@
 ActiveAdmin.register User do
   menu :priority => 11
 
+  controller do
+    def scoped_collection
+      end_of_association_chain.includes(:role)
+    end
+  end
+
+  action_item :only => :show, if: proc{ user.can_validate? } do
+    link_to 'Validate', validate_admin_user_path(user), method: :post
+  end
+
+  action_item :only => :show, if: proc{ user.vaildation_requested? } do
+    link_to 'Invalidate', invalidate_admin_user_path(user), method: :post
+  end
+
   filter :role, member_label: Proc.new { |r| r.name.titleize }
   filter :first_name_or_last_name, as: :string
   filter :email
   filter :student_number
   filter :sports_number
 
-  action_item :only => :show, if: proc{ user.can_validate? } do
-    link_to 'Validate', validate_admin_user_path(user)
-    #link_to admin_validate_user_path
-    #tournament = Tournament.find(params[:id])
-    #FIXME os seguintes links dao erro
-    #link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
-
-  end
-
-  controller do
-    def scoped_collection
-      end_of_association_chain.includes(:role)
-    end
-
-    def validate
-    end
-  end
+  scope :all, default: true
+  scope(:pending_validation) { User.with_validation_requested }
+  scope(:validated) { User.with_validation_finished }
 
   index do
+    column :validation_state
     column :name, sortable: 'first_name'
     column :email
     column(:role, sortable: 'roles.name') { |user| user.role.name.titleize }
@@ -36,6 +37,7 @@ ActiveAdmin.register User do
 
   show do
     attributes_table do
+      row :validation_state
       row(:picture) { |user| image_tag(user.picture.url) }
       row :first_name
       row :last_name
@@ -59,5 +61,17 @@ ActiveAdmin.register User do
       f.input :sports_number
     end
     f.actions
+  end
+
+  member_action :validate, method: :post do
+    user = User.find(params[:id])
+    user.validate!
+    redirect_to action: :show, notice: "User #{user.name} validated"
+  end
+
+  member_action :invalidate, method: :post do
+    user = User.find(params[:id])
+    user.invalidate!
+    redirect_to action: :show, notice: "User #{user.name} validation rejected"
   end
 end

@@ -1,4 +1,5 @@
 Uplay::Application.routes.draw do
+
   root to: 'static_pages#home'
 
   # namespace :admin do
@@ -8,7 +9,10 @@ Uplay::Application.routes.draw do
   # end
 
   ActiveAdmin.routes(self)
-
   devise_for :users
-  # devise_for :admins, ActiveAdmin::Devise.config.merge(class_name: 'User')
+
+  resources :users, only: [:show, :edit, :update] do
+    post '/request-validation' => 'users#request_validation', as: :request_validation
+  end
+
 end
