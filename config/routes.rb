@@ -22,6 +22,6 @@ Uplay::Application.routes.draw do
 
   match 'credentials/:id' => 'credentials#print', :via => :get
 
-	mount Resque::Server.new, at: "/resque"
+	mount Resque::Server, at: "/resque"
 
 end
