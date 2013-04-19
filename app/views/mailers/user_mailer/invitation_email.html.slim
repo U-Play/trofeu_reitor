@@ -3,3 +3,10 @@ p
   = @user.name
 p You can confirm yout account email through the link below:
 p= link_to 'Confirm my account', confirmation_url(@user, confirmation_token: @user.confirmation_token)
+
+- content_for :title, 'Olá, inscreve-te no Troféu Reitor 2013'
+
+- content_for :content do
+  p.content Podes ver a tua inscrição no Troféu Reitor 2013 no seguinte link
+  a= user_path @user, only_path: false
+end

@@ -25,7 +25,7 @@ class Team < ActiveRecord::Base
   :team_referees_attributes
 
   ## Callbacks ##
-  after_update :set_manager
+  after_save :set_manager
   attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true

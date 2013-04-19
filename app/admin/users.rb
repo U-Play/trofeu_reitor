@@ -36,6 +36,7 @@ ActiveAdmin.register User do
   end
 
   show do
+    binding.pry
     attributes_table do
       row :validation_state
       row(:picture) { |user| image_tag(user.picture.url) }
