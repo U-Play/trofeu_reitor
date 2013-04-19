@@ -1,4 +1,4 @@
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   default from: "noreply@uplay.com"
 
   def invitation_email(user)

@@ -11,7 +11,7 @@ ActiveAdmin.register User do
     link_to 'Validate', validate_admin_user_path(user), method: :post
   end
 
-  action_item :only => :show, if: proc{ user.vaildation_requested? } do
+  action_item :only => :show, if: proc{ user.validation_requested? } do
     link_to 'Invalidate', invalidate_admin_user_path(user), method: :post
   end
 
