@@ -1,0 +1,47 @@
+doctype html
+html
+
+  head
+    meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+    title= content_for?(:title) ? yield(:title) : "U-Play"
+    link rel="stylesheet" type="text/css" href="/assets/mailer/layout.css"
+
+  body
+    a href="http://uplay.sas.uminho.pt" alt=""
+      img width="393" src="#{image_path 'trofeu_reitor_2013.png'}" height="140"
+
+    h1 Olá, inscreve-te no Troféu Reitor 2013
+
+    span.content
+      p Completa a tua inscrição através do seguinte link
+      a href="#{accept_invitation_url(@resource, invitation_token: @resource.invitation_token)}"
+        = accept_invitation_url(@resource, invitation_token: @resource.invitation_token)
+
+      br
+      p Para este registo precisas de:
+      ul
+        li Foto de perfil
+        li numero mecanográfico da Universidade do Minho
+        li Número do cartão desportivo
+
+      p
+        b Atenção, para validares a tua inscrição precisas de ter matricula no ano lectivo corrente, e de ter o cartão desportivo activo
+
+      p Podes completar esta inscrição até ao último dia das inscrições do Troféu Reitor 2013
+
+    span.footer
+      p
+        | Obrigado,
+        br
+        | A organização do Troféu Reitor
+        br
+        a.email href="mailto:uplay@sas.uminho.pt" uplay@sas.uminho.pt
+
+      a href="http://www.uplaypro.com" alt=""
+        img width="75" height="75" src="#{image_path 'logo.png'}"
+
+      p.footer
+        a href="http://www.uplaypro.com"
+          | O Trofeu Reitor 2013 é dinamizado pelo U-PLAY,
+          br
+          | uma plataforma de suporte ao desporto universitário

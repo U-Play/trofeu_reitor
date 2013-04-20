@@ -1,12 +1,17 @@
-p
-  | Welcome
-  = @user.name
-p You can confirm yout account email through the link below:
-p= link_to 'Confirm my account', confirmation_url(@user, confirmation_token: @user.confirmation_token)
-
 - content_for :title, 'Olá, inscreve-te no Troféu Reitor 2013'
 
 - content_for :content do
-  p.content Podes ver a tua inscrição no Troféu Reitor 2013 no seguinte link
-  a= user_path @user, only_path: false
+  p Completa a tua inscrição através do seguinte link
+  a= confirmation_url(@user, confirmation_token: @user.confirmation_token)
+
+  p Para este registo precisas de:
+  ul
+    li Foto de perfil
+    li numero mecanográfico da Universidade do Minho
+    li Número do cartão desportivo
+
+  p
+    b Atenção, para validares a tua inscrição precisas de ter matricula no ano lectivo corrente, e de ter o cartão desportivo activo
+
+  p Podes completar esta inscrição até ao último dia das inscrições do Troféu Reitor 2013
 end

@@ -1,0 +1,7 @@
+- content_for :title, "Olá, fazes parte da equipa #{@team.name}"
+
+- content_for :content do
+  p Podes ver a equipa no seguinte link
+  a TODO
+  | team_path @user, only_path: false
+end

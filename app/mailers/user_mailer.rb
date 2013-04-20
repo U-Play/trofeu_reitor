@@ -5,17 +5,23 @@ class UserMailer < ApplicationMailer
     send_mail user, "You've been invited to Trofeu to Reitor"
   end
 
+  def added_to_team_email(user, team)
+    @team = team
+    send_mail(user, "Trofeu Reitor 2013 - Inscrição na equipa #{@team.name}")
+  end
+
   def promoted_to_manager_email(user, team)
     @team = team
-    send_mail(user, "You've been promoted to manager of #{@team.name}")
+    send_mail(user, "Troféu Reitor 2013 - Manager da equipa #{@team.name}")
   end
 
   def validated_email(user)
-    send_mail user, "Your data has been validated"
+    send_mail user, "Troféu Reitor 2013 - Dados validados"
   end
 
-  def invalidated_email(user)
-    send_mail user, "There's something wrong with your validation"
+  def invalidated_email(user, msg)
+    @msg = msg
+    send_mail user, "Troféu Reitor 2013 - Dados invalidados"
   end
 
   protected

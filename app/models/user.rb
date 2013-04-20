@@ -122,8 +122,4 @@ class User < ActiveRecord::Base
       return unless role.nil?
       self.role = Role.default_role
     end
-
-    #def send_invitation_email
-    #  UserMailer.invitation_email(self).deliver
-    #end
 end

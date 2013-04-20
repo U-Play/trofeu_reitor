@@ -1,2 +1,9 @@
-h1= "Hello #{@user.name}"
-p Your profile for Trofeu do Reitor has been marked as invalid
+- content_for :title, 'Olá, a tua inscrição não foi validada'
+
+- content_for :content do
+  p Passa-se algo de errado com a tua inscrição. Consulta o seguinte link:
+  a= user_path @user, only_path: false
+
+  p Mensagem da organização:
+  p= @msg
+end
