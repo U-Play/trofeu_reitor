@@ -23,7 +23,7 @@ gem 'slim'
 gem 'state_machine'
 gem "just-datetime-picker"
 gem 'wicked_pdf'
-gem 'rubyzip'
+gem 'rubyzip', require: 'zip/zip'
 gem "resque", require: 'resque/server'
 
 group :development do
