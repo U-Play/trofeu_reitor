@@ -13,6 +13,11 @@ class CredentialWorker
 
     pdf = WickedPdf.new.pdf_from_string(pdf_html)
     File.open(outfile_path.join("something.pdf"), 'wb') { |f| f << pdf }
+
+    Zip::ZipFile.open(Rails.root.join("archive.zip"), Zip::ZipFile::CREATE) do |z|
+      z.add("something.pdf", Rails.root.join("something.pdf"))
+    end
+    puts "ashdasdasd"
   end
 
 end
