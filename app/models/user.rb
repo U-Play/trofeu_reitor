@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     event(:request_validation) { transition :validation_unprocessed => :validation_requested }
     event(:invalidate) { transition :validation_unprocessed => same, :validation_requested => :validation_unprocessed }
 
-    after_transition any => :requested do |user, transition|
+    after_transition any => :validation_requested do |user, transition|
       AdminMailer.validation_requested_email(user).deliver
     end
 
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
       UserMailer.validated_email(user).deliver
     end
 
-    after_transition any => :unprocessed do |user, transition|
+    after_transition any => :validation_unprocessed do |user, transition|
       UserMailer.invalidated_email(user).deliver
     end
   end
@@ -109,7 +109,11 @@ class User < ActiveRecord::Base
   end
 
   def self.with_validation_requested
-    where validation_state: :requested
+    where validation_state: :validation_requested
+  end
+
+  def self.with_validation_requested_or_unprocessed
+    where validation_state: [:validation_requested, :validation_unprocessed]
   end
 
   protected

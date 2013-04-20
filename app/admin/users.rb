@@ -22,7 +22,8 @@ ActiveAdmin.register User do
   filter :sports_number
 
   scope :all, default: true
-  scope(:pending_validation) { User.with_validation_requested }
+  scope(:pending_validation) { User.with_validation_requested_or_unprocessed }
+  scope(:requested_validation) { User.with_validation_requested }
   scope(:validated) { User.with_validation_finished }
 
   index do
@@ -36,7 +37,6 @@ ActiveAdmin.register User do
   end
 
   show do
-    binding.pry
     attributes_table do
       row :validation_state
       row(:picture) { |user| image_tag(user.picture.url) }

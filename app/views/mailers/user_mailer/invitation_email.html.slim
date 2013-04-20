@@ -2,7 +2,8 @@
 
 - content_for :content do
   p Completa a tua inscrição através do seguinte link
-  a= confirmation_url(@user, confirmation_token: @user.confirmation_token)
+  a href="#{confirmation_url(@user, confirmation_token: @user.confirmation_token)}"
+    = confirmation_url(@user, confirmation_token: @user.confirmation_token)
 
   p Para este registo precisas de:
   ul

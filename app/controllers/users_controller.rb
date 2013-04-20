@@ -19,6 +19,6 @@ class UsersController < ApplicationController
     @user = User.find params[:user_id]
     authorize! :request_validation, @user
     @user.request_validation!
-    redirect_to action: :show, notice: 'Validation requested.'
+    redirect_to user_path(@user), notice: 'Validation requested.'
   end
 end

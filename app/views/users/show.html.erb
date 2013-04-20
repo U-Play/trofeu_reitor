@@ -30,11 +30,7 @@
   <%= @user.validation_state %>
 </p>
 
-<% if can? :manage, @user %>
-  <p>
-    <%= link_to "Edit", edit_user_path(@user) %> |
-    <% if can? :request_validation, @user %>
-      <%= button_to "Request Validation", user_request_validation_path(@user) %>
-    <% end %>
-  </p>
-<% end %>
+<p>
+  <%= link_to "Edit", edit_user_path(@user) if can? :update, @user %>
+  <%= button_to "Request Validation", user_request_validation_path(@user) if can? :request_validation, @user %>
+</p>

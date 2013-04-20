@@ -2,8 +2,11 @@
 
 - content_for :content do
   p Passa-se algo de errado com a tua inscrição. Consulta o seguinte link:
-  a= user_path @user, only_path: false
+  a href="#{user_path @user, only_path: false}"
+    = user_path @user, only_path: false
 
-  p Mensagem da organização:
-  p= @msg
-end
+  br
+  p
+    | Mensagem da organização:
+    br
+    = @msg

@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
     send_mail user, "Troféu Reitor 2013 - Dados validados"
   end
 
-  def invalidated_email(user, msg)
+  def invalidated_email(user, msg = "Dados inválidos")
     @msg = msg
     send_mail user, "Troféu Reitor 2013 - Dados invalidados"
   end
