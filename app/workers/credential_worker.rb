@@ -1,12 +1,13 @@
 class CredentialWorker
   @queue = :credentials
   def self.perform(user)
-    outfile_path = Rails.root
+    outfile_path = Rails.root.join('public')
     view_path = Rails.root.join('app', 'views', 'credentials')
 
     av = ActionView::Base.new()
     av.view_paths = ActionController::Base.view_paths
-    pdf_html = av.render :template => "credentials/print.pdf.erb", 
+    pdf_html = av.render 
+      template: "credentials/print.pdf.erb", 
       layout: 'layouts/credentials.html.erb', 
       margin: {
         top: 20,
@@ -15,15 +16,18 @@ class CredentialWorker
         right: 13
       }
 
-    #body = File.read(view_path.join('print.pdf.erb'))
-    #body_render = Erb.new(body).render(binding)
-
     pdf = WickedPdf.new.pdf_from_string(pdf_html)
-    File.open(outfile_path.join("something.pdf"), 'wb') { |f| f << pdf }
+
+    file = Tempfile.new('credentials.pdf', encoding: 'UTF-8')
+    file.binmode
+    file.write(pdf)
+    file.close
 
     Zip::ZipFile.open(Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H:%M")}.zip"), Zip::ZipFile::CREATE) do |z|
-      z.add("something.pdf", Rails.root.join("something.pdf"))
+      z.add("1.pdf", file.path)
     end
+
+    file.delete
   end
 
 end

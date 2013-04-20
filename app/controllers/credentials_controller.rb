@@ -1,7 +1,6 @@
 class CredentialsController < ApplicationController
 
   def print
-    @users = User.all
     Resque.enqueue(CredentialWorker, @users)
     respond_to do |f|
       f.html
