@@ -8,11 +8,12 @@ Uplay::Application.routes.draw do
   #   end
   # end
 
-  ActiveAdmin.routes(self)
   devise_for :users
 
   resources :users, only: [:show, :edit, :update] do
     post '/request-validation' => 'users#request_validation', as: :request_validation
   end
 
+
+  ActiveAdmin.routes(self)
 end

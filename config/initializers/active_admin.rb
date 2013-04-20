@@ -92,7 +92,7 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  # config.root_to = 'dashboard#index'
+  # config.root_to = 'users#index'
 
   # == Admin Comments
   #
@@ -100,7 +100,7 @@ ActiveAdmin.setup do |config|
   # Admin comments are enabled by default.
   #
   # Default:
-  # config.allow_comments = true
+  config.allow_comments = false
   #
   # You can turn them on and off for any given namespace by using a
   # namespace config block.
@@ -149,4 +149,13 @@ ActiveAdmin.setup do |config|
   #
   # Set the CSV builder options (default is {})
   # config.csv_options = {}
+
+  config.authorization_adapter = ActiveAdmin::CanCanAdapter
+end
+
+module ActiveAdmin::BaseController::Authorization
+  def rescue_active_admin_access_denied(exception)
+    Rails.logger.debug "#{current_user} got access denied on #{exception.action} #{exception.subject.inspect}"
+    redirect_to main_app.root_url, :alert => t('cancan.access_denied')
+  end
 end
