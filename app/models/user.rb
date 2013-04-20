@@ -61,15 +61,15 @@ class User < ActiveRecord::Base
     event(:invalidate) { transition :validation_unprocessed => same, :validation_requested => :validation_unprocessed }
 
     after_transition any => :validation_requested do |user, transition|
-      AdminMailer.validation_requested_email(user).deliver
+      AdminMailer.validation_requested(user).deliver
     end
 
     after_transition any => :validated do |user, transition|
-      UserMailer.validated_email(user).deliver
+      UserMailer.validated(user).deliver
     end
 
     after_transition any => :validation_unprocessed do |user, transition|
-      UserMailer.invalidated_email(user).deliver
+      UserMailer.invalidated(user).deliver
     end
   end
 
@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
 
   def promote_to_manager(team)
     set_role('manager') if role.nil? || role.name == 'athlete'
-    UserMailer.promoted_to_manager_email(self, team).deliver
+    UserMailer.promoted_to_manager(self, team).deliver
   end
 
   def tournaments
@@ -114,6 +114,10 @@ class User < ActiveRecord::Base
 
   def self.with_validation_requested_or_unprocessed
     where validation_state: [:validation_requested, :validation_unprocessed]
+  end
+
+  def self.by_role(role_name)
+    where role_id: Role.find_by_name(role_name)
   end
 
   protected

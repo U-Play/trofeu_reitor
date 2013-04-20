@@ -29,6 +29,6 @@ class TeamAthlete < ActiveRecord::Base
     end
 
     def send_email
-      UserMailer.added_to_team_email(self.athlete, self.team).deliver
+      UserMailer.added_to_team(self.athlete, self.team).deliver
     end
 end
