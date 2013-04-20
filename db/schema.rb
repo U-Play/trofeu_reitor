@@ -73,8 +73,7 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
   add_index "groups", ["tournament_id"], :name => "index_groups_on_tournament_id"
 
   create_table "highlight_occurrences", :force => true do |t|
-    t.integer  "total"
-    t.string   "time"
+    t.integer  "time"
     t.datetime "deleted_at"
     t.integer  "highlight_id"
     t.integer  "match_id"
