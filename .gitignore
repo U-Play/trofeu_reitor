@@ -19,3 +19,5 @@
 .tags
 tags
 cscope.*
+
+dump.rdb
