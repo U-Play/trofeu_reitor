@@ -61,11 +61,14 @@ ActiveAdmin.register Match do
       row(:sport)      { |m| link_to m.tournament.sport.name, admin_sport_path(m.tournament.sport) }
       row(:location)   { |m| link_to m.location.city, admin_location_path(m.location) }
     end
+    panel 'Game Card' do
+      # render :partial => 'game_card', :locals => { match: match }
+    end
     panel "Play by Play" do
       render :partial => 'play_by_play', 
         :locals => {
           match: match, 
-          highlights: HighlightOccurrence.find_all_by_match_id(params[:id]), 
+          highlights: HighlightOccurrence.find_all_by_match_id(match.id), 
           highlight: HighlightOccurrence.new 
         }
     end
@@ -134,6 +137,5 @@ ActiveAdmin.register Match do
   filter :winner_id
   filter :team_one_id
   filter :team_two_id
-
 
 end

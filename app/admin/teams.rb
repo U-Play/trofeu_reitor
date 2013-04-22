@@ -64,7 +64,7 @@ ActiveAdmin.register Team do
     end
   end
 
-  sidebar "Other Matches For This Team", :only => :show do
+  sidebar "Matches For This Team", :only => :show do
     table_for Match.find_all_by_team(team) do
       # column(:status)  { |m| status_tag m.status, m.status_type }
       column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }

@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
   ## Relations ##
   belongs_to :role
+  belongs_to :course
 
   has_many :events
   has_many :teams_as_manager, :class_name => "Team", foreign_key: "manager_id", inverse_of: :manager

@@ -12,6 +12,69 @@ roles.each do |role|
   Role.find_or_create_by_name(role[:name])
 end
 
+puts 'creating courses'
+courses = [
+  { name: 'Administração Publica' },
+  { name: 'Arqueologia' },
+  { name: 'Arquitetura' },
+  { name: 'Biologia Aplicada' },
+  { name: 'Biologia Geologia' },
+  { name: 'Bioquímica' },
+  { name: 'Ciência Politica' },
+  { name: 'Ciências do Ambiente' },
+  { name: 'Ciências da Computação' },
+  { name: 'Ciências da Comunicação ' },
+  { name: 'Contabilidade' },
+  { name: 'Criminologia' },
+  { name: 'Design e Marketing de Moda ' },
+  { name: 'Design do Produto' },
+  { name: 'Direito' },
+  { name: 'Economia' },
+  { name: 'Educação' },
+  { name: 'Educação Básica' },
+  { name: 'Enfermagem' },
+  { name: 'Engenharia Biológica (MI)' },
+  { name: 'Engenharia Biomédica (MI)' },
+  { name: 'Engenharia Civil (MI)' },
+  { name: 'Engenharia de Comunicações (MI)' },
+  { name: 'Engenharia Electrónica Industrial e Computadores (MI)' },
+  { name: 'Engenharia Física (MI)' },
+  { name: 'Engenharia e Gestão Industrial (MI)' },
+  { name: 'Engenharia e Gestão de Sistemas de Informação (MI)' },
+  { name: 'Engenharia Informática' },
+  { name: 'Engenharia de Materiais (MI)' },
+  { name: 'Engenharia Mecânica (MI)' },
+  { name: 'Engenharia de Polímeros (MI)' },
+  { name: 'Engenharia Têxtil (MI)' },
+  { name: 'Estatística Aplicada' },
+  { name: 'Estudos Culturais' },
+  { name: 'Estudos Portugueses e Lusófonos' },
+  { name: 'Filosofia' },
+  { name: 'Física' },
+  { name: 'Geografia e Planeamento' },
+  { name: 'Geologia ' },
+  { name: 'Gestão' },
+  { name: 'História' },
+  { name: 'Línguas Aplicadas ' },
+  { name: 'Línguas e Culturas Orientais' },
+  { name: 'Línguas e Literaturas Europeias' },
+  { name: 'Marketing' },
+  { name: 'Matemática' },
+  { name: 'Medicina (MI)' },
+  { name: 'Música' },
+  { name: 'Negócios Internacionais' },
+  { name: 'Optometria e Ciências da Visão ' },
+  { name: 'Psicologia (MI)' },
+  { name: 'Química' },
+  { name: 'Relações Internacionais' },
+  { name: 'Sociologia' },
+  { name: 'Teatro' }
+]
+
+courses.each do |course|
+  Course.find_or_create_by_name(course[:name])
+end
+
 if Rails.env.production?
   puts 'creating default users in production'
   users = [

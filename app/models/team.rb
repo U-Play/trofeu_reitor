@@ -4,6 +4,7 @@ class Team < ActiveRecord::Base
   ## Relations ##
   belongs_to :tournament
   belongs_to :group
+  belongs_to :course
   belongs_to :manager, :class_name => "User"
 
   has_many :matches_as_team_one, :class_name => "Match", :foreign_key => "team_one_id"
@@ -21,28 +22,29 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :referee
 
   ## Attributes ##
-  attr_accessible :deleted_at, :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
-  :team_referees_attributes
-
-  ## Callbacks ##
-  after_save :set_manager
   attr_accessor :manager_email
+  attr_accessible :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
+  :team_referees_attributes, :course
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
   #accepts_nested_attributes_for :athletes
   accepts_nested_attributes_for :team_referees, :allow_destroy => true
 
+  ## Callbacks ##
+  after_update :set_manager
+  attr_accessor :manager_email
+
   ## Validations ##
-  validates :name, :tournament_id, presence: true
+  validates :name, :tournament_id, :course, presence: true
 
 
   ## Public Methods ##
-  def matches
-    Match.where(:id => (matches_as_team_one + matches_as_team_two))
-  end
-
   def has_athlete?(athlete)
     athletes.any? { |ath| ath.id == athlete.id }
+  end
+
+  def matches
+    Match.where(:id => (matches_as_team_one + matches_as_team_two))
   end
 
   ## Private Methods ##

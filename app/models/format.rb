@@ -18,4 +18,8 @@ class Format < ActiveRecord::Base
   def self.groupFormat
     Format.find_by_name('Group Stage')
   end
+
+  def self.multiStageFormat
+    Format.find_by_name('Multi Stage')
+  end
 end
