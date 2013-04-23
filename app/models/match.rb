@@ -24,8 +24,8 @@ class Match < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
-  :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id, :started, :ended,
-  :knockout_index
+                  :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id,
+                  :started, :ended, :knockout_index, :group_round
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 

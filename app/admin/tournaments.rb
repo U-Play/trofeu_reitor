@@ -15,31 +15,31 @@ ActiveAdmin.register Tournament do
     link_to 'Teams', admin_tournament_teams_path(params[:id])
   end
 
-  action_item :only => :show do
+  action_item :only => :show, :if => proc {tournament.has_group_stage?} do
     tournament = Tournament.find(params[:id])
-    link_to('Groups', admin_tournament_groups_path(tournament.id)) if tournament.has_group_stage?
+    link_to('Groups', admin_tournament_groups_path(tournament.id))
   end
 
   action_item :only => :show do
     link_to 'Matches', admin_tournament_matches_path(params[:id])
   end
 
-  action_item :only => :show do
+  action_item :only => :show, :if => proc {tournament.has_group_stage?} do
     tournament = Tournament.find(params[:id])
     #FIXME os seguintes links dao erro
-    link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id)) if tournament.has_group_stage?
+    link_to('Group Stage Configuration', admin_tournament_format_path(tournament.group_stage))
   end
 
-  action_item :only => :show do
+  action_item :only => :show, :if => proc {tournament.has_knockout_stage?} do
     tournament = Tournament.find(params[:id])
     #FIXME os seguintes links dao erro
-    link_to('Knockout Stage Configuration', admin_tournament_knockout_stages_path(tournament.id)) if tournament.has_knockout_stage?
+    link_to('Knockout Stage Configuration', admin_tournament_knockout_stages_path(tournament.id))
   end
 
   index do
     column(:name)  { |t| link_to t.name, admin_tournament_path(t.id)}
     column(:sport) { |t| link_to t.sport.name, admin_sport_path(t.sport_id)}
-    column :number_of_teams
+    column :number_of_teams, :label => 'Number of Teams' 
     column(:format) { |t| link_to t.format.name, admin_tournament_format_path(t.format) if t.format }
     column :start_date
     column :end_date
@@ -76,6 +76,21 @@ ActiveAdmin.register Tournament do
     f.actions
   end
 
+  #TODO: TESTAR SE O DRAFT JA FOI FEITO
+  action_item :only => :show, :if => proc{ tournament.group_stage} do
+    link_to 'Groups Draft', :controller => "tournaments", :action => "groups_draft", :id => tournament.id
+  end
+
+  member_action :groups_draft, :method => :get do
+    @tournament = Tournament.find(params[:id])
+    @teams = @tournament.teams
+    @groups = @tournament.groups
+  end
+
+  # Save the draft
+  member_action :save_groups_draft, :method => :post do
+  end
+
   #Save the manual draft made
   member_action :save_knockout_draft, :method => :post do
     selected_teams = []
@@ -98,11 +113,11 @@ ActiveAdmin.register Tournament do
   end
 
   action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 
-    link_to 'Knockout Draft', :controller => "tournaments", :action => "show_knockout_draft", :id => tournament.id
+    link_to 'Knockout Draft', :controller => "tournaments", :action => "knockout_draft", :id => tournament.id
   end 
 
   #Action to show the page where the admin can do the manual draft
-  member_action :show_knockout_draft, :method => :get do
+  member_action :knockout_draft, :method => :get do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
   end

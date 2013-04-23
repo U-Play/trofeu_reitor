@@ -23,7 +23,7 @@ class Team < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
-    :team_referees_attributes, :course, :course_id
+    :team_referees_attributes, :course, :course_id, :group_position, :group_id
 
   attr_writer :manager_email
   def manager_email
@@ -41,6 +41,9 @@ class Team < ActiveRecord::Base
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
   validates :course_id, :uniqueness => { :scope => :tournament_id }
+
+  ## Scopes ##
+  scope :from_group_and_position, lambda { |group, pos| where(group_id: group, group_position: pos)}
 
   ## Public Methods ##
   def athletes_per_team

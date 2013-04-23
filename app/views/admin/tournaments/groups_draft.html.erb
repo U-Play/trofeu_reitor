@@ -1,0 +1,33 @@
+<h2>Groups Draft</h2>
+
+<%= form_tag :controller => "tournaments", :action => "save_groups_draft", :method => "post" do |f| %>
+
+  <% @groups.each do |g| %>
+    <table>
+      
+      <thead>
+        <tr>
+          <th>
+            <%= g.name %>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% for i in 10..9+(@tournament.number_of_teams.to_f/@groups.size).ceil do %>
+          <tr>
+            <td>
+              Position <%= i.to_s(36).upcase %>: 
+              <% selected_team = @teams.from_group_and_position(g.id,i.to_s(36).upcase) %>
+              <%= select_tag "draft[#{g.id}[#{i.to_s(36).upcase}]]", options_from_collection_for_select(@teams, :id, :name, !selected_team.empty? && selected_team.first.id), :include_blank => true %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </table>
+  <% end %>
+
+  <%= submit_tag 'Submit' %>
+  <%= link_to 'Cancel', admin_tournament_path(@tournament) %>
+<% end %>
