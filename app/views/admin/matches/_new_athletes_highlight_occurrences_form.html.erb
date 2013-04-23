@@ -1,20 +1,40 @@
-<tr>
-  <td>
-    <table>
-      <% match.team_one.athletes.each do |ath| %>
-        <tr>
-          <td> <%= ath.name %> </td>
-          <td>
-            <select>
-              <% highlights.each do |h| %>
-                <%= <option value="volvo">Volvo</option> %>
-              <%= f.collection_select :highlight_id, Highlight.find_all_by_sport_id(match.tournament.sport.id), :id, :name %>
-              <% end %>
-            </select>
-          </td>
-        </tr>
-      <% end %>
-    </table>
-  </td>
-</tr>
+<% [match.team_one, match.team_two].each do |team| %>
+  <tr>
+  <div class='panel'>
+    <h3><%= team.name %></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Athlete</th>
+            <th>Highlight</th>
+            <th>Time</th>
+            <th></th>
+          </tr>
+        </thead>
 
+        <tbody>
+          <% team.athletes.each_with_index do |ath, ix| %>
+            <% highlight = HighlightOccurrence.new(athlete: ath) %>
+            <tr class="<%= ix.odd? ? "odd" : "even" %>">
+              <%= form_for highlight, :url => admin_match_highlight_occurrences_path(match, highlight), :method => :post do |f| %>
+                <td> 
+                  <%= ath.name %> 
+                  <%= f.hidden_field :athlete_id %>
+                </td>
+                <td>
+                  <%= f.collection_select :highlight_id, highlights, :id, :name %>
+                </td>
+                <td>
+                  <%= f.number_field :time, value: 0, :min => 0 %>
+                </td>
+                <td>
+                  <%= f.submit 'Add' %>
+                </td>
+              <% end if highlight && match %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </tr>
+<% end %>

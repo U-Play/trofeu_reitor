@@ -68,8 +68,7 @@ ActiveAdmin.register Match do
       render :partial => 'play_by_play', 
         :locals => {
           match: match, 
-          highlights: HighlightOccurrence.find_all_by_match_id(match.id), 
-          highlight: HighlightOccurrence.new 
+          highlights: HighlightOccurrence.find_all_by_match_id(match.id) 
         }
     end
     panel "Referees" do
@@ -110,9 +109,9 @@ ActiveAdmin.register Match do
       f.input :format, :required => true, :collection => Format.where(:id => [1,2])
       f.input :winner
       f.input :team_one, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
-      f.input :result_team_one
+      # f.input :result_team_one
       f.input :team_two, :as => :select, :collection => Team.find_all_by_tournament_id(params[:tournament_id])
-      f.input :result_team_two
+      # f.input :result_team_two
       f.input :start_datetime, :as => :just_datetime_picker
     end
 

@@ -88,7 +88,15 @@ class Match < ActiveRecord::Base
   end
 
   def result
-    "#{team_one_data.result} - #{team_two_data.result}"
+    "#{result_team_one} - #{team_two_data.result}"
+  end
+
+  def result_team_one
+    team_one_data.result
+  end
+
+  def result_team_one=(value)
+    team_one_data.update_attributes :result => value
   end
 
   def started?
