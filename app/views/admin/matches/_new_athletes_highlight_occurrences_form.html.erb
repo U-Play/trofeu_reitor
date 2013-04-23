@@ -1,0 +1,20 @@
+<tr>
+  <td>
+    <table>
+      <% match.team_one.athletes.each do |ath| %>
+        <tr>
+          <td> <%= ath.name %> </td>
+          <td>
+            <select>
+              <% highlights.each do |h| %>
+                <%= <option value="volvo">Volvo</option> %>
+              <%= f.collection_select :highlight_id, Highlight.find_all_by_sport_id(match.tournament.sport.id), :id, :name %>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </td>
+</tr>
+
