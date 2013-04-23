@@ -17,6 +17,11 @@ ActiveAdmin.register Team do
     link_to('New Team', new_admin_tournament_team_path())
   end
 
+  member_action :credentials, method: 'get' do
+    @tournament = Tournament.find params[:id]
+    Resque.enqueue CredentialWorker, @tournament
+  end
+
   index do
     column :course
     # column(:tournament, sortable: 'tournament.name') { |team| team.tournament.name }
