@@ -1,0 +1,36 @@
+<% title "Edit User" %>
+
+<%= form_for @user do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </p>
+  <p>
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </p>
+  <p>
+    <%= f.label :course %><br />
+    <%= f.text_field :course %>
+  </p>
+  <p>
+    <%= f.label :student_number %><br />
+    <%= f.text_field :student_number %>
+  </p>
+  <p>
+    <%= f.label :sports_number %><br />
+    <%= f.text_field :sports_number %>
+  </p>
+  <p>
+    <%= f.label :picture %><br />
+    <%= f.file_field :picture %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>
+
+

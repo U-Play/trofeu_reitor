@@ -1,0 +1,12 @@
+- content_for :title, 'Olá, a tua inscrição não foi validada'
+
+- content_for :content do
+  p Passa-se algo de errado com a tua inscrição. Consulta o seguinte link:
+  a href="#{user_path @user, only_path: false}"
+    = user_path @user, only_path: false
+
+  br
+  p
+    | Mensagem da organização:
+    br
+    = @msg

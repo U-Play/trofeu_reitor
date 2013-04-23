@@ -9,25 +9,30 @@ gem 'devise'
 gem 'devise-encryptable'
 gem 'devise_invitable'
 gem 'inherited_resources'
+gem 'jquery-rails'
+gem 'just-datetime-picker'
 gem 'meta_search'
 gem 'paperclip'
 gem 'pg'
 gem 'slim'
-gem "paranoia"
-gem "paranoia_uniqueness_validator"
-gem "just-datetime-picker"
+gem 'state_machine'
+gem 'paranoia'
+gem 'paranoia_uniqueness_validator'
+gem 'roadie' # action_mailer css inliner
 
 group :development do
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'nifty-generators'
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
+  gem 'mocha'
 end
 
 group :assets do
@@ -38,4 +43,3 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 end
 
-gem 'jquery-rails'

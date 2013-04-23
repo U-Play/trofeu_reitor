@@ -1,0 +1,6 @@
+- content_for :title, "Olá, o #{@user.name} pediu a validação da sua inscrição"
+
+- content_for :content do
+  p Por favor valide os seus dados no seguinte link
+  a= admin_user_path @user, only_path: false
+end

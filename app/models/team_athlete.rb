@@ -11,8 +11,9 @@ class TeamAthlete < ActiveRecord::Base
   ## Validations ##
   validates :team, presence: true
   validates :athlete, presence: true
-
   before_validation :set_athlete
+  after_create :send_email
+
   attr_writer :athlete_email
   def athlete_email
     return self.athlete.email if self.athlete
@@ -25,5 +26,9 @@ class TeamAthlete < ActiveRecord::Base
       return if self.athlete
       athlete = User.find_or_invite_by_email(@athlete_email)
       self.athlete_id = athlete.id
+    end
+
+    def send_email
+      UserMailer.added_to_team(self.athlete, self.team).deliver
     end
 end

@@ -1,0 +1,33 @@
+doctype html
+html
+
+  head
+    meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+    title= content_for?(:title) ? yield(:title) : "U-Play"
+    link rel="stylesheet" type="text/css" href="/assets/mailer/layout.css"
+
+  body
+    a href="http://uplay.sas.uminho.pt" alt=""
+      img width="393" src="#{image_path 'trofeu_reitor_2013.png'}" height="140"
+
+    h1= yield(:title)
+
+    span.content
+      = yield(:content)
+
+    span.footer
+      p
+        | Obrigado,
+        br
+        | A organização do Troféu Reitor
+        br
+        a.email href="mailto:uplay@sas.uminho.pt" uplay@sas.uminho.pt
+
+      a href="http://www.uplaypro.com" alt=""
+        img width="75" height="75" src="#{image_path 'logo.png'}"
+
+      p.footer
+        a href="http://www.uplaypro.com"
+          | O Trofeu Reitor 2013 é dinamizado pelo U-PLAY,
+          br
+          | uma plataforma de suporte ao desporto universitário

@@ -1,0 +1,18 @@
+- content_for :title, 'Olá, inscreve-te no Troféu Reitor 2013'
+
+- content_for :content do
+  p Completa a tua inscrição através do seguinte link
+  a href="#{confirmation_url(@user, confirmation_token: @user.confirmation_token)}"
+    = confirmation_url(@user, confirmation_token: @user.confirmation_token)
+
+  p Para este registo precisas de:
+  ul
+    li Foto de perfil
+    li numero mecanográfico da Universidade do Minho
+    li Número do cartão desportivo
+
+  p
+    b Atenção, para validares a tua inscrição precisas de ter matricula no ano lectivo corrente, e de ter o cartão desportivo activo
+
+  p Podes completar esta inscrição até ao último dia das inscrições do Troféu Reitor 2013
+end

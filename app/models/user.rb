@@ -4,8 +4,18 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :invitable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :username, :course, :student_nmdevisuber, :sports_number, :picture, :role_id
+  attr_accessible :email,
+                  :password,
+                  :password_confirmation,
+                  :remember_me,
+                  :first_name,
+                  :last_name,
+                  :username,
+                  :course,
+                  :student_number,
+                  :sports_number,
+                  :picture,
+                  :role_id
 
   has_attached_file :picture
                     # TODO check this configs when possible
@@ -42,6 +52,28 @@ class User < ActiveRecord::Base
   before_create :set_default_role
   # after_create :send_invitation_email
 
+  state_machine :validation_state, initial: :validation_unprocessed do
+    # validation_unprocessed
+    # validation_requested
+    # validated
+    event(:validate) { transition [:validation_unprocessed, :validation_requested] => :validated }
+    event(:request_validation) { transition :validation_unprocessed => :validation_requested }
+    event(:invalidate) { transition :validation_unprocessed => same, :validation_requested => :validation_unprocessed }
+
+    after_transition any => :validation_requested do |user, transition|
+      AdminMailer.validation_requested(user).deliver
+    end
+
+    after_transition any => :validated do |user, transition|
+      UserMailer.validated(user).deliver
+    end
+
+    after_transition any => :validation_unprocessed do |user, transition|
+      UserMailer.invalidated(user).deliver
+    end
+  end
+
+
   def name
     "#{first_name} #{last_name}".strip.presence || email
   end
@@ -60,7 +92,7 @@ class User < ActiveRecord::Base
 
   def promote_to_manager(team)
     set_role('manager') if role.nil? || role.name == 'athlete'
-    UserMailer.promoted_to_manager_email(self, team).deliver
+    UserMailer.promoted_to_manager(self, team).deliver
   end
 
   def tournaments
@@ -70,6 +102,22 @@ class User < ActiveRecord::Base
   def self.find_or_invite_by_email(email)
     user = User.find_by_email(email)
     return user || User.invite!(email: email)
+  end
+
+  def self.with_validation_finished
+    where validation_state: :validated
+  end
+
+  def self.with_validation_requested
+    where validation_state: :validation_requested
+  end
+
+  def self.with_validation_requested_or_unprocessed
+    where validation_state: [:validation_requested, :validation_unprocessed]
+  end
+
+  def self.by_role(role_name)
+    where role_id: Role.find_by_name(role_name)
   end
 
   protected
@@ -82,8 +130,4 @@ class User < ActiveRecord::Base
       return unless role.nil?
       self.role = Role.default_role
     end
-
-    #def send_invitation_email
-    #  UserMailer.invitation_email(self).deliver
-    #end
 end

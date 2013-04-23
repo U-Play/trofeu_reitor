@@ -1,0 +1,7 @@
+- content_for :title, "Olá, és agora o gestor da equipa #{@team.name}"
+
+- content_for :content do
+  p Adiciona os jogadores da tua equipa no seguinte link
+  a href="#{admin_tournament_team_path(@team.tournament, @team, only_path: false)}"
+    = admin_tournament_team_path(@team.tournament, @team, only_path: false)
+end
