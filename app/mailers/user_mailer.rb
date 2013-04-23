@@ -26,9 +26,15 @@ class UserMailer < ApplicationMailer
 
   protected
 
-    def send_mail(user, subject)
-      @user = user
-      @subject = subject
-      mail to: @user.email, subject: @subject
-    end
+  def send_mail(user, subject)
+    @user = user
+    @subject = subject
+    mail to: @user.email, subject: @subject
+  end
+
+  def credentials_ready(user, file)
+    @user = user
+    @file = file
+    mail to: @user.email, subject: "Your credentials are ready"
+  end
 end
