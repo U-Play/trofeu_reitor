@@ -17,9 +17,13 @@ ActiveAdmin.register Team do
     link_to('New Team', new_admin_tournament_team_path())
   end
 
+  action_item do
+    link_to 'Print Credentials', credentials_admin_tournament_team_path(team.tournament.id, team.id)
+  end
+
   member_action :credentials, method: 'get' do
-    @tournament = Tournament.find params[:id]
-    Resque.enqueue CredentialWorker, @tournament
+    Resque.enqueue CredentialWorker, params[:id]
+    redirect_to admin_tournament_team_path(params[:tournament_id], params[:id])
   end
 
   index do
