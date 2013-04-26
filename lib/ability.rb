@@ -32,7 +32,7 @@ class Ability
   end
 
   def athlete
-    can :update, User, id: @user.id, validation_state: :validation_unprocessed
+    can :update, User, id: @user.id, validation_state: 'validation_unprocessed'
     can :request_validation, User do |user|
       user.id == @user.id && user.can_request_validation?
     end
