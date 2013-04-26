@@ -49,7 +49,7 @@ class Team < ActiveRecord::Base
   protected
 
     def set_manager
-      return if @manager_email.nil? || (self.manager && self.manager.email == @manager_email)
+      return if @manager_email.nil? || @manager_email.strip.length == 0 || (self.manager && self.manager.email == @manager_email)
 
       manager = User.find_or_invite_by_email(@manager_email)
       @manager_email = nil
