@@ -8,7 +8,7 @@ else
 end
 
 accounts  = YAML::load(file).to_hash
-mail_account = accounts['mail'][Rails.env.to_s]
+mail_account = accounts['trofeu_reitor']['mail'][Rails.env.to_s]
 
 
 ActionMailer::Base.smtp_settings = {
