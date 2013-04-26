@@ -7,7 +7,7 @@ else
   file = File.join(Rails.root, 'config', 'accounts.yml')
 end
 
-accounts  = YAML::load(file).to_hash
+accounts  = YAML::load(File.open(file)).to_hash
 mail_account = accounts['trofeu_reitor']['mail'][Rails.env.to_s]
 
 
