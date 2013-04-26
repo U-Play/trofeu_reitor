@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: "noreply@uplay.com"
+  default from: "tr2013@uplaypro.com"
 
   def invitation(user)
     send_mail user, "You've been invited to Trofeu to Reitor"

@@ -35,7 +35,6 @@ users.each do |attr|
     user.first_name   = attr[:first_name]
     user.last_name    = attr[:last_name]
     user.role_id      = attr[:role_id]
-    user.confirmed_at = Time.now
     user.password     = attr[:password]
     user.password_confirmation = attr[:password_confirmation]
     user.save!
@@ -79,7 +78,7 @@ sports.each do |attr|
 end
 
 puts 'creating default highlights'
-highlights = [ 
+highlights = [
   { name: 'Goal', description: '', sport_id: Sport.find_by_name(futsal).id },
   { name: 'Card', description: '', sport_id: Sport.find_by_name(futsal).id }
 ]
