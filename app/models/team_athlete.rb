@@ -7,6 +7,7 @@ class TeamAthlete < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :team_id, :athlete_id, :team, :athlete, :athlete_email
+
   attr_writer :athlete_email
 
   ## Validations ##
@@ -14,12 +15,10 @@ class TeamAthlete < ActiveRecord::Base
   validate :athletes_per_team, :on => :create
 
   ## Callbacks ##
-
   before_validation :set_athlete
   after_create :send_email
 
   ## Public Methods ##
-
   def athlete_email
     return self.athlete.email if self.athlete
     @athlete_email

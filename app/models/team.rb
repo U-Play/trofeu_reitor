@@ -33,7 +33,8 @@ class Team < ActiveRecord::Base
   accepts_nested_attributes_for :team_referees, :allow_destroy => true
 
   ## Callbacks ##
-  after_update :set_manager
+  after_update       :set_manager
+  before_validation  :set_name
 
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
@@ -67,5 +68,9 @@ class Team < ActiveRecord::Base
       manager.promote_to_manager(self)
       self.update_attributes manager_id: manager.id
       self.save!
+    end
+
+    def set_name
+      write_attribute(:name, course)
     end
 end
