@@ -31,11 +31,11 @@ ActiveAdmin.register Team do
         column(:name)  { |a| link_to a.name, admin_user_path(a) }
       end
     end
-    panel "Referees" do
-      table_for team.referees do
-        column(:name)  { |r| link_to r.name, admin_user_path(r) }
-      end
-    end
+    # panel "Referees" do
+    #   table_for team.referees do
+    #     column(:name)  { |r| link_to r.name, admin_user_path(r) }
+    #   end
+    # end
     panel "Penalties" do
       table_for team.penalties do
         column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
@@ -80,12 +80,12 @@ ActiveAdmin.register Team do
         mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
       end
     end
-    f.inputs "Referees" do
-      f.has_many :team_referees do |mr|
-        mr.input :referee_email, as: :email, required: true
-        mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
-      end
-    end
+    # f.inputs "Referees" do
+    #   f.has_many :team_referees do |mr|
+    #     mr.input :referee_email, as: :email, required: true
+    #     mr.input :_destroy, :as => :boolean, :label => "Destroy?"# if mr.object.persisted?
+    #   end
+    # end
     f.actions
   end
 

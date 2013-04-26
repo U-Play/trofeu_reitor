@@ -159,14 +159,10 @@ ActiveRecord::Schema.define(:version => 20130426153125) do
     t.integer  "team_one_id"
     t.integer  "team_two_id"
     t.integer  "format_id"
-    t.string   "result_team_one"
-    t.string   "result_team_two"
-    t.string   "color_team_one"
-    t.string   "color_team_two"
     t.boolean  "started"
     t.boolean  "ended"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "knockout_index"
   end
 

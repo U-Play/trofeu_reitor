@@ -10,10 +10,6 @@ class CreateMatches < ActiveRecord::Migration
       t.references  :team_one
       t.references  :team_two
       t.references  :format
-      t.string      :result_team_one
-      t.string      :result_team_two
-      t.string      :color_team_one
-      t.string      :color_team_two
       t.boolean     :started
       t.boolean     :ended
 
