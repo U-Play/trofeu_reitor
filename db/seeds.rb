@@ -15,8 +15,8 @@ end
 if Rails.env.production?
   puts 'creating default users in production'
   users = [
-    { first_name: 'Senor',      last_name: 'root',      email: 'root@uplay.com',      password: 'rootpass',      password_confirmation: 'root',      role_id: Role.find_by_name('root').id },
-    { first_name: 'Mr',         last_name: 'admin',     email: 'admin@uplay.com',     password: 'adminpass',     password_confirmation: 'admin',     role_id: Role.find_by_name('admin').id }
+    { first_name: 'Senor',      last_name: 'root',      email: 'root@uplay.com',      password: 'rootpass',      password_confirmation: 'rootpass',      role_id: Role.find_by_name('root').id },
+    { first_name: 'Mr',         last_name: 'admin',     email: 'admin@uplay.com',     password: 'adminpass',     password_confirmation: 'adminpass',     role_id: Role.find_by_name('admin').id }
   ]
 else
   puts 'creating default users'
