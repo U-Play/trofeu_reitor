@@ -1,8 +1,13 @@
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.perform_deliveries = true
 
-#if Rails.env.production?
-accounts  = YAML::load(File.open(File.join(Rails.root, 'config', 'accounts.yml'))).to_hash
+if Rails.env.production?
+  file = '/home/deploy/config/accounts.yml'
+else
+  file = File.join(Rails.root, 'config', 'accounts.yml')
+end
+
+accounts  = YAML::load(file).to_hash
 mail_account = accounts['mail'][Rails.env.to_s]
 
 
