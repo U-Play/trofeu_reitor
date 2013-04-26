@@ -24,7 +24,9 @@ class Team < ActiveRecord::Base
   ## Attributes ##
   attr_accessor :manager_email
   attr_accessible :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
-  :team_referees_attributes, :course
+  :team_referees_attributes, :course, :course_id
+
+  attr_accessor :manager_email
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
   #accepts_nested_attributes_for :athletes
@@ -32,7 +34,6 @@ class Team < ActiveRecord::Base
 
   ## Callbacks ##
   after_update :set_manager
-  attr_accessor :manager_email
 
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
@@ -45,6 +46,14 @@ class Team < ActiveRecord::Base
 
   def matches
     Match.where(:id => (matches_as_team_one + matches_as_team_two))
+  end
+
+  def sport_type
+    tournament.sport.type
+  end
+
+  def athletes_per_team
+    tournament.sport.athletes_per_team
   end
 
   ## Private Methods ##

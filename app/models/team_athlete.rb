@@ -7,20 +7,32 @@ class TeamAthlete < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :team_id, :athlete_id, :team, :athlete, :athlete_email
+  attr_writer :athlete_email
 
   ## Validations ##
-  validates :team, presence: true
-  validates :athlete, presence: true
+  validates :team, :athlete, presence: true
+  validate :athletes_per_team, :on => :create
+
+  ## Callbacks ##
+
   before_validation :set_athlete
   after_create :send_email
 
-  attr_writer :athlete_email
+  ## Public Methods ##
+
   def athlete_email
     return self.athlete.email if self.athlete
     @athlete_email
   end
 
+  ## Private Methods ##
   protected
+
+    def athletes_per_team
+      if ( (TeamAthlete.where(:team_id => team_id).count + 1) > team.athletes_per_team )
+        errors.add( :athletes, ": too many for this #{team.sport_type} sport" ) 
+      end
+    end
 
     def set_athlete
       return if self.athlete

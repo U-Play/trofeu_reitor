@@ -130,32 +130,70 @@ Format.find_or_initialize_by_name('Multi Stage').tap do |group|
 end
 
 puts 'creating default sports'
-futsal = 'Futsal'
-basket = 'Basketball'
-hand   = 'Handball'
+# Sports
+individual  = 1
+team        = 14
+
+futsal_m    = 'Futsal M'
+futsal_f    = 'Futsal F'
+basket      = 'Basquetebol'
+hand        = 'Andebol'
+volley      = 'Vólei de Praia'
+badminton   = 'Badminton'
+tenis       = 'Ténis'
+table_tenis = 'Ténis de Mesa'
+squash      = 'Squash'
+padel       = 'Padel'
+surf        = 'Surf'
+bodyboard   = 'Bodyboard'
+chess       = 'Xadrez'
+pool        = 'Bilhar'
+foosebal    = 'Matraquilhos'
+climbing    = 'Escalada'
 sports = [
-  {name: futsal, description: ''},
-  {name: basket, description: ''},
-  {name: hand  , description: ''},
+  {name: futsal_m   , athletes_per_team: team       , description: ''},
+  {name: futsal_f   , athletes_per_team: team       , description: ''},
+  {name: basket     , athletes_per_team: team       , description: ''},
+  {name: hand       , athletes_per_team: team       , description: ''},
+  {name: volley     , athletes_per_team: team       , description: ''},
+  {name: badminton  , athletes_per_team: individual , description: ''},
+  {name: tenis      , athletes_per_team: individual , description: ''},
+  {name: table_tenis, athletes_per_team: individual , description: ''},
+  {name: squash     , athletes_per_team: individual , description: ''},
+  {name: padel      , athletes_per_team: individual , description: ''},
+  {name: surf       , athletes_per_team: individual , description: ''},
+  {name: bodyboard  , athletes_per_team: individual , description: ''},
+  {name: chess      , athletes_per_team: individual , description: ''},
+  {name: pool       , athletes_per_team: individual , description: ''},
+  {name: foosebal   , athletes_per_team: individual , description: ''},
+  {name: climbing   , athletes_per_team: individual , description: ''},
 ]
 
 sports.each do |attr|
   Sport.find_or_initialize_by_name(attr[:name]).tap do |sport|
     sport.description = attr[:description]
+    sport.athletes_per_team = attr[:athletes_per_team]
     sport.save!
   end
 end
 
 puts 'creating default highlights'
-futsal_id = Sport.find_by_name(futsal).id
-basket_id = Sport.find_by_name(basket).id
-hand_id   = Sport.find_by_name(hand).id
+futsal_m_id = Sport.find_by_name(futsal_m).id
+futsal_f_id = Sport.find_by_name(futsal_f).id
+basket_id   = Sport.find_by_name(basket).id
+hand_id     = Sport.find_by_name(hand).id
+volley_id   = Sport.find_by_name(volley).id
 highlights = [ 
-  # futsal
-  { name: 'Goal'        , description: '', sport_id: futsal_id },
-  { name: 'Yellow Card' , description: '', sport_id: futsal_id },
-  { name: 'Red Card'    , description: '', sport_id: futsal_id },
-  { name: 'Foul'        , description: '', sport_id: futsal_id },
+  # futsal_m
+  { name: 'Goal'        , description: '', sport_id: futsal_m_id },
+  { name: 'Yellow Card' , description: '', sport_id: futsal_m_id },
+  { name: 'Red Card'    , description: '', sport_id: futsal_m_id },
+  { name: 'Foul'        , description: '', sport_id: futsal_m_id },
+  # futsal_f
+  { name: 'Goal'        , description: '', sport_id: futsal_f_id },
+  { name: 'Yellow Card' , description: '', sport_id: futsal_f_id },
+  { name: 'Red Card'    , description: '', sport_id: futsal_f_id },
+  { name: 'Foul'        , description: '', sport_id: futsal_f_id },
   # basket
   { name: 'Foul 1st Period' , description: '', sport_id: basket_id },
   { name: 'Foul 2nd Period' , description: '', sport_id: basket_id },
@@ -173,6 +211,18 @@ highlights = [
   # { name: 'E'    , description: 'Expulsion: can\'t be substituted'                             , sport_id: hand_id },
   { name: 'TP'   , description: 'Penalização adicional a um jogador que incorre numa conduta
                                   antidesportiva após sofrer desqualificação direta ou por acumulação.', sport_id: hand_id }
+  # volley
+  # badminton  
+  # tenis      
+  # table_tenis
+  # squash     
+  # padel      
+  # surf       
+  # bodyboard  
+  # chess      
+  # pool       
+  # foosebal   
+  # climbing   
 ]
 
 highlights.each do |attr|

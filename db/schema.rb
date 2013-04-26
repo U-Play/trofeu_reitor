@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422170013) do
+ActiveRecord::Schema.define(:version => 20130426105227) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -217,9 +217,10 @@ ActiveRecord::Schema.define(:version => 20130422170013) do
   create_table "sports", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "description"
+    t.integer  "athletes_per_team"
   end
 
   create_table "team_athletes", :force => true do |t|

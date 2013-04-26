@@ -41,10 +41,10 @@ ActiveAdmin.register Match do
   index do
     column("Status") { |m| status_tag m.status, m.status_type }
     column(:start_datetime)
-    column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-    column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+    column(:team_one) { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+    column(:team_two) { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
     column(:result)
-    column(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
+    # column(:location) { |m| link_to m.location.city, admin_location_path(m.location) }
 
     default_actions
   end
@@ -54,12 +54,12 @@ ActiveAdmin.register Match do
       [:start_datetime].each do |column|
         row(column)
       end
-      row(:team_one)   { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-      row(:team_two)   { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      row(:team_one)   { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      row(:team_two)   { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
       row(:result)
       row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
       row(:sport)      { |m| link_to m.tournament.sport.name, admin_sport_path(m.tournament.sport) }
-      row(:location)   { |m| link_to m.location.city, admin_location_path(m.location) }
+      # row(:location)   { |m| link_to m.location.city, admin_location_path(m.location) }
     end
     panel 'Game Card' do
       # render :partial => 'game_card', :locals => { match: match }
@@ -95,8 +95,8 @@ ActiveAdmin.register Match do
   sidebar "Other Matches In This Tournament", :only => :show do
     table_for Match.find_all_by_tournament_id(match.tournament_id) do
       # column(:status)  { |m| status_tag m.status, m.status_type }
-      column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-      column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+      column(:team_one) { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+      column(:team_two) { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
       column(:result)
       column('')     { |m| link_to 'View', admin_tournament_match_path(m.tournament, m) }
     end

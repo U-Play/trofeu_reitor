@@ -9,4 +9,9 @@ class Course < ActiveRecord::Base
 
   ## Validations ##
   validates :name, presence: true 
+
+  ## Methods ##
+  def to_s
+    name
+  end
 end
