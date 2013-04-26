@@ -4,9 +4,12 @@ FactoryGirl.define do
     sequence(:name) { |n| "Team#{n}" }
     association :tournament 
 
-    after(:create) do |t|
-     t.athletes << FactoryGirl.create(:user, role: Role.find_by_name('athlete'))
-    end
+    # after(:create) do |t|
+    #  FactoryGirl.create( :team_athlete, 
+    #                      athlete: FactoryGirl.create(:user, role: Role.find_by_name('athlete')), 
+    #                      team:    t
+    #                    )
+    # end
   end
 end
 
