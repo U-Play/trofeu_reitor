@@ -25,7 +25,7 @@ class CredentialWorker
     file.close
 
     # archive
-    zip_file = Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H:%M")}.zip")
+    zip_file = Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H:%M:%S")}.zip")
     Zip::ZipFile.open(zip_file, Zip::ZipFile::CREATE) do |z|
       z.add("1.pdf", file.path)
     end

@@ -24,6 +24,12 @@ class UserMailer < ApplicationMailer
     send_mail user, "Troféu Reitor 2013 - Dados invalidados"
   end
 
+  def credentials_ready(user, file)
+    @user = user
+    @file = file
+    send_mail user, "Your credentials are ready"
+  end
+
   protected
 
   def send_mail(user, subject)
@@ -32,9 +38,4 @@ class UserMailer < ApplicationMailer
     mail to: @user.email, subject: @subject
   end
 
-  def credentials_ready(user, file)
-    @user = user
-    @file = file
-    mail to: @user.email, subject: "Your credentials are ready"
-  end
 end
