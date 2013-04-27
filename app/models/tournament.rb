@@ -28,14 +28,10 @@ class Tournament < ActiveRecord::Base
   validates :sport, presence: true
   validates :event, presence: true
   validates :name, presence: true
-  validates :number_of_teams, :numericality => {:only_integer => true, :greater_than => 1}
-  validates :format, presence: true
 
   ## Callbacks ##
   before_validation :set_event
   before_save :reject_format
-  after_create :create_teams
-  after_create :elaborate_format
 
   ##Public Methods##
 
@@ -52,16 +48,7 @@ class Tournament < ActiveRecord::Base
       self.knockout_stage.create_knockout_matches
     end
   end
-
-  #Immediately create the number of teams of a tournament
-  def create_teams
-    i = 1
-    self.number_of_teams.times do
-      self.teams.create name: "Team #{i}"
-      i += 1
-    end
-  end
-
+  
   def has_group_stage?
     format_id == Format.group_format.id or format_id == Format.multi_stage_format.id
   end

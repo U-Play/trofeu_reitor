@@ -55,31 +55,15 @@ ActiveAdmin.register Tournament do
     f.inputs "Required Fields" do
       f.input :sport
       f.input :name
-      f.input :format
-      f.inputs "Group Stage" do
-        f.semantic_fields_for :group_stage, (f.object.group_stage || f.object.build_group_stage) do |gs|
-          gs.inputs do
-            gs.input :n_rounds
-            gs.input :loss_points
-            gs.input :tie_points
-            gs.input :win_points
-          end
-        end
+      if !f.object.new_record?
+        f.input :rules
       end
-      f.inputs "Knockout Stage" do
-        f.semantic_fields_for :knockout_stage, (f.object.knockout_stage || f.object.build_knockout_stage) do |ks|
-          ks.inputs do
-            ks.input :result_homologation
-            ks.input :third_place
-          end
-        end
-      end
-      f.input :number_of_teams
       f.input :description
-      f.input :rules
       f.input :contacts
-      f.input :start_date, as: :datepicker
-      f.input :end_date, as: :datepicker
+      if !f.object.new_record?
+        f.input :start_date, as: :datepicker
+        f.input :end_date, as: :datepicker
+      end
     end
     f.actions
   end
@@ -113,6 +97,32 @@ ActiveAdmin.register Tournament do
   member_action :show_knockout_draft, :method => :get do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
+  end
+
+  action_item :only => :show, :if => proc{ tournament.number_of_teams.nil? } do 
+    link_to 'Final Configuration', :controller => "tournaments", :action => "final_configuration", :id => tournament.id
+  end 
+
+  member_action :final_configuration, :method => :get do
+    @tournament = Tournament.find(params[:id])
+  end
+
+  member_action :begin_tournament, :method => :put do
+    @tournament = Tournament.find(params[:id])
+    params[:tournament].store(:number_of_teams, @tournament.teams.size)
+
+    if params[:tournament][:format_id].blank?
+      @tournament.errors.add(:format_id, "can't be blank")
+      render :final_configuration
+    elsif params[:tournament][:number_of_teams] <= 1
+      @tournament.errors.add(:base, "The tournament should have at least 2 teams")
+      render :final_configuration
+    elsif @tournament.update_attributes(params[:tournament])
+      @tournament.elaborate_format
+      redirect_to admin_tournament_path(@tournament)
+    else
+      render :final_configuration
+    end
   end
 
   action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.knockout_stage.actual_stage_finished?} do
