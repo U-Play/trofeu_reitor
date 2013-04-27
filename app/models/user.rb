@@ -45,9 +45,15 @@ class User < ActiveRecord::Base
   has_many :matches, :through => :highlight_occurrences
   has_many :highlights, :through => :highlight_occurrences
 
+  # Scopes
+  scope :with_validation_finished,    -> { where validation_state: :validated }
+  scope :without_validation_finished, -> { where validation_state: [:validation_requested, :validation_unprocessed] }
+  scope :with_validation_requested,   -> { where validation_state: :validation_requested }
+
+  scope :by_role, -> (role_name) { where role_id: Role.find_by_name(role_name) }
+
   # accepts_nested_attributes_for :team_athletes, :allow_destroy => true
 
-  ## Public Methods ##
 
   before_create :set_default_role
   # after_create :send_invitation_email
@@ -73,6 +79,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  ## Public Methods ##
 
   def name
     "#{first_name} #{last_name}".strip.presence || email
@@ -102,22 +109,6 @@ class User < ActiveRecord::Base
   def self.find_or_invite_by_email(email)
     user = User.find_by_email(email)
     return user || User.invite!(email: email)
-  end
-
-  def self.with_validation_finished
-    where validation_state: :validated
-  end
-
-  def self.with_validation_requested
-    where validation_state: :validation_requested
-  end
-
-  def self.with_validation_requested_or_unprocessed
-    where validation_state: [:validation_requested, :validation_unprocessed]
-  end
-
-  def self.by_role(role_name)
-    where role_id: Role.find_by_name(role_name)
   end
 
   protected

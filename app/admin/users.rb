@@ -7,11 +7,11 @@ ActiveAdmin.register User do
     end
   end
 
-  action_item :only => :show, if: proc{ user.can_validate? } do
+  action_item :only => :show, if: proc{ can? :validate, user } do
     link_to 'Validate', validate_admin_user_path(user), method: :post
   end
 
-  action_item :only => :show, if: proc{ user.validation_requested? } do
+  action_item :only => :show, if: proc{ can? :invalidate, user } do
     link_to 'Invalidate', invalidate_admin_user_path(user), method: :post
   end
 
@@ -22,9 +22,9 @@ ActiveAdmin.register User do
   filter :sports_number
 
   scope :all, default: true
-  scope(:pending_validation) { User.with_validation_requested_or_unprocessed }
+  scope(:pending_validation)   { User.without_validation_finished }
   scope(:requested_validation) { User.with_validation_requested }
-  scope(:validated) { User.with_validation_finished }
+  scope(:validated)            { User.with_validation_finished }
 
   index do
     column :validation_state
