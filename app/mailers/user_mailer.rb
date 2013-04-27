@@ -27,7 +27,7 @@ class UserMailer < ApplicationMailer
   def credentials_ready(user, file)
     @user = user
     @file = file
-    send_mail user, "Your credentials are ready"
+    send_mail user, "Troféu Reitor 2013 - Credenciais"
   end
 
   protected

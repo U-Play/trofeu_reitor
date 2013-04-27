@@ -25,16 +25,16 @@ class CredentialWorker
     file.close
 
     # archive
-    zip_file = Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H:%M:%S")}.zip")
+    zip_file = Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H_%M_%S")}.zip")
     Zip::ZipFile.open(zip_file, Zip::ZipFile::CREATE) do |z|
-      z.add("1.pdf", file.path)
+      z.add("1.pdf", file)
     end
 
     file.delete
 
-    UserMailer.credentials_ready User.find(user_id), zip_file
+    mail = UserMailer.credentials_ready User.find(user_id), zip_file
+    mail.deliver
   end
-
 end
 
 
