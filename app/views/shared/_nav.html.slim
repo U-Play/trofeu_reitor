@@ -1,12 +1,53 @@
 nav
-  ul
-    - if can?(:access, :admin)
-      li= link_to 'Admin', admin_users_path
-    - if user_signed_in?
-      li= link_to 'Profile', user_path(current_user)
+  .row
+    .large-12.columns
+      .nav-bar.right     
+        ul class="button-group"
+        - if can?(:access, :admin)
+          li= link_to 'Admin', admin_users_path
+        - if user_signed_in?
+          li=  link_to 'Profile', user_path(current_user)
 
-    - if user_signed_in?
-      li= link_to 'Sign out', destroy_user_session_path, method: :delete
-    - else
-      li= link_to 'Sign in', new_user_session_path
-      li= link_to 'Sign up', new_user_registration_path
+        - if user_signed_in?
+          li=  link_to 'Sign out', destroy_user_session_path, method: :delete
+
+        - else
+          li=  link_to 'Sign in', new_user_session_path 
+          li=  link_to 'Sign up', new_user_registration_path
+      = image_tag("reitor.png", :alt => "Trofeu do Reitor")
+      hr 
+      ul class="button-group"
+        li
+          a href="#" class=" small button" Andebol Misto
+        li
+          a href="#" class=" small button" Badminton
+        li
+          a href="#" class=" small button" Basquetebol Misto
+        li
+          a href="#" class=" small button" Bilhar
+        li
+          a href="#" class=" small button" BodyBoard
+        li
+          a href="#" class=" small button" Futsal Feminino
+        li
+          a href="#" class=" small button" Futsal Masculino
+        li
+          a href="#" class=" small button" Escalada
+        li
+          a href="#" class=" small button" Matraquilhos
+        li
+          a href="#" class=" small button" Padel
+        li
+          a href="#" class=" small button" Squash
+        li
+          a href="#" class=" small button" Surf
+        li
+          a href="#" class=" small button" Ténis
+        li
+          a href="#" class=" small button" Ténis de mesa
+        li
+          a href="#" class=" small button" Voleibol de Praia
+        li
+          a href="#" class=" small button" Xadrez
+          
+         
