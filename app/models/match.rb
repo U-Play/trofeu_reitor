@@ -10,6 +10,7 @@ class Match < ActiveRecord::Base
   belongs_to :team_two, :class_name => "Team"
 
   has_many :penalties
+  has_many :team_data, :class_name => "TeamData", :dependent => :destroy
 
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
@@ -23,8 +24,8 @@ class Match < ActiveRecord::Base
 
   ## Attributes ##
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
-  :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id, :result_team_one,
-  :result_team_two, :started, :ended, :knockout_index
+  :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id, :started, :ended,
+  :knockout_index
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
@@ -32,13 +33,14 @@ class Match < ActiveRecord::Base
 
   ## Validations ##
   validates :tournament, presence: true 
-  #validates :location_id, presence: true
   validates :format, presence: true
   validate :end_after_started
   validate :start_with_two_teams
+
+  ## Callbacks ##
+  before_save :team_with_team_data
   
   ## Scopes ##
-
   scope :finished, lambda { where("winner_id IS NOT NULL")}
   scope :stage, lambda { |stage| where(knockout_index: stage) }
 
@@ -89,6 +91,14 @@ class Match < ActiveRecord::Base
     "#{result_team_one} - #{result_team_two}"
   end
 
+  def result_team_one
+    team_one_data.try(:result)
+  end
+
+  def result_team_two
+    team_two_data.try(:result)
+  end
+
   def started?
     started && !ended
   end
@@ -99,6 +109,14 @@ class Match < ActiveRecord::Base
 
   def status_type
     ( started? && :error ) || ( pending? && :warning ) || ( ended? && :ok )
+  end
+
+  def team_one_data
+    team_data.where( :team_id => team_one.id ).first if team_one
+  end
+
+  def team_two_data
+    team_data.where( :team_id => team_two.id ).first if team_two
   end
 
   def teams
@@ -113,6 +131,15 @@ class Match < ActiveRecord::Base
     end
 
     def start_with_two_teams
-      errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
+      errors.add(:started, "match must have two teams defined") if started && (team_one.nil? || team_two.nil?)
+    end
+
+    def team_with_team_data
+      if team_one and team_one_data.nil?
+        self.team_data.build team: team_one
+      end
+      if team_two and team_two_data.nil?
+        self.team_data.build team: team_two
+      end
     end
 end

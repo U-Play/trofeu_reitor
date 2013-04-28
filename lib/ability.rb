@@ -18,7 +18,7 @@ class Ability
     validator
     can :access, :admin
     can :read, ActiveAdmin::Page, name: "Dashboard"
-    can :manage, [Tournament, Team, User]
+    can :manage, [Tournament, Team, User, Match, Group, Sport]
   end
 
   def validator

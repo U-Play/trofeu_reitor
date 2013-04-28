@@ -11,11 +11,15 @@ class Format < ActiveRecord::Base
   ## Validations ##
   validates :name, presence: true
 
-  def self.knockoutFormat
+  def self.knockout_format
     Format.find_by_name('Knockout Stage')
   end
 
-  def self.groupFormat
+  def self.group_format
     Format.find_by_name('Group Stage')
+  end
+
+  def self.multi_stage_format
+    Format.find_by_name('Multi Stage')
   end
 end

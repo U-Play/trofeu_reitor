@@ -17,4 +17,5 @@
 /config/accounts.yml
 
 .tags
+tags
 cscope.*

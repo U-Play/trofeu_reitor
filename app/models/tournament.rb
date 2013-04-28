@@ -12,7 +12,6 @@ class Tournament < ActiveRecord::Base
   has_many :teams, :order => 'id'
   has_many :matches, :order => 'position'
   has_many :groups
-  # has_many :news
 
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
@@ -58,19 +57,17 @@ class Tournament < ActiveRecord::Base
   def create_teams
     i = 1
     self.number_of_teams.times do
-      self.teams.create name: "Team " << i.to_s 
+      self.teams.create name: "Team #{i}"
       i += 1
     end
   end
 
   def has_group_stage?
-    #TODO check a better way to references group stage and multi stage other than the ids
-    format_id == 1 or format_id == 3
+    format_id == Format.group_format.id or format_id == Format.multi_stage_format.id
   end
 
   def has_knockout_stage?
-    #TODO check a better way to references group stage and multi stage other than the ids
-    format_id == 2 or format_id == 3
+    format_id == Format.knockout_format.id or format_id == Format.multi_stage_format.id
   end
 
   protected
@@ -80,9 +77,9 @@ class Tournament < ActiveRecord::Base
     end
 
     def reject_format
-      if self.format_id == 1
+      if self.format_id == Format.group_format.id
         self.knockout_stage = nil
-      elsif self.format_id == 2
+      elsif self.format_id == Format.knockout_format.id
         self.group_stage = nil
       end
     end

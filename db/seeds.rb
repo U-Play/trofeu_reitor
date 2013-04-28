@@ -12,6 +12,69 @@ roles.each do |role|
   Role.find_or_create_by_name(role[:name])
 end
 
+puts 'creating courses'
+courses = [
+  { name: 'Administração Publica' },
+  { name: 'Arqueologia' },
+  { name: 'Arquitetura' },
+  { name: 'Biologia Aplicada' },
+  { name: 'Biologia Geologia' },
+  { name: 'Bioquímica' },
+  { name: 'Ciência Politica' },
+  { name: 'Ciências do Ambiente' },
+  { name: 'Ciências da Computação' },
+  { name: 'Ciências da Comunicação ' },
+  { name: 'Contabilidade' },
+  { name: 'Criminologia' },
+  { name: 'Design e Marketing de Moda ' },
+  { name: 'Design do Produto' },
+  { name: 'Direito' },
+  { name: 'Economia' },
+  { name: 'Educação' },
+  { name: 'Educação Básica' },
+  { name: 'Enfermagem' },
+  { name: 'Engenharia Biológica (MI)' },
+  { name: 'Engenharia Biomédica (MI)' },
+  { name: 'Engenharia Civil (MI)' },
+  { name: 'Engenharia de Comunicações (MI)' },
+  { name: 'Engenharia Electrónica Industrial e Computadores (MI)' },
+  { name: 'Engenharia Física (MI)' },
+  { name: 'Engenharia e Gestão Industrial (MI)' },
+  { name: 'Engenharia e Gestão de Sistemas de Informação (MI)' },
+  { name: 'Engenharia Informática' },
+  { name: 'Engenharia de Materiais (MI)' },
+  { name: 'Engenharia Mecânica (MI)' },
+  { name: 'Engenharia de Polímeros (MI)' },
+  { name: 'Engenharia Têxtil (MI)' },
+  { name: 'Estatística Aplicada' },
+  { name: 'Estudos Culturais' },
+  { name: 'Estudos Portugueses e Lusófonos' },
+  { name: 'Filosofia' },
+  { name: 'Física' },
+  { name: 'Geografia e Planeamento' },
+  { name: 'Geologia ' },
+  { name: 'Gestão' },
+  { name: 'História' },
+  { name: 'Línguas Aplicadas ' },
+  { name: 'Línguas e Culturas Orientais' },
+  { name: 'Línguas e Literaturas Europeias' },
+  { name: 'Marketing' },
+  { name: 'Matemática' },
+  { name: 'Medicina (MI)' },
+  { name: 'Música' },
+  { name: 'Negócios Internacionais' },
+  { name: 'Optometria e Ciências da Visão ' },
+  { name: 'Psicologia (MI)' },
+  { name: 'Química' },
+  { name: 'Relações Internacionais' },
+  { name: 'Sociologia' },
+  { name: 'Teatro' }
+]
+
+courses.each do |course|
+  Course.find_or_create_by_name(course[:name])
+end
+
 if Rails.env.production?
   puts 'creating default users in production'
   users = [
@@ -67,20 +130,99 @@ Format.find_or_initialize_by_name('Multi Stage').tap do |group|
 end
 
 puts 'creating default sports'
-futsal = 'Futsal'
-sports = [{name: futsal, description: ''}]
+# Sports
+individual  = 1
+team        = 14
+
+futsal_m    = 'Futsal M'
+futsal_f    = 'Futsal F'
+basket      = 'Basquetebol'
+hand        = 'Andebol'
+volley      = 'Vólei de Praia'
+badminton   = 'Badminton'
+tenis       = 'Ténis'
+table_tenis = 'Ténis de Mesa'
+squash      = 'Squash'
+padel       = 'Padel'
+surf        = 'Surf'
+bodyboard   = 'Bodyboard'
+chess       = 'Xadrez'
+pool        = 'Bilhar'
+foosebal    = 'Matraquilhos'
+climbing    = 'Escalada'
+sports = [
+  {name: futsal_m   , athletes_per_team: team       , description: ''},
+  {name: futsal_f   , athletes_per_team: team       , description: ''},
+  {name: basket     , athletes_per_team: team       , description: ''},
+  {name: hand       , athletes_per_team: team       , description: ''},
+  {name: volley     , athletes_per_team: team       , description: ''},
+  {name: badminton  , athletes_per_team: individual , description: ''},
+  {name: tenis      , athletes_per_team: individual , description: ''},
+  {name: table_tenis, athletes_per_team: individual , description: ''},
+  {name: squash     , athletes_per_team: individual , description: ''},
+  {name: padel      , athletes_per_team: individual , description: ''},
+  {name: surf       , athletes_per_team: individual , description: ''},
+  {name: bodyboard  , athletes_per_team: individual , description: ''},
+  {name: chess      , athletes_per_team: individual , description: ''},
+  {name: pool       , athletes_per_team: individual , description: ''},
+  {name: foosebal   , athletes_per_team: individual , description: ''},
+  {name: climbing   , athletes_per_team: individual , description: ''},
+]
 
 sports.each do |attr|
   Sport.find_or_initialize_by_name(attr[:name]).tap do |sport|
     sport.description = attr[:description]
+    sport.athletes_per_team = attr[:athletes_per_team]
     sport.save!
   end
 end
 
 puts 'creating default highlights'
-highlights = [
-  { name: 'Goal', description: '', sport_id: Sport.find_by_name(futsal).id },
-  { name: 'Card', description: '', sport_id: Sport.find_by_name(futsal).id }
+futsal_m_id = Sport.find_by_name(futsal_m).id
+futsal_f_id = Sport.find_by_name(futsal_f).id
+basket_id   = Sport.find_by_name(basket).id
+hand_id     = Sport.find_by_name(hand).id
+volley_id   = Sport.find_by_name(volley).id
+highlights = [ 
+  # futsal_m
+  { name: 'Goal'        , description: '', sport_id: futsal_m_id },
+  { name: 'Yellow Card' , description: '', sport_id: futsal_m_id },
+  { name: 'Red Card'    , description: '', sport_id: futsal_m_id },
+  { name: 'Foul'        , description: '', sport_id: futsal_m_id },
+  # futsal_f
+  { name: 'Goal'        , description: '', sport_id: futsal_f_id },
+  { name: 'Yellow Card' , description: '', sport_id: futsal_f_id },
+  { name: 'Red Card'    , description: '', sport_id: futsal_f_id },
+  { name: 'Foul'        , description: '', sport_id: futsal_f_id },
+  # basket
+  { name: 'Foul 1st Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 2nd Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 3rd Period' , description: '', sport_id: basket_id },
+  { name: 'Foul 4th Period' , description: '', sport_id: basket_id },
+  { name: 'One Point'       , description: '', sport_id: basket_id },
+  { name: 'Two Points'      , description: '', sport_id: basket_id },
+  { name: 'Three Points'    , description: '', sport_id: basket_id },
+  # handball
+  { name: 'Goal' , description: ''                           , sport_id: hand_id },
+  { name: 'A'    , description: 'Yellow Card Warning'        , sport_id: hand_id },
+  { name: "2'"   , description: ''                           , sport_id: hand_id },
+  { name: 'D/E'  , description: 'Desqualification/Expulsion' , sport_id: hand_id },
+  # { name: 'D'    , description: 'Red Card Desqualification: can be substituted after 2 minutes', sport_id: hand_id },
+  # { name: 'E'    , description: 'Expulsion: can\'t be substituted'                             , sport_id: hand_id },
+  { name: 'TP'   , description: 'Penalização adicional a um jogador que incorre numa conduta
+                                  antidesportiva após sofrer desqualificação direta ou por acumulação.', sport_id: hand_id }
+  # volley
+  # badminton  
+  # tenis      
+  # table_tenis
+  # squash     
+  # padel      
+  # surf       
+  # bodyboard  
+  # chess      
+  # pool       
+  # foosebal   
+  # climbing   
 ]
 
 highlights.each do |attr|

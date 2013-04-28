@@ -2,9 +2,11 @@ ActiveAdmin.register Sport do
   menu :parent => "Administration"
 
   filter :name
+  # filter :type
 
   index do
     column(:name) { |sport| link_to sport.name, admin_sport_path(sport) }
+    column(:type) { |sport| sport.is_individual? ? 'Individual' : 'Team' }
     default_actions
   end
 
@@ -12,6 +14,7 @@ ActiveAdmin.register Sport do
     f.inputs "Sport Details" do
       f.input :name, :required => true
       f.input :description
+      f.input :athletes_per_team, :label => 'Max number of athletes per team', required: true
     end
     f.inputs "Highlights" do
       f.has_many :highlights do |mr|
@@ -31,19 +34,19 @@ ActiveAdmin.register Sport do
   show do
     panel "Sport Details" do
       attributes_table do
-        [:name, :description].each do |column|
+        [:name, :description, :athletes_per_team].each do |column|
           row(column)
         end
+        row(:type) { |sport| sport.is_individual? ? 'Individual' : 'Team' }
       end
     end
-    panel "Tournaments" do
-      table_for sport.tournaments do
-        column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
-        column(:start_date)
-        column(:end_date)
-      end
-    end
-
+    # panel "Tournaments" do
+    #   table_for sport.tournaments do
+    #     column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
+    #     column(:start_date)
+    #     column(:end_date)
+    #   end
+    # end
     panel "Highlights" do
       table_for sport.highlights do |t|
         t.column(:name) { |highlight| link_to highlight.name, admin_sport_highlight_path(highlight.sport, highlight) }

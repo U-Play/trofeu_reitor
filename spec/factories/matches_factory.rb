@@ -6,9 +6,9 @@ FactoryGirl.define do
     association :location 
     association :format 
 
-    after(:create) do |m|
-      m.team_one_id = FactoryGirl.create(:team, tournament_id: m.tournament_id).id
-      m.team_two_id = FactoryGirl.create(:team, tournament_id: m.tournament_id).id
+    after(:build) do |m|
+      m.team_one = FactoryGirl.create(:team, tournament_id: m.tournament_id)
+      m.team_two = FactoryGirl.create(:team, tournament_id: m.tournament_id)
       m.save
     end
 

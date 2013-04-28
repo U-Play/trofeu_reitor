@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416135157) do
+ActiveRecord::Schema.define(:version => 20130426153125) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
   add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
+
+  create_table "courses", :force => true do |t|
+    t.string   "name"
+    t.datetime "deleted_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -115,6 +122,22 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "match_athletes", :force => true do |t|
+    t.boolean  "starter"
+    t.boolean  "substitute"
+    t.boolean  "captain"
+    t.integer  "number"
+    t.integer  "match_id"
+    t.integer  "team_id"
+    t.integer  "athlete_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "match_athletes", ["athlete_id"], :name => "index_match_athletes_on_athlete_id"
+  add_index "match_athletes", ["match_id"], :name => "index_match_athletes_on_match_id"
+  add_index "match_athletes", ["team_id"], :name => "index_match_athletes_on_team_id"
+
   create_table "match_referees", :force => true do |t|
     t.datetime "deleted_at"
     t.integer  "match_id"
@@ -128,20 +151,18 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
 
   create_table "matches", :force => true do |t|
     t.integer  "position"
+    t.datetime "start_datetime"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
     t.integer  "location_id"
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
     t.integer  "format_id"
-    t.datetime "start_datetime"
-    t.string   "result_team_one"
-    t.string   "result_team_two"
     t.boolean  "started"
     t.boolean  "ended"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "knockout_index"
   end
 
@@ -196,9 +217,10 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
   create_table "sports", :force => true do |t|
     t.string   "name"
     t.datetime "deleted_at"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "description"
+    t.integer  "athletes_per_team"
   end
 
   create_table "team_athletes", :force => true do |t|
@@ -211,6 +233,19 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
 
   add_index "team_athletes", ["athlete_id"], :name => "index_team_athletes_on_user_id"
   add_index "team_athletes", ["team_id"], :name => "index_team_athletes_on_team_id"
+
+  create_table "team_data", :force => true do |t|
+    t.string   "color"
+    t.string   "result"
+    t.datetime "deleted_at"
+    t.integer  "match_id"
+    t.integer  "team_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "team_data", ["match_id"], :name => "index_team_data_on_match_id"
+  add_index "team_data", ["team_id"], :name => "index_team_data_on_team_id"
 
   create_table "team_referees", :force => true do |t|
     t.datetime "deleted_at"
@@ -231,8 +266,10 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "group_id"
+    t.integer  "course_id"
   end
 
+  add_index "teams", ["course_id"], :name => "index_teams_on_course_id"
   add_index "teams", ["manager_id"], :name => "index_teams_on_coach_id"
   add_index "teams", ["tournament_id"], :name => "index_teams_on_tournament_id"
 
@@ -272,7 +309,6 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "username"
-    t.string   "course"
     t.string   "student_number"
     t.string   "sports_number"
     t.string   "picture_file_name"
@@ -288,8 +324,10 @@ ActiveRecord::Schema.define(:version => 20130416135157) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.string   "validation_state"
+    t.integer  "course_id"
   end
 
+  add_index "users", ["course_id"], :name => "index_users_on_course_id"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 

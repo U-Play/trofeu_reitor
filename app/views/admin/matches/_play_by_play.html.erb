@@ -1,24 +1,32 @@
-<table class="table table-condensed table-striped">
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Highlight</th>
-      <th>Athlete</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% if match.started? or match.ended? %>
-      <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: highlight } %>
-    <% end %>
-    <% highlights.each do |hl| %>
+<% if match.started? or match.ended? %>
+    <%# <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: HighlightOccurrence.new } %>
+    <%= render :partial => 'new_athletes_highlight_occurrences_form', 
+                :locals => { 
+                  match: match, 
+                  highlights: Highlight.find_all_by_sport_id(match.tournament.sport.id) 
+                } 
+    %>
+<% end %>
+<div class='panel'>
+  <h3>History</h3>
+  <table>
+    <thead>
       <tr>
-        <td><%= hl.time %></td>
-        <td><%= hl.highlight.name %></td>
-        <td><%= hl.athlete.name_with_team(match) %></td>
-        <td><%= link_to 'Apagar', admin_match_highlight_occurrence_path(match, hl), :method => :delete %></td>
+        <th>Time</th>
+        <th>Highlight</th>
+        <th>Athlete</th>
+        <th></th>
       </tr>
-    <% end if highlights %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% highlights.each do |hl| %>
+        <tr>
+          <td><%= hl.time %></td>
+          <td><%= hl.highlight.name %></td>
+          <td><%= hl.athlete.name_with_team(match) %></td>
+          <td><%= link_to 'Delete', admin_match_highlight_occurrence_path(match, hl), :method => :delete %></td>
+        </tr>
+      <% end if highlights %>
+    </tbody>
+  </table>
+</div>

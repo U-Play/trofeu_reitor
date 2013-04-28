@@ -70,7 +70,7 @@ class KnockoutStage < ActiveRecord::Base
     position = 1
     #Create all Games
     self.tournament_games.times do
-      self.tournament.matches.create position: position, knockout_index: stage_of_position(position), format_id: Format.knockoutFormat.id
+      self.tournament.matches.create position: position, knockout_index: stage_of_position(position), format_id: Format.knockout_format.id
       position += 1
     end
   end
