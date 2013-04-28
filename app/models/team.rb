@@ -22,9 +22,8 @@ class Team < ActiveRecord::Base
   has_many :referees, :through => :team_referees, :source => :referee
 
   ## Attributes ##
-  attr_accessor :manager_email
   attr_accessible :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
-  :team_referees_attributes, :course, :course_id
+    :team_referees_attributes, :course, :course_id
 
   attr_accessor :manager_email
 
@@ -33,8 +32,8 @@ class Team < ActiveRecord::Base
   accepts_nested_attributes_for :team_referees, :allow_destroy => true
 
   ## Callbacks ##
-  after_update       :set_manager
-  before_validation  :set_name
+  after_save        :set_manager
+  before_validation :set_name
 
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
@@ -61,7 +60,7 @@ class Team < ActiveRecord::Base
   protected
 
     def set_manager
-      return if @manager_email.nil? || (self.manager && self.manager.email == @manager_email)
+      return if @manager_email.nil? || @manager_email.strip.length == 0 || (self.manager && self.manager.email == @manager_email)
 
       manager = User.find_or_invite_by_email(@manager_email)
       @manager_email = nil
