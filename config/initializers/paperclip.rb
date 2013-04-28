@@ -7,5 +7,5 @@ if Rails.env.production?
 end
 
 # user#picture: public/system/uploads/users/pictures/:id.:extension
-Paperclip::Attachment.default_options[:path] = ':rails_root/public/uploads/:class/:attachment/:id.:extension'
-Paperclip::Attachment.default_options[:url]  = '/uploads/:class/:attachment/:id.:extension'
+Paperclip::Attachment.default_options[:path] = ':rails_root/public/uploads/:class/:attachment/:id/:style.:extension'
+Paperclip::Attachment.default_options[:url]  = '/uploads/:class/:attachment/:id/:style.:extension'

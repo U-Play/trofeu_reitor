@@ -1,0 +1,31 @@
+- title 'User'
+
+= image_tag @user.picture.url(:default)
+p
+  strong Email:
+  = @user.email
+
+p
+  strong Name:
+  = @user.name
+
+p
+  strong Course:
+  =  @user.course
+
+p
+  strong Student Number:
+  = @user.student_number
+
+p
+  strong Sports Number:
+  = @user.sports_number
+
+p
+  strong Validation State:
+  = @user.validation_state.titleize
+
+.action_container
+  = link_to 'Edit', edit_user_path(@user) if can? :update, @user
+  = link_to 'Change Password', edit_user_registration_path
+  = button_to 'Request Validation', user_request_validation_path(@user) if can? :request_validation, @user
