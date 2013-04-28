@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
 
   has_attached_file :picture,
                     styles: { default: "300x300>", thumb: "150x150>" },
-                    path: 'public/uploads/'
                     default_url: '/assets/defaults/user_picture_:style.png'
 
   ## Relations ##
