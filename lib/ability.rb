@@ -7,12 +7,15 @@ class Ability
     send user.role.name unless user.nil? || user.role.nil?
   end
 
+  protected
+
   def root
     admin
     can :manage, :all
   end
 
   def admin
+    validator
     can :access, :admin
     can :read, ActiveAdmin::Page, name: "Dashboard"
     can :manage, [Tournament, Team, User]
@@ -20,6 +23,10 @@ class Ability
 
   def validator
     can :access, :admin
+    can :read, [Tournament, Team]
+    can :read, User
+    can :validate, User.without_validation_finished
+    can :invalidate, User.with_validation_requested
   end
 
   def blogger
@@ -29,6 +36,8 @@ class Ability
   def manager
     athlete
     can :access, :admin
+    can :read, [Tournament, Team, User]
+    can :manage, Team, id: @user.teams_as_manager.map(&:id)
   end
 
   def athlete
