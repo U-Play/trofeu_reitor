@@ -36,7 +36,7 @@ class Ability
   def manager
     athlete
     can :access, :admin
-    can :read, [Tournament, User]
+    can :read, [Tournament, Team, User]
     can :manage, Team, id: @user.teams_as_manager.map(&:id)
   end
 
