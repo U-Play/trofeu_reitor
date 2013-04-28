@@ -63,13 +63,11 @@ class Tournament < ActiveRecord::Base
   end
 
   def has_group_stage?
-    format_id == Format.groupFormat.id or format_id == Format.multiStageFormat.id
-    # format_id == 1 or format_id == 3
+    format_id == Format.group_format.id or format_id == Format.multi_stage_format.id
   end
 
   def has_knockout_stage?
-    format_id == Format.knockoutFormat.id or format_id == Format.multiStageFormat.id
-    # format_id == 2 or format_id == 3
+    format_id == Format.knockout_format.id or format_id == Format.multi_stage_format.id
   end
 
   protected
@@ -79,11 +77,9 @@ class Tournament < ActiveRecord::Base
     end
 
     def reject_format
-      if self.format_id == Format.groupFormat.id
-      # if self.format_id == 1
+      if self.format_id == Format.group_format.id
         self.knockout_stage = nil
-      # elsif self.format_id == 2
-      elsif self.format_id == Format.knockoutFormat.id
+      elsif self.format_id == Format.knockout_format.id
         self.group_stage = nil
       end
     end

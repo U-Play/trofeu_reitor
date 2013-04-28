@@ -14,8 +14,11 @@ class Sport < ActiveRecord::Base
   validate :name, :athletes_per_team, presence: true
 
   ## Public Methods ##
+  def is_individual?
+    athletes_per_team == 1
+  end
 
-  def type
-    athletes_per_team == 1 ? 'Individual' : 'Team'
+  def is_team?
+    athletes_per_team > 1
   end
 end

@@ -10,7 +10,7 @@ class Match < ActiveRecord::Base
   belongs_to :team_two, :class_name => "Team"
 
   has_many :penalties
-  has_many :team_data, :class_name => "TeamData"
+  has_many :team_data, :class_name => "TeamData", :dependent => :destroy
 
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
@@ -88,15 +88,15 @@ class Match < ActiveRecord::Base
   end
 
   def result
-    "#{result_team_one} - #{team_two_data.result}"
+    "#{result_team_one} - #{result_team_two}"
   end
 
   def result_team_one
-    team_one_data.result
+    team_one_data.try(:result)
   end
 
-  def result_team_one=(value)
-    team_one_data.update_attributes :result => value
+  def result_team_two
+    team_two_data.try(:result)
   end
 
   def started?
@@ -131,13 +131,14 @@ class Match < ActiveRecord::Base
     end
 
     def start_with_two_teams
-      errors.add(:started, "match must have two athletes defined") if started && (team_one.nil? || team_two.nil?)
+      errors.add(:started, "match must have two teams defined") if started && (team_one.nil? || team_two.nil?)
     end
 
     def team_with_team_data
       if team_one and team_one_data.nil?
         self.team_data.build team: team_one
-      elsif team_two and team_two_data.nil?
+      end
+      if team_two and team_two_data.nil?
         self.team_data.build team: team_two
       end
     end
