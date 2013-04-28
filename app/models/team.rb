@@ -41,6 +41,10 @@ class Team < ActiveRecord::Base
 
 
   ## Public Methods ##
+  def athletes_per_team
+    tournament.sport.athletes_per_team
+  end
+
   def has_athlete?(athlete)
     athletes.any? { |ath| ath.id == athlete.id }
   end
@@ -53,15 +57,11 @@ class Team < ActiveRecord::Base
     tournament.sport.type
   end
 
-  def athletes_per_team
-    tournament.sport.athletes_per_team
-  end
-
   ## Private Methods ##
   protected
 
     def set_manager
-      return if @manager_email.nil? || @manager_email.strip.length == 0 || (self.manager && self.manager.email == @manager_email)
+      return if @manager_email.nil? || (self.manager && self.manager.email == @manager_email)
 
       manager = User.find_or_invite_by_email(@manager_email)
       @manager_email = nil
