@@ -17,9 +17,9 @@ class User < ActiveRecord::Base
                   :picture,
                   :role_id
 
-  has_attached_file :picture
-                    # TODO check this configs when possible
-                    #styles: { medium: "300x300>", thumb: "100x100>" }
+  has_attached_file :picture,
+                    styles: { default: "300x300>", thumb: "150x150>" },
+                    default_url: '/assets/defaults/user_picture_:style.png'
 
   ## Relations ##
   belongs_to :role

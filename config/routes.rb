@@ -14,6 +14,5 @@ Uplay::Application.routes.draw do
     post '/request-validation' => 'users#request_validation', as: :request_validation
   end
 
-
   ActiveAdmin.routes(self)
 end
