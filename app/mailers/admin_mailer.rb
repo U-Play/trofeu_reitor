@@ -1,6 +1,6 @@
 class AdminMailer < ApplicationMailer
   default from: "noreply@uplay.com"
-  default to: "test@uplaypro.com" # TODO definir aqui o mail do admin
+  default to: "vtr@uplaypro.com" # TODO definir aqui o mail do admin
 
   def validation_requested(user)
     @user = user
