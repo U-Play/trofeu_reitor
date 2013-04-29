@@ -48,7 +48,11 @@ class Tournament < ActiveRecord::Base
       self.knockout_stage.create_knockout_matches
     end
   end
-  
+
+  def has_teams?
+    !self.teams.empty?
+  end
+
   def has_group_stage?
     format_id == Format.group_format.id or format_id == Format.multi_stage_format.id
   end

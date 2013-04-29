@@ -99,8 +99,8 @@ ActiveAdmin.register Tournament do
     @teams = @tournament.teams
   end
 
-  action_item :only => :show, :if => proc{ tournament.number_of_teams.nil? } do 
-    link_to 'Final Configuration', :controller => "tournaments", :action => "final_configuration", :id => tournament.id
+  action_item :only => :show, :if => proc{ tournament.has_teams? } do 
+    link_to 'Begin Tournament', :controller => "tournaments", :action => "final_configuration", :id => tournament.id
   end 
 
   member_action :final_configuration, :method => :get do
