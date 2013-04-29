@@ -22,8 +22,7 @@ ActiveAdmin.register Team do
   end
 
   member_action :credentials, method: 'get' do
-    Resque.enqueue CredentialWorker, params[:id], current_user.id
-    UserMailer.credentials_ready current_user, "something"
+    Resque.enqueue CredentialWorker, params[:id], current_user.id, "#{request.protocol}#{request.host_with_port}"
     redirect_to admin_tournament_team_path(params[:tournament_id], params[:id])
   end
 

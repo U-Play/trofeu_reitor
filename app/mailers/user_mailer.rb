@@ -24,10 +24,11 @@ class UserMailer < ApplicationMailer
     send_mail user, "Troféu Reitor 2013 - Dados invalidados"
   end
 
-  def credentials_ready(user, file)
+  def team_credentials_ready(user, team, file)
     @user = user
     @file = file
-    send_mail user, "Troféu Reitor 2013 - Credenciais"
+    @team = team
+    send_mail user, "Troféu Reitor 2013 - Credenciais da equipa #{@team.name}"
   end
 
   protected

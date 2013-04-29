@@ -1,6 +1,6 @@
 class CredentialWorker
   @queue = :credentials
-  def self.perform(team_id, user_id)
+  def self.perform(team_id, user_id, host_with_port)
     outfile_path = Rails.root.join('public')
     view_path = Rails.root.join('app', 'views', 'credentials')
 
@@ -25,14 +25,15 @@ class CredentialWorker
     file.close
 
     # archive
-    zip_file = Rails.root.join("public/credentials#{Time.now.strftime("%Y-%m-%d_%H_%M_%S")}.zip")
+    zip_name = "credentials#{Time.now.strftime("%Y-%m-%d_%H_%M_%S")}.zip"
+    zip_file = Rails.root.join("public/#{zip_name}")
     Zip::ZipFile.open(zip_file, Zip::ZipFile::CREATE) do |z|
       z.add("1.pdf", file)
     end
 
     file.delete
 
-    mail = UserMailer.credentials_ready User.find(user_id), zip_file
+    mail = UserMailer.team_credentials_ready User.find(user_id), Team.find(team_id), "#{host_with_port}/#{zip_name}"
     mail.deliver
   end
 end
