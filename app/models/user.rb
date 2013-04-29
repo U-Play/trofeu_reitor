@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
                   :student_number,
                   :sports_number,
                   :picture,
-                  :role_id
+                  :role_id,
+                  :role
 
   has_attached_file :picture,
                     styles: { default: "300x300>", thumb: "150x150>" },
@@ -115,7 +116,7 @@ class User < ActiveRecord::Base
   protected
 
     def set_role(new_role)
-      self.update_attributes role_id: Role.find_by_name(new_role).id
+      self.update_attributes role: Role.find_by_name(new_role)
     end
 
     def set_default_role
