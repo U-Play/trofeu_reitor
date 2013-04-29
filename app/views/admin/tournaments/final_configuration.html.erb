@@ -1,0 +1,35 @@
+<%= semantic_form_for @tournament, :url => begin_tournament_admin_tournament_path(@tournament), :html => {:method => :put} do |f| %>
+    <%= f.inputs "Required Fields" do %>
+      <%= f.semantic_errors :base %>
+      <%= f.input :sport %>
+      <%= f.input :name %>
+      <%= f.input :format, :required => true %>
+      <%=  f.inputs "Group Stage" do %>
+        <%= f.semantic_fields_for :group_stage, (f.object.group_stage || f.object.build_group_stage) do |gs| %>
+          <%= gs.inputs do %>
+            <%= gs.input :n_rounds %>
+            <%= gs.input :loss_points %>
+            <%= gs.input :tie_points %>
+            <%= gs.input :win_points %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= f.inputs "Knockout Stage" do %>
+        <%= f.semantic_fields_for :knockout_stage, (f.object.knockout_stage || f.object.build_knockout_stage) do |ks| %>
+          <%= ks.inputs do %>
+            <%= ks.input :result_homologation %>
+            <%= ks.input :third_place %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= f.input :rules %>
+      <%= f.input :description %>
+      <%= f.input :contacts %>
+      <%= f.input :start_date, :as => :string, :input_html => {:class => "datepicker"} %>
+      <%= f.input :end_date, :as => :string, :input_html => {:class => "datepicker"} %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action :submit, :label => "Begin Tournament" %>
+      <li class="cancel"><%= link_to "Cancel", admin_tournament_path(@tournament) %></li>
+    <% end %>
+<% end %>
