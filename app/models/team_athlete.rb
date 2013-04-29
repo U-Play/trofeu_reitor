@@ -36,6 +36,7 @@ class TeamAthlete < ActiveRecord::Base
     def set_athlete
       return if self.athlete
       athlete = User.find_or_invite_by_email(@athlete_email)
+      athlete.update_attributes course: self.team.course
       self.athlete_id = athlete.id
     end
 
