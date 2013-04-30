@@ -1,6 +1,7 @@
 // Required global settings and mixins for Foundation
 @import "foundation/foundation-global";
 
+
 // Settings file to override Foundation variables
 
 // You can find the variables for each component at the bottom of their
@@ -15,11 +16,11 @@
 // $em-base: 16px;
 
 // We use these to control various global styles
-// $body-bg: #fff;
-// $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-// $body-font-weight: normal;
-// $body-font-style: normal;
+ $body-bg:  #fff;
+ $body-font-color: #222;
+ $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+ $body-font-weight: normal;
+ $body-font-style: normal;
 
 // We use this to control font-smoothing
 // $font-smoothing: antialiased;
@@ -34,8 +35,8 @@
 // $success-color: #5da423;
 
 // We use these to make sure border radius matches unless we want it different.
-// $global-radius: 3px;
-// $global-rounded: 1000px;
+ $global-radius: 3px;
+ $global-rounded: 1000px;
 
 // We use these to control inset shadow shiny edges and depressions.
 // $shiny-edge-size: 0 1px 0;
