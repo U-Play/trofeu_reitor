@@ -87,7 +87,7 @@ ActiveAdmin.register Tournament do
   end
 
   # Save the draft
-  member_action :save_groups_draft, :method => :post do
+  member_action :save_groups_draft, :method => :put do
   end
 
   action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 

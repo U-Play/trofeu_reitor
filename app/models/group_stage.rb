@@ -20,7 +20,7 @@ class GroupStage < ActiveRecord::Base
   ## Public Methods ##
 
   def create_groups
-    for i in 10..10+self.n_groups do
+    for i in 10..9+self.n_groups do
       self.tournament.groups.create name: "Group #{i.to_s(36).upcase}"
     end
   end
