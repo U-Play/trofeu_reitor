@@ -29,7 +29,7 @@ class TeamAthlete < ActiveRecord::Base
 
     def athletes_per_team
       if ( (TeamAthlete.where(:team_id => team_id).count + 1) > team.athletes_per_team )
-        errors.add( :athletes, ": too many for this #{team.sport_type} sport" ) 
+        errors.add( :athletes, ": too many for this sport" ) 
       end
     end
 

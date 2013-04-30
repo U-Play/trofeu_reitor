@@ -52,9 +52,9 @@ class Team < ActiveRecord::Base
     Match.where(:id => (matches_as_team_one + matches_as_team_two))
   end
 
-  def sport_type
-    tournament.sport.type
-  end
+  # def sport_type
+  #   tournament.sport.type
+  # end
 
   ## Private Methods ##
   protected
