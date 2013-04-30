@@ -47,8 +47,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
-  # Add Foundation Here
-  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'zurb-foundation'
   gem 'compass-rails'
 end
 
