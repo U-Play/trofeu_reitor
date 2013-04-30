@@ -13,8 +13,8 @@ class CredentialWorker
       margin: {
         top: 20,
         bottom: 20,
-        left: 13,
-        right: 13
+        left: 14,
+        right: 14
       }, locals: { :athletes => Team.find(team_id).athletes }
     pdf = WickedPdf.new.pdf_from_string(pdf_html)
 
