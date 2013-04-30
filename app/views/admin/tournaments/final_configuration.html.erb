@@ -7,7 +7,8 @@
       <%=  f.inputs "Group Stage" do %>
         <%= f.semantic_fields_for :group_stage, (f.object.group_stage || f.object.build_group_stage) do |gs| %>
           <%= gs.inputs do %>
-            <%= gs.input :n_rounds %>
+            <%= gs.input :n_groups %>
+            <%= gs.input :n_turns %>
             <%= gs.input :loss_points %>
             <%= gs.input :tie_points %>
             <%= gs.input :win_points %>

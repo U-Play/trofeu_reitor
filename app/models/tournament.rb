@@ -49,8 +49,12 @@ class Tournament < ActiveRecord::Base
     end
   end
 
-  def has_teams?
-    !self.teams.empty?
+  def has_minimum_teams?
+    self.teams.size >= 2
+  end
+
+  def finalized?
+    !self.number_of_teams.nil?
   end
 
   def has_group_stage?

@@ -1,0 +1,21 @@
+<% team_position = 1 %>
+<%= semantic_form_for @tournament, :url => save_knockout_draft_admin_tournament_path(@tournament), :html => {:method => :put} do |f| %>
+  <%= f.inputs "Matches" do %>
+    <%= f.semantic_errors :base %>
+    <% @tournament.matches.stage(@first_stage).each do |m| %>
+      <h4>Match <%= m.position %></h4>
+        <%= f.label "Team #{team_position}:   " %>
+        <%= select_tag "matches[#{m.id}][]", options_from_collection_for_select(@teams, :id, :course, m.team_one_id), :include_blank => true %>
+        <p/>
+        <%= f.label "Team #{team_position + 1}:   " %>
+        <%= select_tag "matches[#{m.id}][]", options_from_collection_for_select(@teams, :id, :course, m.team_two_id), :include_blank => true %>
+        <p/>
+        <br/>
+        <% team_position += 2 %>
+      <% end %>
+    <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :label => "Save Knockout Draft" %>
+    <li class="cancel"><%= link_to "Cancel", admin_tournament_path(@tournament) %></li>
+  <% end %>
+<% end %>

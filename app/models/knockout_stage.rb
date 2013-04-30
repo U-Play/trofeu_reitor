@@ -5,20 +5,12 @@ class KnockoutStage < ActiveRecord::Base
   belongs_to :tournament
 
   ## Attributes ##
-  attr_accessible :result_homologation, :third_place, :tournament_id
+  attr_accessible :draft_made, :result_homologation, :third_place, :tournament_id
 
   ## Validations ##
   validates :tournament, presence: true
 
   ## Public Methods ##
-
-  def draft_made?
-    teams_drafted = 0
-    self.tournament.teams.each do |t|
-      teams_drafted += 1 unless t.matches_as_team_one.empty? && t.matches_as_team_two.empty? 
-    end
-    return self.tournament.number_of_teams == teams_drafted 
-  end
 
   def actual_stage_finished?
     #Don't address the final stage
@@ -39,10 +31,6 @@ class KnockoutStage < ActiveRecord::Base
     return positions.reverse
   end
 
-  def number_of_first_games
-    return 2 ** (self.number_of_stages-1)
-  end
-
   #Based on the number of teams, get the number of stages that the tournament will have
   def number_of_stages
     number_of_stages = 0
@@ -54,13 +42,11 @@ class KnockoutStage < ActiveRecord::Base
 
   #Set the winner of the match for the matches with only one team (can only happen in knockout)
   def set_exempt_winners
-    for position in 1..self.number_of_first_games
-      match = self.tournament.matches.find_by_position(position)
-
-      if match.team_one_id.nil? && !match.team_two_id.nil?
-        match.update_attributes(:winner_id => match.team_two_id)
-      elsif !match.team_one_id.nil? && match.team_two_id.nil?
-        match.update_attributes(:winner_id => match.team_one_id)
+    self.tournament.matches.stage(self.number_of_stages - 1).each do |m|
+      if m.team_one_id.nil? && !m.team_two_id.nil?
+        m.update_attributes(:winner_id => m.team_two_id)
+      elsif !m.team_one_id.nil? && m.team_two_id.nil?
+        m.update_attributes(:winner_id => m.team_one_id)
       end
     end
   end
@@ -77,7 +63,7 @@ class KnockoutStage < ActiveRecord::Base
 
   def tournament_games
     number_stages = self.number_of_stages
-    if self.third_place
+    if self.third_place && self.tournament.number_of_teams > 3
       number_of_games = 2 ** number_stages
     else
       number_of_games = (2 ** number_stages) - 1

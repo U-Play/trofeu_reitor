@@ -5,7 +5,7 @@ class GroupStage < ActiveRecord::Base
   belongs_to :tournament
 
   ## Attributes ##
-  attr_accessible :loss_points, :n_groups, :n_turns, :tie_points, :win_points, :tournament_id
+  attr_accessible :draft_made, :loss_points, :n_groups, :n_turns, :tie_points, :win_points, :tournament_id
 
   ## Validations ##
   validates :tournament, presence: true

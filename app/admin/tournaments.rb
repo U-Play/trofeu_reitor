@@ -76,12 +76,11 @@ ActiveAdmin.register Tournament do
     f.actions
   end
 
-  #TODO: TESTAR SE O DRAFT JA FOI FEITO
-  action_item :only => :show, :if => proc{ tournament.group_stage} do
+  action_item :only => :show, :if => proc{ tournament.group_stage && !tournament.group_stage.draft_made?} do
     link_to 'Groups Draft', :controller => "tournaments", :action => "groups_draft", :id => tournament.id
   end
 
-  member_action :groups_draft, :method => :get do
+  member_action :groups_draft do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
     @groups = @tournament.groups
@@ -91,38 +90,47 @@ ActiveAdmin.register Tournament do
   member_action :save_groups_draft, :method => :post do
   end
 
-  #Save the manual draft made
-  member_action :save_knockout_draft, :method => :post do
-    selected_teams = []
-    @tournament = Tournament.find(params[:id])
-    params[:matches].each do |match,teams|
-      selected_teams << teams[0] if !teams[0].blank?
-      selected_teams << teams[1] if !teams[1].blank?
-    end
-    if selected_teams.uniq.length == selected_teams.length
-      params[:matches].each do |match,teams|
-        @tournament.matches.find(match).update_attributes(:team_one_id => teams[0], :team_two_id => teams[1])
-      end
-      @tournament.knockout_stage.set_exempt_winners if selected_teams.length == @tournament.number_of_teams
-      redirect_to admin_tournament_path(@tournament)
-    else
-      @tournament.errors[:base] << "The same team cannot be selected for two different matches!"
-      @teams = @tournament.teams
-      render :show_knockout_draft
-    end
-  end
-
   action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 
     link_to 'Knockout Draft', :controller => "tournaments", :action => "knockout_draft", :id => tournament.id
   end 
 
   #Action to show the page where the admin can do the manual draft
-  member_action :knockout_draft, :method => :get do
+  member_action :knockout_draft do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
+    @first_stage = @tournament.knockout_stage.number_of_stages - 1
   end
 
-  action_item :only => :show, :if => proc{ tournament.has_teams? } do 
+  #Save the manual draft made
+  member_action :save_knockout_draft, :method => :put do
+    selected_teams = []
+    game_not_selected = false
+    @tournament = Tournament.find(params[:id])
+    params[:matches].each do |match,teams|
+      selected_teams << teams[0] if !teams[0].blank?
+      selected_teams << teams[1] if !teams[1].blank?
+      game_not_selected = true if teams[0].blank? && teams[1].blank?
+    end
+    if selected_teams.uniq.length != selected_teams.length
+      @tournament.errors[:base] << "The same team cannot be selected for two different matches"
+      @teams = @tournament.teams
+      @first_stage = @tournament.knockout_stage.number_of_stages - 1
+      render :knockout_draft
+    else
+      params[:matches].each do |match,teams|
+        @tournament.matches.find(match).update_attributes(:team_one_id => teams[0], :team_two_id => teams[1])
+      end
+      if selected_teams.length == @tournament.number_of_teams && !game_not_selected
+        @tournament.knockout_stage.set_exempt_winners
+        @tournament.knockout_stage.update_attributes(:draft_made => true)
+        redirect_to admin_tournament_path(@tournament), :notice => "Draft completed"
+      else
+        redirect_to admin_tournament_path(@tournament), :alert => "There are matches without one team at least"
+      end
+    end
+  end
+
+  action_item :only => :show, :if => proc{ tournament.has_minimum_teams? && !tournament.finalized? } do 
     link_to 'Begin Tournament', :controller => "tournaments", :action => "final_configuration", :id => tournament.id
   end 
 
@@ -136,9 +144,6 @@ ActiveAdmin.register Tournament do
 
     if params[:tournament][:format_id].blank?
       @tournament.errors.add(:format_id, "can't be blank")
-      render :final_configuration
-    elsif params[:tournament][:number_of_teams] <= 1
-      @tournament.errors.add(:base, "The tournament should have at least 2 teams")
       render :final_configuration
     elsif @tournament.update_attributes(params[:tournament])
       @tournament.elaborate_format
