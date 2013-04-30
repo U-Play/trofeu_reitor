@@ -37,7 +37,7 @@ class Team < ActiveRecord::Base
 
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
-
+  validates :course_id, :uniqueness => { :scope => :tournament_id }
 
   ## Public Methods ##
   def athletes_per_team
@@ -52,9 +52,9 @@ class Team < ActiveRecord::Base
     Match.where(:id => (matches_as_team_one + matches_as_team_two))
   end
 
-  # def sport_type
-  #   tournament.sport.type
-  # end
+  def to_s
+    name
+  end
 
   ## Private Methods ##
   protected
@@ -66,11 +66,12 @@ class Team < ActiveRecord::Base
       @manager_email = nil
       manager.promote_to_manager(self)
       manager.update_attributes course: self.course
+      TeamAthlete.create!( team: self, athlete: manager )
       self.update_attributes manager_id: manager.id
       self.save!
     end
 
     def set_name
-      write_attribute(:name, course)
+      write_attribute(:name, "#{course.name} - #{tournament.sport.name}")
     end
 end

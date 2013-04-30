@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
 
-  has_many :team_athletes, :dependent => :destroy
+  has_many :team_athletes, :dependent => :destroy, foreign_key: "athlete_id"
   has_many :teams_as_athlete, :through => :team_athletes
 
-  has_many :team_referees
+  has_many :team_referees, :dependent => :destroy, foreign_key: "referee_id"
   has_many :teams_as_referee, :through => :team_referees
 
   has_many :match_referees

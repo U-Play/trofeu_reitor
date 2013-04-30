@@ -28,6 +28,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'nifty-generators'
+  gem 'bullet'
 end
 
 group :test do

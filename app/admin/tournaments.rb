@@ -3,6 +3,13 @@ ActiveAdmin.register Tournament do
 
   filter :name
 
+  controller do
+    def scoped_collection
+      # TODO :format is being eager loaded unnecessarily on edit
+      end_of_association_chain.includes(:format)
+    end
+  end
+
   # Custom Action Items
   action_item :only => :show do
     link_to 'Teams', admin_tournament_teams_path(params[:id])
@@ -30,7 +37,8 @@ ActiveAdmin.register Tournament do
   end
 
   index do
-    column(:name) { |t| link_to t.name, admin_tournament_path(t.id)}
+    column(:name)  { |t| link_to t.name, admin_tournament_path(t.id)}
+    column(:sport) { |t| link_to t.sport.name, admin_sport_path(t.sport_id)}
     column :number_of_teams
     column(:format) { |t| link_to t.format.name, admin_tournament_format_path(t.format) if t.format }
     column :start_date

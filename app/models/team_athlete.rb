@@ -12,7 +12,9 @@ class TeamAthlete < ActiveRecord::Base
 
   ## Validations ##
   validates :team, :athlete, presence: true
-  validate :athletes_per_team, :on => :create
+  validates :athlete_id, :uniqueness_without_deleted => { :scope => :team_id }
+  validate  :athlete_uniqueness_per_tournament, :on => :create
+  validate  :athletes_per_team, :on => :create
 
   ## Callbacks ##
   before_validation :set_athlete
@@ -30,6 +32,12 @@ class TeamAthlete < ActiveRecord::Base
     def athletes_per_team
       if ( (TeamAthlete.where(:team_id => team_id).count + 1) > team.athletes_per_team )
         errors.add( :athletes, ": too many for this sport" ) 
+      end
+    end
+
+    def athlete_uniqueness_per_tournament
+      if ( TeamAthlete.where( :team_id => Team.where( :tournament_id => self.team.tournament_id ), :athlete_id => self.athlete_id ).any? )
+        errors.add( :athlete, ": this athlete already belongs to a team in this tournament" ) 
       end
     end
 
