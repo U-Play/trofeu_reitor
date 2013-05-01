@@ -28,6 +28,7 @@ class UserMailer < ApplicationMailer
 
     def send_mail(user, subject)
       @user = user
-      mail to: @user.email, subject: subject
+      @subject = subject
+      mail to: @user.email, subject: @subject
     end
 end
