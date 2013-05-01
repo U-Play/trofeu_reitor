@@ -8,7 +8,7 @@ ActiveAdmin.register Team do
 
   controller do
     def scoped_collection
-      end_of_association_chain.includes(:tournament)
+      end_of_association_chain.accessible_by(current_ability).includes(:tournament)
     end
   end
 
