@@ -1,7 +1,5 @@
-- content_for :title, "Olá, fazes parte da equipa #{@team.name}"
+- content_for :title, "Fazes parte da equipa #{@team.name}"
 
 - content_for :content do
-  p Podes ver a equipa no seguinte link
-  a TODO
-  | team_path @user, only_path: false
+  p= "Foste adicionado como atleta do Troféu Reitor 2013, pela equipa #{@team.name}."
 end
