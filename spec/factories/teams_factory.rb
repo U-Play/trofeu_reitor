@@ -1,9 +1,13 @@
 FactoryGirl.define do
 
   factory :team do
-    sequence(:name) { |n| "Team#{n}" }
+    # sequence(:name) { |n| "Team#{n}" }
     association :tournament 
-    association :course
+    # association :course
+
+    after(:build) do |t|
+      t.course = Course.find(rand(Course.count) + 1)
+    end
 
     # after(:create) do |t|
     #  FactoryGirl.create( :team_athlete, 

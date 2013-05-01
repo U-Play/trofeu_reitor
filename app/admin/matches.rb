@@ -5,6 +5,13 @@ ActiveAdmin.register Match do
   # Is nested resource of
   belongs_to :tournament
 
+  controller do
+    def scoped_collection
+      # TODO :tournament is being eager loaded unnecessarily on edit
+      end_of_association_chain.includes( {:team_one => :course}, {:team_two => :course}, :tournament)
+    end
+  end
+
   # Custom Member Actions
   member_action :begin, :method => :put do
     match = Match.find(params[:id])
@@ -57,7 +64,7 @@ ActiveAdmin.register Match do
       row(:team_one)   { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
       row(:team_two)   { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
       row(:result)
-      row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
+      # row(:tournament) { |m| link_to m.tournament.name, admin_tournament_path(m.tournament) }
       row(:sport)      { |m| link_to m.tournament.sport.name, admin_sport_path(m.tournament.sport) }
       # row(:location)   { |m| link_to m.location.city, admin_location_path(m.location) }
     end

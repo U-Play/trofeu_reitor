@@ -6,7 +6,6 @@ gem 'activeadmin'
 gem 'activerecord-postgres-hstore'
 gem 'cancan'
 gem 'capistrano'
-gem 'rvm-capistrano'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'devise_invitable'
@@ -15,35 +14,36 @@ gem 'jquery-rails'
 gem 'just-datetime-picker'
 gem 'meta_search'
 gem 'paperclip'
-gem 'pg'
-gem 'slim'
-gem 'state_machine'
 gem 'paranoia'
 gem 'paranoia_uniqueness_validator'
+gem 'pg'
 gem 'roadie' # action_mailer css inliner
+gem 'rvm-capistrano'
+gem 'slim'
+gem 'state_machine'
 
 group :development do
-  gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'bullet'
   gem 'meta_request'
   gem 'nifty-generators'
+  gem 'pry-rails'
 end
 
 group :test do
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
   gem 'database_cleaner'
+  gem 'factory_girl_rails'
   gem 'mocha'
+  gem 'rspec-rails'
 end
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
   # Add Foundation Here
   gem 'zurb-foundation', '~> 4.0.0'
-
-  gem 'therubyracer', :platforms => :ruby
 end
 

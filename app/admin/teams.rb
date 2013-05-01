@@ -8,8 +8,14 @@ ActiveAdmin.register Team do
 
   controller do
     def scoped_collection
-      end_of_association_chain.includes(:tournament)
+      # TODO :manager and :group are being eager loaded unnecessarily on edit
+      end_of_association_chain.includes(:course, :manager, :group)
+      # end_of_association_chain.includes(:tournament)
     end
+  end
+
+  action_item :only => :show do
+    link_to('New Team', new_admin_tournament_team_path())
   end
 
   index do
@@ -36,21 +42,21 @@ ActiveAdmin.register Team do
     #     column(:name)  { |r| link_to r.name, admin_user_path(r) }
     #   end
     # end
-    panel "Penalties" do
-      table_for team.penalties do
-        column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
-        column(:start_date)
-        column(:end_date)
-      end
-    end
     panel "Matches" do
       table_for team.matches do
         column(:id)  { |m| link_to m.id, admin_tournament_match_path(m.tournament, m) }
         column("Status") { |m| status_tag m.status, m.status_type }
         column(:start_datetime)
-        column(:team_one) { |m| link_to m.team_one.name, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
-        column(:team_two) { |m| link_to m.team_two.name, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
+        column(:team_one) { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
+        column(:team_two) { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
         column(:result)
+      end
+    end
+    panel "Penalties" do
+      table_for team.penalties do
+        column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
+        column(:start_date)
+        column(:end_date)
       end
     end
   end
