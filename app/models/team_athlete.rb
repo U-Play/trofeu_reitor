@@ -9,6 +9,9 @@ class TeamAthlete < ActiveRecord::Base
   attr_accessible :team_id, :athlete_id, :team, :athlete, :athlete_email
 
   attr_writer :athlete_email
+  def athlete_email
+    self.athlete.try(:email) || @athlete_email
+  end
 
   ## Validations ##
   validates :team, :athlete, presence: true
