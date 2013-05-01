@@ -25,7 +25,10 @@ class Team < ActiveRecord::Base
   attr_accessible :name, :tournament_id, :manager_id, :manager_email, :team_athletes_attributes,
     :team_referees_attributes, :course, :course_id
 
-  attr_accessor :manager_email
+  attr_writer :manager_email
+  def manager_email
+    self.manager.try(:email) || @manager_email
+  end
 
   accepts_nested_attributes_for :team_athletes, :allow_destroy => true
   #accepts_nested_attributes_for :athletes
