@@ -9,8 +9,7 @@ ActiveAdmin.register Team do
   controller do
     def scoped_collection
       # TODO :manager and :group are being eager loaded unnecessarily on edit
-      end_of_association_chain.includes(:course, :manager, :group)
-      # end_of_association_chain.includes(:tournament)
+      end_of_association_chain.accessible_by(current_ability).includes(:course, :manager, :group)
     end
   end
 

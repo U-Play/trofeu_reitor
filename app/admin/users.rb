@@ -27,7 +27,7 @@ ActiveAdmin.register User do
   scope(:validated)            { User.with_validation_finished }
 
   index do
-    column :validation_state
+    column("Validation") { |u| status_tag u.validation_status[:str], u.validation_status[:type] }
     column :name, sortable: 'first_name'
     column :email
     column(:role, sortable: 'roles.name') { |user| user.role.name.titleize }

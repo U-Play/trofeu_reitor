@@ -126,6 +126,12 @@ class User < ActiveRecord::Base
     return user || User.invite!(email: email)
   end
 
+  def validation_status
+    return {str: 'Unprocessed', type: :error}   if validation_unprocessed?
+    return {str: 'Requested',   type: :warning} if validation_requested?
+    return {str: 'Finished',    type: :ok}
+  end
+
   protected
 
     def set_role(new_role)
