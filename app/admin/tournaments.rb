@@ -111,12 +111,7 @@ ActiveAdmin.register Tournament do
       selected_teams << teams[1] if !teams[1].blank?
       game_not_selected = true if teams[0].blank? && teams[1].blank?
     end
-    if selected_teams.uniq.length != selected_teams.length
-      @tournament.errors[:base] << "The same team cannot be selected for two different matches"
-      @teams = @tournament.teams
-      @first_stage = @tournament.knockout_stage.number_of_stages - 1
-      render :knockout_draft
-    else
+    if selected_teams.uniq.length == selected_teams.length
       params[:matches].each do |match,teams|
         @tournament.matches.find(match).update_attributes(:team_one_id => teams[0], :team_two_id => teams[1])
       end
@@ -127,6 +122,11 @@ ActiveAdmin.register Tournament do
       else
         redirect_to admin_tournament_path(@tournament), :alert => "There are matches without one team at least"
       end
+    else
+      @tournament.errors[:base] << "The same team cannot be selected for two different matches"
+      @teams = @tournament.teams
+      @first_stage = @tournament.knockout_stage.number_of_stages - 1
+      render :knockout_draft
     end
   end
 
