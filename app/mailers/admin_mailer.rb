@@ -4,7 +4,8 @@ class AdminMailer < ApplicationMailer
 
   def validation_requested(user)
     @user = user
+    @subject = "Troféu Reitor 2013 - Validação de Atleta"
     #mail to: User.by_role('admin').map(&:email), subject: "Troféu Reitor 2013 - Validação de Atleta"
-    mail subject: "Troféu Reitor 2013 - Validação de Atleta"
+    mail subject: @subject
   end
 end

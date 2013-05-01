@@ -18,7 +18,11 @@ class UsersController < ApplicationController
   def request_validation
     @user = User.find params[:user_id]
     authorize! :request_validation, @user
-    @user.request_validation!
-    redirect_to user_path(@user), notice: 'Validation requested.'
+    if @user.try_request_validation!
+      notice = 'Validation requested.'
+    else
+      notice = 'Some fields on your profile are still empty.'
+    end
+    redirect_to user_path(@user), notice: notice
   end
 end

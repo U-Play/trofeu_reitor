@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
                   :remember_me,
                   :first_name,
                   :last_name,
-                  :username,
+                 :username,
                   :course,
                   :student_number,
                   :sports_number,
@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
     # validation_requested
     # validated
     event(:validate) { transition [:validation_unprocessed, :validation_requested] => :validated }
-    event(:request_validation) { transition :validation_unprocessed => :validation_requested }
+    event(:request_validation) { transition :validation_unprocessed => :validation_requested, if: :validatable? }
     event(:invalidate) { transition :validation_unprocessed => same, :validation_requested => :validation_unprocessed }
 
     after_transition any => :validation_requested do |user, transition|
@@ -108,9 +108,28 @@ class User < ActiveRecord::Base
     Tournament.joins(:event => :user).where(:events => {:user_id => id})
   end
 
+  def try_request_validation!
+    self.request_validation! if self.validatable?
+  end
+
+  def validatable?
+    first_name.present? &&
+    last_name.present? &&
+    email.present? &&
+    student_number.present? &&
+    sports_number.present? &&
+    picture.present?
+  end
+
   def self.find_or_invite_by_email(email)
     user = User.find_by_email(email)
     return user || User.invite!(email: email)
+  end
+
+  def validation_status
+    return {str: 'Unprocessed', type: :error}   if validation_unprocessed?
+    return {str: 'Requested',   type: :warning} if validation_requested?
+    return {str: 'Finished',    type: :ok}
   end
 
   protected
