@@ -38,7 +38,7 @@ ActiveAdmin.register User do
 
   show do
     attributes_table do
-      row :validation_state
+      row("Validation") { |u| status_tag u.validation_status[:str], u.validation_status[:type] }
       row(:picture) { |user| image_tag(user.picture.url(:thumb)) }
       row :first_name
       row :last_name
