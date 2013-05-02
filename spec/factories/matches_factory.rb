@@ -12,6 +12,13 @@ FactoryGirl.define do
       m.save
     end
 
+    factory :ronaldo_messi do
+      after(:build) do |m|
+        m.team_one = FactoryGirl.create(:team_ronaldo, tournament_id: m.tournament_id)
+        m.team_two = FactoryGirl.create(:team_messi, tournament_id: m.tournament_id)
+        m.save
+      end
+    end
   end
 end
 
