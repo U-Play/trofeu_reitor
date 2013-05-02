@@ -89,7 +89,8 @@ else
     { first_name: 'Awesome',    last_name: 'validator', email: 'validator@uplay.com', password: 'validator', password_confirmation: 'validator', role_id: Role.find_by_name('validator').id },
     { first_name: 'Effeminate', last_name: 'blogger',   email: 'blogger@uplay.com',   password: 'blogger',   password_confirmation: 'blogger',   role_id: Role.find_by_name('blogger').id },
     { first_name: 'Cristiano',  last_name: 'Ronaldo',   email: 'cr7@uplay.com',       password: 'user',      password_confirmation: 'user',      role_id: Role.find_by_name('athlete').id },
-    { first_name: 'Lionel',     last_name: 'Messi',     email: 'messi@uplay.com',     password: 'user',      password_confirmation: 'user',      role_id: Role.find_by_name('athlete').id }
+    { first_name: 'Lionel',     last_name: 'Messi',     email: 'messi@uplay.com',     password: 'user',      password_confirmation: 'user',      role_id: Role.find_by_name('athlete').id },
+    { first_name: 'Mister',     last_name: 'Manager',   email: 'manager@uplay.com',   password: 'manager',   password_confirmation: 'manager',   role_id: Role.find_by_name('manager').id }
   ]
 end
 
