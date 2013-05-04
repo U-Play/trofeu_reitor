@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 20130430093538) do
   end
 
   create_table "group_stages", :force => true do |t|
-    t.integer  "n_turns"
+    t.integer  "n_rounds"
     t.integer  "win_points"
     t.integer  "tie_points"
     t.integer  "loss_points"

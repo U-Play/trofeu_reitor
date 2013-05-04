@@ -1,7 +1,7 @@
 class CreateGroupStages < ActiveRecord::Migration
   def change
     create_table :group_stages do |t|
-      t.integer :n_turns
+      t.integer :n_rounds
       t.integer :win_points
       t.integer :tie_points
       t.integer :loss_points
