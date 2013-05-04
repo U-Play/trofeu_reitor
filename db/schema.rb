@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130426153125) do
+ActiveRecord::Schema.define(:version => 20130430093538) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -63,8 +63,10 @@ ActiveRecord::Schema.define(:version => 20130426153125) do
     t.integer  "loss_points"
     t.integer  "tournament_id"
     t.datetime "deleted_at"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "n_groups"
+    t.boolean  "draft_made",    :default => false, :null => false
   end
 
   add_index "group_stages", ["tournament_id"], :name => "index_group_stages_on_tournament_id"
@@ -109,8 +111,9 @@ ActiveRecord::Schema.define(:version => 20130426153125) do
     t.boolean  "result_homologation"
     t.integer  "tournament_id"
     t.datetime "deleted_at"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "draft_made",          :default => false, :null => false
   end
 
   add_index "knockout_stages", ["tournament_id"], :name => "index_knockout_stages_on_tournament_id"
@@ -164,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20130426153125) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.integer  "knockout_index"
+    t.integer  "group_round"
   end
 
   add_index "matches", ["format_id"], :name => "index_matches_on_format_id"
@@ -263,10 +267,11 @@ ActiveRecord::Schema.define(:version => 20130426153125) do
     t.datetime "deleted_at"
     t.integer  "tournament_id"
     t.integer  "manager_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "group_id"
     t.integer  "course_id"
+    t.string   "group_position"
   end
 
   add_index "teams", ["course_id"], :name => "index_teams_on_course_id"

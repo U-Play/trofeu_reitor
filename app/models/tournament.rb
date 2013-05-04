@@ -11,7 +11,7 @@ class Tournament < ActiveRecord::Base
 
   has_many :teams, :order => 'id'
   has_many :matches, :order => 'position'
-  has_many :groups
+  has_many :groups, :order => 'name'
 
   has_many :news_references, :as => :newsable
   has_many :news, through: :news_references
@@ -42,15 +42,19 @@ class Tournament < ActiveRecord::Base
       puts "NOT IMPLEMENTED"
     #Format: Group Stage
     elsif self.group_stage
-      puts "NOT IMPLEMENTED"
+      self.group_stage.create_groups
     #Format: Knockout Stage
     elsif self.knockout_stage
       self.knockout_stage.create_knockout_matches
     end
   end
 
-  def has_teams?
-    !self.teams.empty?
+  def has_minimum_teams?
+    self.teams.size >= 2
+  end
+
+  def finalized?
+    !self.number_of_teams.nil?
   end
 
   def has_group_stage?
