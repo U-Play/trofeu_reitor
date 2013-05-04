@@ -13,9 +13,11 @@ nav
             - if can?(:access, :admin)
              li class="has-flyout" = link_to 'Admin', admin_users_path
              li class="divider"
+             li class="has-flyout" =  link_to 'Sign out', destroy_user_session_path, :method => :delete
             - if user_signed_in?
              li class="has-flyout" =  link_to 'Profile', user_path(current_user)
              li class="divider"
+             li class="has-flyout" =  link_to 'Sign out', destroy_user_session_path, :method => :delete
             - else
              li class="has-flyout" =  link_to 'Sign in', new_user_session_path
              li class="divider"
