@@ -78,23 +78,16 @@ ActiveAdmin.register Match do
           highlights: HighlightOccurrence.find_all_by_match_id(match.id) 
         }
     end
-    panel "Referees" do
-      table_for match.referees do 
-        column(:name)  { |r| link_to r.name, admin_user_path(r) }
-      end
-    end
-    panel "Penalties" do
-      table_for match.penalties do 
-        column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
-        column(:start_date)
-        column(:end_date)
-      end
-    end
-    # panel "Highlights" do
-    #   table_for match.highlight_occurrences do 
-    #     column(:time)
-    #     column(:athlete)   { |ho| link_to ho.athlete.name, admin_user_path(ho.athlete) }
-    #     column(:highlight) { |ho| link_to ho.highlight.name, admin_sport_highlight_path(ho.highlight.sport, ho.highlight) }
+    # panel "Referees" do
+    #   table_for match.referees do 
+    #     column(:name)  { |r| link_to r.name, admin_user_path(r) }
+    #   end
+    # end
+    # panel "Penalties" do
+    #   table_for match.penalties do 
+    #     column(:name)  { |p| link_to p.name, admin_penalty_path(p) }
+    #     column(:start_date)
+    #     column(:end_date)
     #   end
     # end
   end
@@ -122,24 +115,18 @@ ActiveAdmin.register Match do
       f.input :start_datetime, :as => :just_datetime_picker
     end
 
-    f.inputs "Referees" do
-      f.has_many :match_referees do |mr|
-        mr.input :referee # it automatically generates a drop-down select to choose from your existing referees
-        # mr.input :another_attribute_to_update
-
-        # if mr.object.persisted?
-        # show the destroy checkbox only if it is an existing match_referee
-        # else, there's already dynamic JS to add / remove new match_referees
-        mr.input :_destroy, :as => :boolean, :label => "Destroy?"
-        # end
-      end
-    end
+    # f.inputs "Referees" do
+    #   f.has_many :match_referees do |mr|
+    #     mr.input :referee
+    #     mr.input :_destroy, :as => :boolean, :label => "Destroy?"
+    #   end
+    # end
     f.actions
   end
 
   # Filter only by
   filter :start_datetime
-  filter :location_id
+  # filter :location_id
   filter :winner_id
   filter :team_one_id
   filter :team_two_id
