@@ -72,10 +72,9 @@ class Team < ActiveRecord::Base
       @manager_email = nil
       manager.promote_to_manager(self)
 
-      if !manager.course.nil?
+      if manager.course
         if manager.course.id != self.course.id
           errors.add( :manager, "course doesn't match the team's course" ) 
-          # raise
         end
       else
         manager.update_attributes course: self.course
