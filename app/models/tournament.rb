@@ -53,7 +53,7 @@ class Tournament < ActiveRecord::Base
     self.teams.size >= 2
   end
 
-  def finalized?
+  def began?
     !self.number_of_teams.nil?
   end
 

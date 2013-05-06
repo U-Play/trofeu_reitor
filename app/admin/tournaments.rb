@@ -15,7 +15,7 @@ ActiveAdmin.register Tournament do
     link_to 'Teams', admin_tournament_teams_path(params[:id])
   end
 
-  action_item :only => :show, :if => proc {tournament.has_group_stage?} do
+  action_item :only => :show, :if => proc{ tournament.has_group_stage? } do
     tournament = Tournament.find(params[:id])
     link_to('Groups', admin_tournament_groups_path(tournament.id))
   end
@@ -24,13 +24,13 @@ ActiveAdmin.register Tournament do
     link_to 'Matches', admin_tournament_matches_path(params[:id])
   end
 
-  action_item :only => :show, :if => proc {tournament.has_group_stage?} do
+  action_item :only => :show, :if => proc{ tournament.has_group_stage? } do
     tournament = Tournament.find(params[:id])
     #FIXME os seguintes links dao erro
-    link_to('Group Stage Configuration', admin_tournament_format_path(tournament.group_stage))
+    link_to('Group Stage Configuration', admin_tournament_group_stages_path(tournament.id))
   end
 
-  action_item :only => :show, :if => proc {tournament.has_knockout_stage?} do
+  action_item :only => :show, :if => proc{ tournament.has_knockout_stage? } do
     tournament = Tournament.find(params[:id])
     #FIXME os seguintes links dao erro
     link_to('Knockout Stage Configuration', admin_tournament_knockout_stages_path(tournament.id))
@@ -77,7 +77,7 @@ ActiveAdmin.register Tournament do
   end
 
   action_item :only => :show, :if => proc{ tournament.group_stage && !tournament.group_stage.draft_made?} do
-    link_to 'Groups Draft', :controller => "tournaments", :action => "groups_draft", :id => tournament.id
+    link_to 'Groups Draft', :controller => 'tournaments', :action => 'groups_draft', :id => tournament.id
   end
 
   member_action :groups_draft do
@@ -91,7 +91,7 @@ ActiveAdmin.register Tournament do
   end
 
   action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 
-    link_to 'Knockout Draft', :controller => "tournaments", :action => "knockout_draft", :id => tournament.id
+    link_to 'Knockout Draft', :controller => 'tournaments', :action => 'knockout_draft', :id => tournament.id
   end 
 
   #Action to show the page where the admin can do the manual draft
@@ -118,24 +118,37 @@ ActiveAdmin.register Tournament do
       if selected_teams.length == @tournament.number_of_teams && !game_not_selected
         @tournament.knockout_stage.set_exempt_winners
         @tournament.knockout_stage.update_attributes(:draft_made => true)
-        redirect_to admin_tournament_path(@tournament), :notice => "Draft completed"
+        redirect_to admin_tournament_path(@tournament), :notice => 'Draft completed'
       else
-        redirect_to admin_tournament_path(@tournament), :alert => "There are matches without one team at least"
+        redirect_to admin_tournament_path(@tournament), :alert => 'There are matches without one team at least'
       end
     else
-      @tournament.errors[:base] << "The same team cannot be selected for two different matches"
+      @tournament.errors[:base] << 'The same team cannot be selected for two different matches'
       @teams = @tournament.teams
       @first_stage = @tournament.knockout_stage.number_of_stages - 1
       render :knockout_draft
     end
   end
 
-  action_item :only => :show, :if => proc{ tournament.has_minimum_teams? && !tournament.finalized? } do 
-    link_to 'Begin Tournament', :controller => "tournaments", :action => "final_configuration", :id => tournament.id
+  action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? && can?(:manage, tournament) } do 
+    link_to 'Knockout Draft', :controller => 'tournaments', :action => 'knockout_draft', :id => tournament.id
+  end 
+
+  #Action to show the page where the admin can do the manual draft
+  member_action :knockout_draft, :method => :get do
+    @tournament = Tournament.find(params[:id])
+    authorize! :manage, @tournament
+    @teams = @tournament.teams
+    @first_stage = @tournament.knockout_stage.number_of_stages - 1
+  end
+
+  action_item :only => :show, :if => proc{ tournament.has_minimum_teams? && !tournament.began? && can?(:manage, tournament) } do 
+    link_to 'Begin Tournament', :controller => 'tournaments', :action => 'final_configuration', :id => tournament.id
   end 
 
   member_action :final_configuration, :method => :get do
     @tournament = Tournament.find(params[:id])
+    authorize! :manage, @tournament
   end
 
   member_action :begin_tournament, :method => :put do
@@ -153,13 +166,14 @@ ActiveAdmin.register Tournament do
     end
   end
 
-  action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.knockout_stage.actual_stage_finished?} do
-    link_to 'Generate Next Stage', {:controller => "tournaments", :action => "next_stage", :id => tournament.id}, :method => :post
+  action_item :only => :show, :if => proc{ !tournament.knockout_stage.nil? && tournament.knockout_stage.actual_stage_finished? && can?(:manage, tournament) } do
+    link_to 'Generate Next Stage', {:controller => 'tournaments', :action => 'next_stage', :id => tournament.id}, :method => :post
   end
 
   #Action that will update the matches with teams that go to the next stage
   member_action :next_stage, :method => :post do
     @tournament = Tournament.find(params[:id])
+    authorize! :manage, @tournament
     @tournament.knockout_stage.update_next_stage
     redirect_to admin_tournament_path(@tournament)
   end
