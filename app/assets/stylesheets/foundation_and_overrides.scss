@@ -1,6 +1,7 @@
 // Required global settings and mixins for Foundation
 @import "foundation/foundation-global";
 
+
 // Settings file to override Foundation variables
 
 // You can find the variables for each component at the bottom of their
@@ -12,14 +13,14 @@
 //
 
 // This is the default html and body font-size for the base em value.
-// $em-base: 16px;
+// $em-base: 12px;
 
 // We use these to control various global styles
-// $body-bg: #fff;
-// $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-// $body-font-weight: normal;
-// $body-font-style: normal;
+ $body-bg: #FFFFFF;
+ $body-font-color: #222;
+ $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+ $body-font-weight: normal;
+ $body-font-style: normal;
 
 // We use this to control font-smoothing
 // $font-smoothing: antialiased;
@@ -28,14 +29,14 @@
 // $text-direction: ltr;
 
 // We use these as default colors throughout
-// $primary-color: #2ba6cb;
+ $primary-color: #009900;
 // $secondary-color: #e9e9e9;
 // $alert-color: #c60f13;
 // $success-color: #5da423;
 
 // We use these to make sure border radius matches unless we want it different.
-// $global-radius: 3px;
-// $global-rounded: 1000px;
+ $global-radius: 3px;
+ $global-rounded: 1000px;
 
 // We use these to control inset shadow shiny edges and depressions.
 // $shiny-edge-size: 0 1px 0;
@@ -115,9 +116,9 @@
 
 // We use these to style paragraphs
 // $paragraph-font-family: inherit;
-// $paragraph-font-weight: normal;
+// $paragraph-font-weight: small;
 // $paragraph-font-size: 1em;
-// $paragraph-line-height: 1.6;
+// $paragraph-line-height: 1;
 // $paragraph-margin-bottom: emCalc(20px);
 // $paragraph-aside-font-size: emCalc(14px);
 // $paragraph-aside-line-height: 1.35;

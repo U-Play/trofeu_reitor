@@ -2,6 +2,7 @@
 <html>
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Trofeu Reitor 2013" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "vendor/custom.modernizr" %>
@@ -9,14 +10,14 @@
     <%= yield(:head) %>
   </head>
   <body>
+    <%= render 'shared/nav' %>
+    <div class="row">
       <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+        <div class="alert-box secondary"><%= content_tag :div, msg, :id => "flash_#{name}" %></div>
       <% end %>
-      <%= render 'shared/nav' %>
-      <div class="row">
       <%= content_tag :h1, yield(:title) if show_title? %>
-        <%= yield %>
-      </div>
-      <%= render 'shared/footer' %>
+      <%= yield %>
+    </div>
+    <%= render 'shared/footer' %>
   </body>
 </html>
