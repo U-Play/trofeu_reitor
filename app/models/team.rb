@@ -41,7 +41,8 @@ class Team < ActiveRecord::Base
   ## Validations ##
   validates :name, :tournament_id, :course, presence: true
   validates :course_id, :uniqueness => { :scope => :tournament_id }
-
+  validate :one_team_one_group
+  
   ## Scopes ##
   scope :from_group_and_position, lambda { |group, pos| where(group_id: group, group_position: pos)}
 
@@ -62,8 +63,20 @@ class Team < ActiveRecord::Base
     name
   end
 
+  def self.clean_position(tournament, group, position)
+    team = Team.find_by_tournament_id_and_group_id_and_group_position(tournament, group, position)
+    team.update_attributes(:group_id => nil, :group_position => nil) if team
+  end
+
   ## Private Methods ##
   protected
+
+    def one_team_one_group
+      if Group.joins(:teams).where('teams.id = ? AND teams.tournament_id = ? AND (teams.group_id != ? OR (teams.group_id = ? AND teams.group_position != ?))', 
+                                   self.id, self.tournament_id, self.group_id, self.group_id, self.group_position).any?
+        raise "The team #{self.name} cannot be selected more than once"
+      end
+    end
 
     def set_manager
       return if @manager_email.nil? || @manager_email.strip.length == 0 || (self.manager && self.manager.email == @manager_email)

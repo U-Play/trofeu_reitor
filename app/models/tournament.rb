@@ -35,7 +35,7 @@ class Tournament < ActiveRecord::Base
 
   ##Public Methods##
 
-  # According to the format of the tournament, create the necessary games
+  # According to the format of the tournament, create the necessary matches
   def elaborate_format
     #Format: Multi Stage
     if self.group_stage && self.knockout_stage
@@ -63,6 +63,10 @@ class Tournament < ActiveRecord::Base
 
   def has_knockout_stage?
     format_id == Format.knockout_format.id or format_id == Format.multi_stage_format.id
+  end
+
+  def all_groups_with_min_teams?
+    !self.groups.map{|g| g.teams.size >= 2}.include?(false)
   end
 
   protected

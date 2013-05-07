@@ -5,6 +5,7 @@ class Group < ActiveRecord::Base
   belongs_to :tournament
 
   has_many :teams
+  has_many :matches
 
   ## Attributes ##
   attr_accessible :name, :tournament, :team_ids

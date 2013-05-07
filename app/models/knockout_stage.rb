@@ -15,9 +15,9 @@ class KnockoutStage < ActiveRecord::Base
   def actual_stage_finished?
     #Don't address the final stage
     last_positions = self.last_position_of_each_stage(1)
-    games_finished = self.tournament.matches.finished.size
+    matches_finished = self.tournament.matches.finished.size
     #Also test if the next stage has already been set
-    return last_positions.include?(games_finished) && self.tournament.matches.find_by_position(games_finished + 1).team_one_id.nil?
+    return last_positions.include?(matches_finished) && self.tournament.matches.find_by_position(matches_finished + 1).team_one_id.nil?
   end
 
   def last_position_of_each_stage(last_stage = 0)
@@ -54,19 +54,19 @@ class KnockoutStage < ActiveRecord::Base
   #According to the configurations, create the necessary matches that will be played 'till the final one
   def create_knockout_matches
     position = 1
-    #Create all Games
-    self.tournament_games.times do
+    #Create all Matches
+    self.tournament_matches.times do
       self.tournament.matches.create position: position, knockout_index: stage_of_position(position), format_id: Format.knockout_format.id
       position += 1
     end
   end
 
-  def tournament_games
+  def tournament_matches
     number_stages = self.number_of_stages
     if self.third_place && self.tournament.number_of_teams > 3
-      number_of_games = 2 ** number_stages
+      number_of_matches = 2 ** number_stages
     else
-      number_of_games = (2 ** number_stages) - 1
+      number_of_matches = (2 ** number_stages) - 1
     end
   end
 
@@ -79,11 +79,11 @@ class KnockoutStage < ActiveRecord::Base
     return (last_positions.length - 1)
   end
 
-  ##Will check at what stage the tournament is and prepare the games (get the winning teams) of the next stage
+  ##Will check at what stage the tournament is and prepare the matches (get the winning teams) of the next stage
   def update_next_stage
-    games_finished = self.tournament.matches.finished.size
+    matches_finished = self.tournament.matches.finished.size
     last_positions = self.last_position_of_each_stage
-    next_stage = last_positions.index(games_finished) - 1
+    next_stage = last_positions.index(matches_finished) - 1
     self.set_next_stage_matches(next_stage)
   end
 
