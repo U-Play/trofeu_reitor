@@ -88,14 +88,6 @@ ActiveAdmin.register Tournament do
 
   member_action :save_groups_draft, :method => :put do
     @tournament = Tournament.find(params[:id])
-    attributes = {}
-    params[:groups].each do |group, alignment|
-      alignment.each do |position, team|
-        attributes[team] = Hash.new
-        attributes[team].store(:group_id, group)
-        attributes[team].store(:group_position, position)
-      end
-    end
     Team.transaction do
       begin
         params[:groups].each do |group, alignment|
@@ -104,12 +96,12 @@ ActiveAdmin.register Tournament do
             Team.find(team).update_attributes(:group_id => group, :group_position => position) if !team.blank?
           end
         end
-        if @tournament.all_groups_with_min_teams?
+        if @tournament.all_groups_with_min_teams? && @tournament.all_teams_in_groups?
           @tournament.group_stage.update_attributes(:draft_made => true)
           @tournament.group_stage.create_matches
           redirect_to admin_tournament_path(@tournament), :notice => 'Draft completed'
         else
-          redirect_to admin_tournament_path(@tournament), :alert => 'Cannot close the draft! All groups must have at least two teams!'
+          redirect_to admin_tournament_path(@tournament), :alert => 'The draft is not completed! All groups must have at least two teams and all teams must be selected!'
         end
       rescue Exception => e
         @tournament.errors.add(:base, e.message)

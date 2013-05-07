@@ -69,6 +69,10 @@ class Tournament < ActiveRecord::Base
     !self.groups.map{|g| g.teams.size >= 2}.include?(false)
   end
 
+  def all_teams_in_groups?
+    self.number_of_teams == self.teams.where('group_id IS NOT NULL').size
+  end
+
   protected
 
     def set_event
