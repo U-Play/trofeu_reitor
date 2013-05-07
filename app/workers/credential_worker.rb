@@ -15,7 +15,7 @@ class CredentialWorker
         bottom: 20,
         left: 14,
         right: 14
-      }, locals: { :athletes => Team.find(team_id).athletes, host: 'http://'+host_with_port }
+      }, locals: { :athletes => Team.find(team_id).athletes, host: host_with_port }
     pdf = WickedPdf.new.pdf_from_string(pdf_html)
 
     # write

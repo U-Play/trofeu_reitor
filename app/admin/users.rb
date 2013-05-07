@@ -70,7 +70,7 @@ ActiveAdmin.register User do
 
   member_action :credential, method: :get do
     @athlete = User.find params[:id]
-    @host = 'http://'+request.host_with_port
+    @host = request.protocol+request.host_with_port
     respond_to do |f|
       f.html
       f.pdf do
