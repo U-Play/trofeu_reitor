@@ -14,8 +14,11 @@
 /log/*.log
 /tmp
 /public/uploads
+/public/creden*
 /config/accounts.yml
 
 .tags
 tags
 cscope.*
+
+dump.rdb

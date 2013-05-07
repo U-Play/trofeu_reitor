@@ -55,13 +55,35 @@ ActiveAdmin.register User do
       f.input :role, include_blank: false, member_label: Proc.new{ |r| r.name.titleize }
     end
     f.inputs "Details" do
-      f.input :picture, as: :file, hint: f.template.image_tag(f.object.picture.url)
+      f.input :picture, as: :file, hint: f.template.image_tag(f.object.picture.url(:default))
       f.input :first_name
       f.input :last_name
       f.input :student_number
       f.input :sports_number
     end
     f.actions
+  end
+
+  action_item only: :show do
+    link_to 'Credential', credential_admin_user_path(user.id, format: 'pdf')
+  end
+
+  member_action :credential, method: :get do
+    @athlete = User.find params[:id]
+    @host = request.protocol+request.host_with_port
+    respond_to do |f|
+      f.html
+      f.pdf do
+        render :pdf => 'credential',
+          layout: 'credentials.html',
+          :margin => {
+          top: 20,
+          bottom: 20,
+          left: 13,
+          right: 13
+        }
+      end
+    end
   end
 
   member_action :validate, method: :post do
@@ -75,4 +97,4 @@ ActiveAdmin.register User do
     user.invalidate!
     redirect_to action: :show, notice: "User #{user.name} validation rejected"
   end
-end
+  end

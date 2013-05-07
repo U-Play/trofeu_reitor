@@ -5,7 +5,7 @@ class Course < ActiveRecord::Base
   has_many :athletes, class_name: 'User'
 
   ## Attributes ##
-  attr_accessible :name
+  attr_accessible :name, :abbreviation
 
   ## Validations ##
   validates :name, presence: true 

@@ -32,26 +32,26 @@ class TeamAthlete < ActiveRecord::Base
   ## Private Methods ##
   protected
 
-    def athletes_per_team
-      if ( (TeamAthlete.where(:team_id => team_id).count + 1) > team.athletes_per_team )
-        errors.add( :athletes, ": too many for this sport" ) 
-      end
+  def athletes_per_team
+    if ( (TeamAthlete.where(:team_id => team_id).count + 1) > team.athletes_per_team )
+      errors.add( :athletes, ": too many for this sport" ) 
     end
+  end
 
-    def athlete_uniqueness_per_tournament
-      if ( TeamAthlete.where( :team_id => Team.where( :tournament_id => self.team.tournament_id ), :athlete_id => self.athlete_id ).any? )
-        errors.add( :athlete, ": this athlete already belongs to a team in this tournament" ) 
-      end
+  def athlete_uniqueness_per_tournament
+    if ( TeamAthlete.where( :team_id => Team.where( :tournament_id => self.team.tournament_id ), :athlete_id => self.athlete_id ).any? )
+      errors.add( :athlete, ": this athlete already belongs to a team in this tournament" ) 
     end
+  end
 
-    def set_athlete
-      return if self.athlete
-      athlete = User.find_or_invite_by_email(@athlete_email)
-      athlete.update_attributes course: self.team.course
-      self.athlete_id = athlete.id
-    end
+  def set_athlete
+    return if self.athlete
+    athlete = User.find_or_invite_by_email(@athlete_email)
+    athlete.update_attributes course: self.team.course
+    self.athlete_id = athlete.id
+  end
 
-    def send_email
-      UserMailer.added_to_team(self.athlete, self.team).deliver
-    end
+  def send_email
+    UserMailer.added_to_team(self.athlete, self.team).deliver
+  end
 end

@@ -17,6 +17,16 @@ ActiveAdmin.register Team do
     link_to('New Team', new_admin_tournament_team_path())
   end
 
+  action_item only: :show do
+    link_to 'Print Credentials', credentials_admin_tournament_team_path(team.tournament.id, team.id)
+  end
+
+  member_action :credentials, method: 'get' do
+    Resque.enqueue CredentialWorker, params[:id], current_user.id, "#{request.protocol}#{request.host_with_port}"
+    redirect_to admin_tournament_team_path(params[:tournament_id], params[:id]),
+      notice: 'The credentials are being processed. Watch your email in no time.'
+  end
+
   index do
     column :course
     # column(:tournament, sortable: 'tournament.name') { |team| team.tournament.name }

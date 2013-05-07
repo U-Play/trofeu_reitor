@@ -21,6 +21,10 @@ gem 'roadie' # action_mailer css inliner
 gem 'rvm-capistrano'
 gem 'slim'
 gem 'state_machine'
+gem "just-datetime-picker"
+gem 'wicked_pdf'
+gem 'rubyzip', require: 'zip/zip'
+gem "resque", require: 'resque/server'
 
 group :development do
   gem 'better_errors'
@@ -43,7 +47,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
-  # Add Foundation Here
-  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'zurb-foundation'
+  gem 'compass-rails'
 end
 

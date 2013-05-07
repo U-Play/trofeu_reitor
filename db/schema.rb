@@ -155,18 +155,20 @@ ActiveRecord::Schema.define(:version => 20130430093538) do
 
   create_table "matches", :force => true do |t|
     t.integer  "position"
-    t.datetime "start_datetime"
     t.datetime "deleted_at"
     t.integer  "tournament_id"
     t.integer  "location_id"
     t.integer  "winner_id"
     t.integer  "team_one_id"
     t.integer  "team_two_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "format_id"
+    t.datetime "start_datetime"
+    t.string   "result_team_one"
+    t.string   "result_team_two"
     t.boolean  "started"
     t.boolean  "ended"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
     t.integer  "knockout_index"
     t.integer  "group_round"
   end
