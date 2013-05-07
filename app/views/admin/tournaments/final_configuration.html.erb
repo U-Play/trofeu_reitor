@@ -4,7 +4,13 @@
       <%= f.input :sport %>
       <%= f.input :name %>
       <%= f.input :format, :required => true %>
-      <%=  f.inputs "Group Stage" do %>
+      <li class="string input stringish" id="tournament_number_of_teams_input">
+        <label class=" label" for="tournament_number_of_teams">Number of Teams:</label>
+        <label id="tournament_number_of_teams" maxlength="255" name="tournament[number_of_teams]">
+          <%= "#{@tournament.teams.size} Teams" %>
+        </label>
+      </li>
+      <%= f.inputs "Group Stage" do %>
         <%= f.semantic_fields_for :group_stage, (f.object.group_stage || f.object.build_group_stage) do |gs| %>
           <%= gs.inputs do %>
             <%= gs.input :n_groups, :label => 'Number of Groups'  %>
