@@ -29,9 +29,25 @@ ActiveAdmin.register Match do
     match = Match.find(params[:id])
     match.end
     if match.update_attributes params[:match]
-      redirect_to edit_admin_tournament_match_path(match.tournament, match), :warning => 'Insert the final result and the winner of this match'
+      redirect_to edit_result_admin_tournament_match_path(match.tournament, match), :warning => 'Insert the final result and the winner of this match'
     else
       render :show
+    end
+  end
+
+  # /admin/tournaments/:tournament_id/matches/:id/edit_result
+  member_action :edit_result do
+    @match = Match.find(params[:id])
+    @tournament = Tournament.find(params[:tournament_id])
+  end
+
+  member_action :put_result, method: :put do
+    @match = Match.find(params[:id])
+     
+    if @match.update_attributes(params[:match])
+      redirect_to admin_tournament_match_path(@brand.tournament, @brand), :notice => 'Match\'s result submitted.'
+    else
+      render :edit_result
     end
   end
 
@@ -58,6 +74,7 @@ ActiveAdmin.register Match do
 
   show do
     attributes_table do
+      row(:status)     { |m| status_tag m.status, m.status_type }
       [:start_datetime].each do |column|
         row(column)
       end
@@ -97,7 +114,7 @@ ActiveAdmin.register Match do
       # column(:status)  { |m| status_tag m.status, m.status_type }
       column(:team_one) { |m| link_to m.team_one.course, admin_tournament_team_path(m.tournament, m.team_one) if m.team_one }
       column(:team_two) { |m| link_to m.team_two.course, admin_tournament_team_path(m.tournament, m.team_two) if m.team_two }
-      column(:result)
+      # column(:result)
       column('')     { |m| link_to 'View', admin_tournament_match_path(m.tournament, m) }
     end
   end

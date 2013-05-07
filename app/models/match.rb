@@ -120,7 +120,7 @@ class Match < ActiveRecord::Base
   end
 
   def teams
-    Team.where( :id => team_one + team_two)
+    Team.where( :id => [team_one_id, team_two_id])
   end
 
   ## Protected Methods ##

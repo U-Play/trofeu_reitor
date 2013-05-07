@@ -1,11 +1,11 @@
 <% if match.started? or match.ended? %>
-    <%# <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: HighlightOccurrence.new } %>
-    <%= render :partial => 'new_athletes_highlight_occurrences_form', 
-                :locals => { 
-                  match: match, 
-                  highlights: Highlight.find_all_by_sport_id(match.tournament.sport.id) 
-                } 
-    %>
+  <%# <%= render :partial => 'new_highlight_occurrence_form', :locals => { match: match, highlight: HighlightOccurrence.new } %>
+  <%= render :partial => 'new_athletes_highlight_occurrences_form', 
+              :locals => { 
+                match: match, 
+                highlights: Highlight.find_all_by_sport_id(match.tournament.sport.id) 
+              } 
+  %>
 <% end %>
 <div class='panel'>
   <h3>History</h3>
