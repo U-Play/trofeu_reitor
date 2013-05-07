@@ -1,13 +1,11 @@
 nav
-  .row
-    .large-12.columns
+  .top-border
+  .header-container
+    .row.black-background
       nav class="top-bar"
         section class="top-bar-section"
-          ul class="title-area"
-            li class="name"
-              h1
-                a href="/"
-                  span  Trofeu Reitor 2013
+          a href="/" class="brand"
+            = image_tag 'TReitor-logo.jpg'
           ul class="right"
             li class="divider"
             - if can?(:access, :admin)
@@ -22,18 +20,3 @@ nav
              li class="has-flyout" =  link_to 'Sign in', new_user_session_path
              li class="divider"
              li class="has-flyout" =  link_to 'Sign up', new_user_registration_path
-    .large-9.columns
-      = image_tag("reitor.png", :alt => "Trofeu do Reitor")
-    .large-3.columns
-      ul class="nav-bar vertical"
-        li class="active" 
-          a Equipas
-        li class="has-flyout" 
-          a href="#" Desportos
-          a href="#" class="flyout-toggle"
-            span 
-          ul class="flyout"
-            li
-              a href="#" Sub Nav Item 1
-        
-    hr

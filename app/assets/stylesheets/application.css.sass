@@ -1,0 +1,38 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require foundation_and_overrides
+ *= require_self
+ */
+@import 'compass'
+.head
+	@include background(image-url('escolas.png'))
+	height: 300px
+	background-repeat: no-repeat
+	background-position: left center	
+
+.top-border 
+	background-color: #F46420
+	height: 4px
+	position: relative
+	top: 0
+	width: 100%
+	z-index: 2
+
+.header-container 
+	background-color: #000
+	position: relative
+	height: 60px
+	width: 100%
+	z-index: 2
+	margin-bottom: 10px
+
+.inline-list li img
+	height: 30px

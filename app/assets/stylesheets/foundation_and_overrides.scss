@@ -66,7 +66,7 @@
 // Grid Variables
 //
 
-// $row-width: 62.5em;
+$row-width: 750px;
 // $column-gutter: 1.875em;
 // $total-columns: 12;
 
@@ -101,7 +101,7 @@
 // $h3-font-size: emCalc(27px);
 // $h4-font-size: emCalc(23px);
 // $h5-font-size: emCalc(18px);
-// $h6-font-size: 1em;
+$h6-font-size: 0.8em;
 
 // These control how subheaders are styled.
 // $subheader-line-height: 1.4;
@@ -117,7 +117,7 @@
 // We use these to style paragraphs
 // $paragraph-font-family: inherit;
 // $paragraph-font-weight: small;
-// $paragraph-font-size: 1em;
+$paragraph-font-size: 0.8em;
 // $paragraph-line-height: 1;
 // $paragraph-margin-bottom: emCalc(20px);
 // $paragraph-aside-font-size: emCalc(14px);
@@ -969,7 +969,7 @@
 //
 
 // Background color for the top bar
-// $topbar-bg: #111;
+ $topbar-bg: #000;
 
 // Height and margin
 // $topbar-height: 45px;

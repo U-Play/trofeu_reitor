@@ -22,6 +22,7 @@ gem 'paranoia'
 gem 'paranoia_uniqueness_validator'
 gem 'roadie' # action_mailer css inliner
 
+
 group :development do
   gem 'pry-rails'
   gem 'better_errors'
@@ -43,6 +44,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   # Add Foundation Here
   gem 'zurb-foundation', '~> 4.0.0'
+  gem 'compass-rails'
 
   gem 'therubyracer', :platforms => :ruby
 end
