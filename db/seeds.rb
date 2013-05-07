@@ -12,7 +12,7 @@ roles.each do |role|
   Role.find_or_create_by_name(role[:name])
 end
 
-puts 'ccourses'
+puts 'creating courses'
 courses = [
   { abbreviation: 'APublica', name: 'Administração Publica' },
   { abbreviation: 'Arqueologia', name: 'Arqueologia' },

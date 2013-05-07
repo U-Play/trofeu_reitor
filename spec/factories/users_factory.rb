@@ -6,7 +6,6 @@ FactoryGirl.define do
     sequence(:email) { |n| "someweirdunrepeatableemail#{n}@yourcousin.com" }
     sequence(:password) { |n| "bigpassword#{n}" }
     sequence(:password_confirmation) { |n| "bigpassword#{n}" }
-    #confirmed_at { Time.now }
     association :role
 
     factory :cr7 do
