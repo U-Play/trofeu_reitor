@@ -20,8 +20,6 @@ Uplay::Application.routes.draw do
   ActiveAdmin.routes(self)
   # devise_for :admins, ActiveAdmin::Devise.config.merge(class_name: 'User')
 
-  match 'credentials/:id' => 'credentials#print', :via => :get
-
 	mount Resque::Server, at: "/resque"
 
 end
