@@ -37,15 +37,16 @@ ActiveAdmin.register Match do
 
   # /admin/tournaments/:tournament_id/matches/:id/edit_result
   member_action :edit_result do
-    @match = Match.find(params[:id])
+    @match      = Match.find(params[:id])
     @tournament = Tournament.find(params[:tournament_id])
   end
 
   member_action :put_result, method: :put do
-    @match = Match.find(params[:id])
+    @match      = Match.find(params[:id])
+    @tournament = Tournament.find(params[:tournament_id])
      
     if @match.update_attributes(params[:match])
-      redirect_to admin_tournament_match_path(@brand.tournament, @brand), :notice => 'Match\'s result submitted.'
+      redirect_to admin_tournament_match_path(@tournament, @match), :notice => 'Match\'s result submitted.'
     else
       render :edit_result
     end

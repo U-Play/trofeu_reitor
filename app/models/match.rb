@@ -25,20 +25,25 @@ class Match < ActiveRecord::Base
   ## Attributes ##
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
                   :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id,
-                  :started, :ended, :knockout_index, :group_round
+                  :started, :ended, :knockout_index, :group_round, :team_one_result,
+                  :team_two_result
+
+  attr_writer     :team_one_result, :team_two_result
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
+  accepts_nested_attributes_for :team_data
 
   just_define_datetime_picker :start_datetime, :add_to_attr_accessible => true
 
   ## Validations ##
   validates :tournament, presence: true 
   validates :format, presence: true
-  validate :end_after_started
-  validate :start_with_two_teams
+  validate  :end_after_started
+  validate  :start_with_two_teams
 
   ## Callbacks ##
-  before_save :team_with_team_data
+  before_validation :set_result
+  before_save       :team_with_team_data
   
   ## Scopes ##
   scope :finished, lambda { where("winner_id IS NOT NULL")}
@@ -76,7 +81,7 @@ class Match < ActiveRecord::Base
   end
 
   def self.find_all_by_team(team)
-   where('team_one_id = ? OR team_two_id = ?', team.id, team.id) 
+    where('team_one_id = ? OR team_two_id = ?', team.id, team.id) 
   end
 
   def pending?
@@ -88,15 +93,7 @@ class Match < ActiveRecord::Base
   end
 
   def result
-    "#{result_team_one} - #{result_team_two}"
-  end
-
-  def result_team_one
-    team_one_data.try(:result)
-  end
-
-  def result_team_two
-    team_two_data.try(:result)
+    "#{team_one_result} - #{team_two_result}"
   end
 
   def started?
@@ -115,8 +112,16 @@ class Match < ActiveRecord::Base
     team_data.where( :team_id => team_one.id ).first if team_one
   end
 
+  def team_one_result
+    self.team_one_data.try(:result) || @team_one_result
+  end
+
   def team_two_data
     team_data.where( :team_id => team_two.id ).first if team_two
+  end
+
+  def team_two_result
+    self.team_two_data.try(:result) || @team_two_result
   end
 
   def teams
@@ -128,6 +133,11 @@ class Match < ActiveRecord::Base
 
     def end_after_started 
       errors.add(:ended, "match has to start before ending") if (!started && ended)
+    end
+
+    def set_result
+      self.team_one_data.result = team_one_result
+      self.team_two_data.result = team_two_result
     end
 
     def start_with_two_teams

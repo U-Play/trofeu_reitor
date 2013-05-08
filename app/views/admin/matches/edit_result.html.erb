@@ -1,5 +1,6 @@
-<%# <%= form_for [:admin, @match.tournament, @match] do |f| %>
 <%= form_for @match, :url => put_result_admin_tournament_match_path(@tournament, @match), :method => :put  do |f| %>
+  <%= f.text_field :team_one_result %>
+  <%= f.text_field :team_two_result %>
   <%= f.collection_select :winner_id, @match.teams, :id, :course %> 
   <%= f.submit 'Submit' %>
 <% end %>
