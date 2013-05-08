@@ -71,7 +71,15 @@ class Team < ActiveRecord::Base
       manager = User.find_or_invite_by_email(@manager_email)
       @manager_email = nil
       manager.promote_to_manager(self)
-      manager.update_attributes course: self.course
+
+      if manager.course
+        if manager.course.id != self.course.id
+          errors.add( :manager, "course doesn't match the team's course" ) 
+        end
+      else
+        manager.update_attributes course: self.course
+      end
+
       TeamAthlete.create!( team: self, athlete: manager )
       self.update_attributes manager_id: manager.id
       self.save!
