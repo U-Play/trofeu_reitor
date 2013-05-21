@@ -86,15 +86,37 @@ ActiveAdmin.register Tournament do
     @groups = @tournament.groups
   end
 
-  # Save the draft
   member_action :save_groups_draft, :method => :put do
+    @tournament = Tournament.find(params[:id])
+    Team.transaction do
+      begin
+        params[:groups].each do |group, alignment|
+          alignment.each do |position, team|
+            Team.clean_position(@tournament.id, group, position)
+            Team.find(team).update_attributes(:group_id => group, :group_position => position) if !team.blank?
+          end
+        end
+        if @tournament.all_groups_with_min_teams? && @tournament.all_teams_in_groups?
+          @tournament.group_stage.update_attributes(:draft_made => true)
+          @tournament.group_stage.create_matches
+          redirect_to admin_tournament_path(@tournament), :notice => 'Draft completed'
+        else
+          redirect_to admin_tournament_path(@tournament), :alert => 'The draft is not completed! All groups must have at least two teams and all teams must be selected!'
+        end
+      rescue Exception => e
+        @tournament.errors.add(:base, e.message)
+        @teams = @tournament.teams
+        @groups = @tournament.groups
+        render :groups_draft
+        raise ActiveRecord::Rollback
+      end
+    end
   end
 
   action_item :only => :show, :if => proc{ tournament.knockout_stage && !tournament.knockout_stage.draft_made? } do 
     link_to 'Knockout Draft', :controller => 'tournaments', :action => 'knockout_draft', :id => tournament.id
   end 
 
-  #Action to show the page where the admin can do the manual draft
   member_action :knockout_draft do
     @tournament = Tournament.find(params[:id])
     @teams = @tournament.teams
@@ -120,7 +142,7 @@ ActiveAdmin.register Tournament do
         @tournament.knockout_stage.update_attributes(:draft_made => true)
         redirect_to admin_tournament_path(@tournament), :notice => 'Draft completed'
       else
-        redirect_to admin_tournament_path(@tournament), :alert => 'There are matches without one team at least'
+        redirect_to admin_tournament_path(@tournament), :alert => 'There are matches without teams'
       end
     else
       @tournament.errors[:base] << 'The same team cannot be selected for two different matches'

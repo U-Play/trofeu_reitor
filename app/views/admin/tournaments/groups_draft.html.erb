@@ -1,5 +1,6 @@
 <%= semantic_form_for @tournament, :url => save_groups_draft_admin_tournament_path(@tournament), :html => {:method => :put} do |f| %>
   <%= f.inputs "Groups" do %>
+    <%= f.semantic_errors :base %>
     <% @groups.each do |g| %>
       <table>     
         <thead>
@@ -13,7 +14,7 @@
               <td>
                 Position <%= i.to_s(36).upcase %>: 
                 <% selected_team = @teams.from_group_and_position(g.id,i.to_s(36).upcase) %>
-                <%= select_tag "draft[#{g.id}[#{i.to_s(36).upcase}]]", options_from_collection_for_select(@teams, :id, :course, !selected_team.empty? && selected_team.first.id), :include_blank => true %>
+                <%= select_tag "groups[#{g.id}[#{i.to_s(36).upcase}]]", options_from_collection_for_select(@teams, :id, :course, !selected_team.empty? && selected_team.first.id), :include_blank => true %>
               </td>
             </tr>
           <% end %>

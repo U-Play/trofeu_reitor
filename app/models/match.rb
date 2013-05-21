@@ -8,6 +8,7 @@ class Match < ActiveRecord::Base
   belongs_to :winner, :class_name => "Team"
   belongs_to :team_one, :class_name => "Team"
   belongs_to :team_two, :class_name => "Team"
+  belongs_to :group
 
   has_many :penalties
   has_many :team_data, :class_name => "TeamData", :dependent => :destroy
@@ -25,7 +26,7 @@ class Match < ActiveRecord::Base
   ## Attributes ##
   attr_accessible :start_datetime, :position, :tournament_id, :location_id, :winner_id,
                   :team_one_id, :team_two_id, :match_referees_attributes, :format, :format_id,
-                  :started, :ended, :knockout_index, :group_round
+                  :started, :ended, :knockout_index, :group_round, :group_id
 
   accepts_nested_attributes_for :match_referees, :allow_destroy => true
 
