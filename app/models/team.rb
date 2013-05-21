@@ -63,8 +63,8 @@ class Team < ActiveRecord::Base
     name
   end
 
-  def self.clean_position(tournament, group, position)
-    team = Team.find_by_tournament_id_and_group_id_and_group_position(tournament, group, position)
+  def self.clean_position(tournament_id, group_id, position)
+    team = Team.find_by_tournament_id_and_group_id_and_group_position(tournament_id, group_id, position)
     team.update_attributes(:group_id => nil, :group_position => nil) if team
   end
 

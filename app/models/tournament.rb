@@ -66,7 +66,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def all_groups_with_min_teams?
-    !self.groups.map{|g| g.teams.size >= 2}.include?(false)
+    self.groups.all?{ |g| g.teams.size >= 2 }
   end
 
   def all_teams_in_groups?

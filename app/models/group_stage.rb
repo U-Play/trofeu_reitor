@@ -45,7 +45,7 @@ class GroupStage < ActiveRecord::Base
     end
 
     def min_two_teams_per_group
-      if !self.n_groups.nil? && self.n_groups > self.tournament.number_of_teams.to_f/2
+      if self.n_groups.present? && self.n_groups > self.tournament.number_of_teams.to_f/2
         self.tournament.errors.add(:base, 'There should be at least two teams per group')
       end
     end
